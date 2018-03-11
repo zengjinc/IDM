@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 与slf4j结合之后,logger获取方式  Logger logger = LoggerFactory.getLogger(本类类名.class);  --> 
+<!-- 导入的包  import org.apache.logging.log4j.LogManager;-->
+<!-- import org.apache.logging.log4j.Logger; --> 
+
+<!-- 往 log4j2 文件中添加 ${XXX},读取配置文件  http://k1280000.iteye.com/blog/2176541   http://blog.csdn.net/fansunion/article/details/43156557 -->
+
+
+<configuration status="debug">	 
+  <appenders>  
+	 <Console name="Console" target="SYSTEM_OUT">  
+		<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+		<PatternLayout
+			pattern="%d{yyyy-MM-dd HH:mm:ss} -%-5level [%t]  %logger.%M(%L) -%msg%n" />
+	</Console>
+
+	<RollingFile name="RollingFile" fileName="../logs/pcs.log"
+		filePattern="logs/pcs-%d{yyyy-MM-dd}-%i.log.zip" ImmediateFlush="true">
+		<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} -%-5level [%t]  %logger.%M(%L) -%msg%n" />
+		<Policies>
+			<TimeBasedTriggeringPolicy modulate="true" interval="1" />
+<!-- 			<SizeBasedTriggeringPolicy size="10MB" /> -->
+		</Policies>
+		<!-- <DefaultRolloverStrategy max="20"/> -->
+	</RollingFile>
+</appenders>  
+  
+  <loggers>  
+  		<logger name="org.springframework" level="OFF"></logger>
+<!--   		<logger name="pcs.filters" level="OFF"></logger> -->
+<!-- 		<logger name="pcs.aop.GetCacheAop" level="OFF"></logger> -->
+        <root level="debug">
+            <appender-ref ref="Console"/>            
+            <appender-ref ref="RollingFile"/>
+        </root>      
+  </loggers>  
+</configuration>
