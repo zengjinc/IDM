@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.UserAttrDefMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.UserAttrDef" >
+    <id column="user_attr_def_uuid" property="userAttrDefUuid" jdbcType="VARCHAR" />
+    <result column="user_attr_def_key" property="userAttrDefKey" jdbcType="VARCHAR" />
+    <result column="user_attr_def_datatype" property="userAttrDefDatatype" jdbcType="VARCHAR" />
+    <result column="user_attr_def_status" property="userAttrDefStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_attr_def_uuid, user_attr_def_key, user_attr_def_datatype, user_attr_def_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.UserAttrDefExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_attr_def
+    where user_attr_def_uuid = #{userAttrDefUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_attr_def
+    where user_attr_def_uuid = #{userAttrDefUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.UserAttrDefExample" >
+    delete from user_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.UserAttrDef" >
+    insert into user_attr_def (user_attr_def_uuid, user_attr_def_key, 
+      user_attr_def_datatype, user_attr_def_status)
+    values (#{userAttrDefUuid,jdbcType=VARCHAR}, #{userAttrDefKey,jdbcType=VARCHAR}, 
+      #{userAttrDefDatatype,jdbcType=VARCHAR}, #{userAttrDefStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.UserAttrDef" >
+    insert into user_attr_def
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userAttrDefUuid != null" >
+        user_attr_def_uuid,
+      </if>
+      <if test="userAttrDefKey != null" >
+        user_attr_def_key,
+      </if>
+      <if test="userAttrDefDatatype != null" >
+        user_attr_def_datatype,
+      </if>
+      <if test="userAttrDefStatus != null" >
+        user_attr_def_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userAttrDefUuid != null" >
+        #{userAttrDefUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userAttrDefKey != null" >
+        #{userAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="userAttrDefDatatype != null" >
+        #{userAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="userAttrDefStatus != null" >
+        #{userAttrDefStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.UserAttrDefExample" resultType="java.lang.Integer" >
+    select count(*) from user_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_attr_def
+    <set >
+      <if test="record.userAttrDefUuid != null" >
+        user_attr_def_uuid = #{record.userAttrDefUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAttrDefKey != null" >
+        user_attr_def_key = #{record.userAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAttrDefDatatype != null" >
+        user_attr_def_datatype = #{record.userAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAttrDefStatus != null" >
+        user_attr_def_status = #{record.userAttrDefStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_attr_def
+    set user_attr_def_uuid = #{record.userAttrDefUuid,jdbcType=VARCHAR},
+      user_attr_def_key = #{record.userAttrDefKey,jdbcType=VARCHAR},
+      user_attr_def_datatype = #{record.userAttrDefDatatype,jdbcType=VARCHAR},
+      user_attr_def_status = #{record.userAttrDefStatus,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.UserAttrDef" >
+    update user_attr_def
+    <set >
+      <if test="userAttrDefKey != null" >
+        user_attr_def_key = #{userAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="userAttrDefDatatype != null" >
+        user_attr_def_datatype = #{userAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="userAttrDefStatus != null" >
+        user_attr_def_status = #{userAttrDefStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_attr_def_uuid = #{userAttrDefUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.UserAttrDef" >
+    update user_attr_def
+    set user_attr_def_key = #{userAttrDefKey,jdbcType=VARCHAR},
+      user_attr_def_datatype = #{userAttrDefDatatype,jdbcType=VARCHAR},
+      user_attr_def_status = #{userAttrDefStatus,jdbcType=INTEGER}
+    where user_attr_def_uuid = #{userAttrDefUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

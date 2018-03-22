@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.AccessControlAssignMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.AccessControlAssign" >
+    <id column="assg_user_uuid" property="assgUserUuid" jdbcType="VARCHAR" />
+    <result column="assg_obj_code" property="assgObjCode" jdbcType="INTEGER" />
+    <result column="assg_role_code" property="assgRoleCode" jdbcType="INTEGER" />
+    <result column="assg_scp_code" property="assgScpCode" jdbcType="INTEGER" />
+    <result column="assg_desc" property="assgDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    assg_user_uuid, assg_obj_code, assg_role_code, assg_scp_code, assg_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.AccessControlAssignExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from access_control_assign
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from access_control_assign
+    where assg_user_uuid = #{assgUserUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from access_control_assign
+    where assg_user_uuid = #{assgUserUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.AccessControlAssignExample" >
+    delete from access_control_assign
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.AccessControlAssign" >
+    insert into access_control_assign (assg_user_uuid, assg_obj_code, assg_role_code, 
+      assg_scp_code, assg_desc)
+    values (#{assgUserUuid,jdbcType=VARCHAR}, #{assgObjCode,jdbcType=INTEGER}, #{assgRoleCode,jdbcType=INTEGER}, 
+      #{assgScpCode,jdbcType=INTEGER}, #{assgDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.AccessControlAssign" >
+    insert into access_control_assign
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="assgUserUuid != null" >
+        assg_user_uuid,
+      </if>
+      <if test="assgObjCode != null" >
+        assg_obj_code,
+      </if>
+      <if test="assgRoleCode != null" >
+        assg_role_code,
+      </if>
+      <if test="assgScpCode != null" >
+        assg_scp_code,
+      </if>
+      <if test="assgDesc != null" >
+        assg_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="assgUserUuid != null" >
+        #{assgUserUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="assgObjCode != null" >
+        #{assgObjCode,jdbcType=INTEGER},
+      </if>
+      <if test="assgRoleCode != null" >
+        #{assgRoleCode,jdbcType=INTEGER},
+      </if>
+      <if test="assgScpCode != null" >
+        #{assgScpCode,jdbcType=INTEGER},
+      </if>
+      <if test="assgDesc != null" >
+        #{assgDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.AccessControlAssignExample" resultType="java.lang.Integer" >
+    select count(*) from access_control_assign
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update access_control_assign
+    <set >
+      <if test="record.assgUserUuid != null" >
+        assg_user_uuid = #{record.assgUserUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assgObjCode != null" >
+        assg_obj_code = #{record.assgObjCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.assgRoleCode != null" >
+        assg_role_code = #{record.assgRoleCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.assgScpCode != null" >
+        assg_scp_code = #{record.assgScpCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.assgDesc != null" >
+        assg_desc = #{record.assgDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update access_control_assign
+    set assg_user_uuid = #{record.assgUserUuid,jdbcType=VARCHAR},
+      assg_obj_code = #{record.assgObjCode,jdbcType=INTEGER},
+      assg_role_code = #{record.assgRoleCode,jdbcType=INTEGER},
+      assg_scp_code = #{record.assgScpCode,jdbcType=INTEGER},
+      assg_desc = #{record.assgDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.AccessControlAssign" >
+    update access_control_assign
+    <set >
+      <if test="assgObjCode != null" >
+        assg_obj_code = #{assgObjCode,jdbcType=INTEGER},
+      </if>
+      <if test="assgRoleCode != null" >
+        assg_role_code = #{assgRoleCode,jdbcType=INTEGER},
+      </if>
+      <if test="assgScpCode != null" >
+        assg_scp_code = #{assgScpCode,jdbcType=INTEGER},
+      </if>
+      <if test="assgDesc != null" >
+        assg_desc = #{assgDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where assg_user_uuid = #{assgUserUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.AccessControlAssign" >
+    update access_control_assign
+    set assg_obj_code = #{assgObjCode,jdbcType=INTEGER},
+      assg_role_code = #{assgRoleCode,jdbcType=INTEGER},
+      assg_scp_code = #{assgScpCode,jdbcType=INTEGER},
+      assg_desc = #{assgDesc,jdbcType=VARCHAR}
+    where assg_user_uuid = #{assgUserUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

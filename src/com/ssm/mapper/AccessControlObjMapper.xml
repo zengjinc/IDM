@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.AccessControlObjMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.AccessControlObj" >
+    <id column="obj_code" property="objCode" jdbcType="INTEGER" />
+    <result column="obj_name" property="objName" jdbcType="VARCHAR" />
+    <result column="boj_desc" property="bojDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    obj_code, obj_name, boj_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.AccessControlObjExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from access_control_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from access_control_obj
+    where obj_code = #{objCode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from access_control_obj
+    where obj_code = #{objCode,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.AccessControlObjExample" >
+    delete from access_control_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.AccessControlObj" >
+    insert into access_control_obj (obj_code, obj_name, boj_desc
+      )
+    values (#{objCode,jdbcType=INTEGER}, #{objName,jdbcType=VARCHAR}, #{bojDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.AccessControlObj" >
+    insert into access_control_obj
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objCode != null" >
+        obj_code,
+      </if>
+      <if test="objName != null" >
+        obj_name,
+      </if>
+      <if test="bojDesc != null" >
+        boj_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objCode != null" >
+        #{objCode,jdbcType=INTEGER},
+      </if>
+      <if test="objName != null" >
+        #{objName,jdbcType=VARCHAR},
+      </if>
+      <if test="bojDesc != null" >
+        #{bojDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.AccessControlObjExample" resultType="java.lang.Integer" >
+    select count(*) from access_control_obj
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update access_control_obj
+    <set >
+      <if test="record.objCode != null" >
+        obj_code = #{record.objCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.objName != null" >
+        obj_name = #{record.objName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bojDesc != null" >
+        boj_desc = #{record.bojDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update access_control_obj
+    set obj_code = #{record.objCode,jdbcType=INTEGER},
+      obj_name = #{record.objName,jdbcType=VARCHAR},
+      boj_desc = #{record.bojDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.AccessControlObj" >
+    update access_control_obj
+    <set >
+      <if test="objName != null" >
+        obj_name = #{objName,jdbcType=VARCHAR},
+      </if>
+      <if test="bojDesc != null" >
+        boj_desc = #{bojDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where obj_code = #{objCode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.AccessControlObj" >
+    update access_control_obj
+    set obj_name = #{objName,jdbcType=VARCHAR},
+      boj_desc = #{bojDesc,jdbcType=VARCHAR}
+    where obj_code = #{objCode,jdbcType=INTEGER}
+  </update>
+</mapper>

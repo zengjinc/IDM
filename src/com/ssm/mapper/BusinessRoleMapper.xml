@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.BusinessRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.BusinessRole" >
+    <id column="biz_role_uuid" property="bizRoleUuid" jdbcType="VARCHAR" />
+    <result column="biz_role_id" property="bizRoleId" jdbcType="VARCHAR" />
+    <result column="biz_role_name" property="bizRoleName" jdbcType="VARCHAR" />
+    <result column="biz_role_desc" property="bizRoleDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    biz_role_uuid, biz_role_id, biz_role_name, biz_role_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.BusinessRoleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from business_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from business_role
+    where biz_role_uuid = #{bizRoleUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from business_role
+    where biz_role_uuid = #{bizRoleUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.BusinessRoleExample" >
+    delete from business_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.BusinessRole" >
+    insert into business_role (biz_role_uuid, biz_role_id, biz_role_name, 
+      biz_role_desc)
+    values (#{bizRoleUuid,jdbcType=VARCHAR}, #{bizRoleId,jdbcType=VARCHAR}, #{bizRoleName,jdbcType=VARCHAR}, 
+      #{bizRoleDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.BusinessRole" >
+    insert into business_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bizRoleUuid != null" >
+        biz_role_uuid,
+      </if>
+      <if test="bizRoleId != null" >
+        biz_role_id,
+      </if>
+      <if test="bizRoleName != null" >
+        biz_role_name,
+      </if>
+      <if test="bizRoleDesc != null" >
+        biz_role_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bizRoleUuid != null" >
+        #{bizRoleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="bizRoleId != null" >
+        #{bizRoleId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizRoleName != null" >
+        #{bizRoleName,jdbcType=VARCHAR},
+      </if>
+      <if test="bizRoleDesc != null" >
+        #{bizRoleDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.BusinessRoleExample" resultType="java.lang.Integer" >
+    select count(*) from business_role
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update business_role
+    <set >
+      <if test="record.bizRoleUuid != null" >
+        biz_role_uuid = #{record.bizRoleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bizRoleId != null" >
+        biz_role_id = #{record.bizRoleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bizRoleName != null" >
+        biz_role_name = #{record.bizRoleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bizRoleDesc != null" >
+        biz_role_desc = #{record.bizRoleDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update business_role
+    set biz_role_uuid = #{record.bizRoleUuid,jdbcType=VARCHAR},
+      biz_role_id = #{record.bizRoleId,jdbcType=VARCHAR},
+      biz_role_name = #{record.bizRoleName,jdbcType=VARCHAR},
+      biz_role_desc = #{record.bizRoleDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.BusinessRole" >
+    update business_role
+    <set >
+      <if test="bizRoleId != null" >
+        biz_role_id = #{bizRoleId,jdbcType=VARCHAR},
+      </if>
+      <if test="bizRoleName != null" >
+        biz_role_name = #{bizRoleName,jdbcType=VARCHAR},
+      </if>
+      <if test="bizRoleDesc != null" >
+        biz_role_desc = #{bizRoleDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where biz_role_uuid = #{bizRoleUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.BusinessRole" >
+    update business_role
+    set biz_role_id = #{bizRoleId,jdbcType=VARCHAR},
+      biz_role_name = #{bizRoleName,jdbcType=VARCHAR},
+      biz_role_desc = #{bizRoleDesc,jdbcType=VARCHAR}
+    where biz_role_uuid = #{bizRoleUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

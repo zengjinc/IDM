@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.OuAncestorMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.OuAncestor" >
+    <id column="ou_descendent" property="ouDescendent" jdbcType="VARCHAR" />
+    <result column="ou_ancestor" property="ouAncestor" jdbcType="VARCHAR" />
+    <result column="ou_depth" property="ouDepth" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ou_descendent, ou_ancestor, ou_depth
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.OuAncestorExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ou_ancestor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ou_ancestor
+    where ou_descendent = #{ouDescendent,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ou_ancestor
+    where ou_descendent = #{ouDescendent,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.OuAncestorExample" >
+    delete from ou_ancestor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.OuAncestor" >
+    insert into ou_ancestor (ou_descendent, ou_ancestor, ou_depth
+      )
+    values (#{ouDescendent,jdbcType=VARCHAR}, #{ouAncestor,jdbcType=VARCHAR}, #{ouDepth,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.OuAncestor" >
+    insert into ou_ancestor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ouDescendent != null" >
+        ou_descendent,
+      </if>
+      <if test="ouAncestor != null" >
+        ou_ancestor,
+      </if>
+      <if test="ouDepth != null" >
+        ou_depth,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ouDescendent != null" >
+        #{ouDescendent,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAncestor != null" >
+        #{ouAncestor,jdbcType=VARCHAR},
+      </if>
+      <if test="ouDepth != null" >
+        #{ouDepth,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.OuAncestorExample" resultType="java.lang.Integer" >
+    select count(*) from ou_ancestor
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ou_ancestor
+    <set >
+      <if test="record.ouDescendent != null" >
+        ou_descendent = #{record.ouDescendent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAncestor != null" >
+        ou_ancestor = #{record.ouAncestor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouDepth != null" >
+        ou_depth = #{record.ouDepth,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ou_ancestor
+    set ou_descendent = #{record.ouDescendent,jdbcType=VARCHAR},
+      ou_ancestor = #{record.ouAncestor,jdbcType=VARCHAR},
+      ou_depth = #{record.ouDepth,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.OuAncestor" >
+    update ou_ancestor
+    <set >
+      <if test="ouAncestor != null" >
+        ou_ancestor = #{ouAncestor,jdbcType=VARCHAR},
+      </if>
+      <if test="ouDepth != null" >
+        ou_depth = #{ouDepth,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ou_descendent = #{ouDescendent,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.OuAncestor" >
+    update ou_ancestor
+    set ou_ancestor = #{ouAncestor,jdbcType=VARCHAR},
+      ou_depth = #{ouDepth,jdbcType=INTEGER}
+    where ou_descendent = #{ouDescendent,jdbcType=VARCHAR}
+  </update>
+</mapper>

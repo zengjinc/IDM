@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.OuAttrDefMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.OuAttrDef" >
+    <id column="ou_attr_def_uuid" property="ouAttrDefUuid" jdbcType="VARCHAR" />
+    <result column="ou_attr_def_key" property="ouAttrDefKey" jdbcType="VARCHAR" />
+    <result column="ou_attr_def_name" property="ouAttrDefName" jdbcType="VARCHAR" />
+    <result column="ou_attr_def_datatype" property="ouAttrDefDatatype" jdbcType="VARCHAR" />
+    <result column="ou_attr_def_mandatory" property="ouAttrDefMandatory" jdbcType="INTEGER" />
+    <result column="ou_attr_def_editable" property="ouAttrDefEditable" jdbcType="INTEGER" />
+    <result column="ou_attr_def_max" property="ouAttrDefMax" jdbcType="VARCHAR" />
+    <result column="ou_attr_def_min" property="ouAttrDefMin" jdbcType="VARCHAR" />
+    <result column="ou_attr_def_res_uuid" property="ouAttrDefResUuid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ou_attr_def_uuid, ou_attr_def_key, ou_attr_def_name, ou_attr_def_datatype, ou_attr_def_mandatory, 
+    ou_attr_def_editable, ou_attr_def_max, ou_attr_def_min, ou_attr_def_res_uuid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.OuAttrDefExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ou_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ou_attr_def
+    where ou_attr_def_uuid = #{ouAttrDefUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ou_attr_def
+    where ou_attr_def_uuid = #{ouAttrDefUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.OuAttrDefExample" >
+    delete from ou_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.OuAttrDef" >
+    insert into ou_attr_def (ou_attr_def_uuid, ou_attr_def_key, ou_attr_def_name, 
+      ou_attr_def_datatype, ou_attr_def_mandatory, 
+      ou_attr_def_editable, ou_attr_def_max, ou_attr_def_min, 
+      ou_attr_def_res_uuid)
+    values (#{ouAttrDefUuid,jdbcType=VARCHAR}, #{ouAttrDefKey,jdbcType=VARCHAR}, #{ouAttrDefName,jdbcType=VARCHAR}, 
+      #{ouAttrDefDatatype,jdbcType=VARCHAR}, #{ouAttrDefMandatory,jdbcType=INTEGER}, 
+      #{ouAttrDefEditable,jdbcType=INTEGER}, #{ouAttrDefMax,jdbcType=VARCHAR}, #{ouAttrDefMin,jdbcType=VARCHAR}, 
+      #{ouAttrDefResUuid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.OuAttrDef" >
+    insert into ou_attr_def
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="ouAttrDefUuid != null" >
+        ou_attr_def_uuid,
+      </if>
+      <if test="ouAttrDefKey != null" >
+        ou_attr_def_key,
+      </if>
+      <if test="ouAttrDefName != null" >
+        ou_attr_def_name,
+      </if>
+      <if test="ouAttrDefDatatype != null" >
+        ou_attr_def_datatype,
+      </if>
+      <if test="ouAttrDefMandatory != null" >
+        ou_attr_def_mandatory,
+      </if>
+      <if test="ouAttrDefEditable != null" >
+        ou_attr_def_editable,
+      </if>
+      <if test="ouAttrDefMax != null" >
+        ou_attr_def_max,
+      </if>
+      <if test="ouAttrDefMin != null" >
+        ou_attr_def_min,
+      </if>
+      <if test="ouAttrDefResUuid != null" >
+        ou_attr_def_res_uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="ouAttrDefUuid != null" >
+        #{ouAttrDefUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefKey != null" >
+        #{ouAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefName != null" >
+        #{ouAttrDefName,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefDatatype != null" >
+        #{ouAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefMandatory != null" >
+        #{ouAttrDefMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="ouAttrDefEditable != null" >
+        #{ouAttrDefEditable,jdbcType=INTEGER},
+      </if>
+      <if test="ouAttrDefMax != null" >
+        #{ouAttrDefMax,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefMin != null" >
+        #{ouAttrDefMin,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefResUuid != null" >
+        #{ouAttrDefResUuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.OuAttrDefExample" resultType="java.lang.Integer" >
+    select count(*) from ou_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update ou_attr_def
+    <set >
+      <if test="record.ouAttrDefUuid != null" >
+        ou_attr_def_uuid = #{record.ouAttrDefUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAttrDefKey != null" >
+        ou_attr_def_key = #{record.ouAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAttrDefName != null" >
+        ou_attr_def_name = #{record.ouAttrDefName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAttrDefDatatype != null" >
+        ou_attr_def_datatype = #{record.ouAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAttrDefMandatory != null" >
+        ou_attr_def_mandatory = #{record.ouAttrDefMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="record.ouAttrDefEditable != null" >
+        ou_attr_def_editable = #{record.ouAttrDefEditable,jdbcType=INTEGER},
+      </if>
+      <if test="record.ouAttrDefMax != null" >
+        ou_attr_def_max = #{record.ouAttrDefMax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAttrDefMin != null" >
+        ou_attr_def_min = #{record.ouAttrDefMin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ouAttrDefResUuid != null" >
+        ou_attr_def_res_uuid = #{record.ouAttrDefResUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update ou_attr_def
+    set ou_attr_def_uuid = #{record.ouAttrDefUuid,jdbcType=VARCHAR},
+      ou_attr_def_key = #{record.ouAttrDefKey,jdbcType=VARCHAR},
+      ou_attr_def_name = #{record.ouAttrDefName,jdbcType=VARCHAR},
+      ou_attr_def_datatype = #{record.ouAttrDefDatatype,jdbcType=VARCHAR},
+      ou_attr_def_mandatory = #{record.ouAttrDefMandatory,jdbcType=INTEGER},
+      ou_attr_def_editable = #{record.ouAttrDefEditable,jdbcType=INTEGER},
+      ou_attr_def_max = #{record.ouAttrDefMax,jdbcType=VARCHAR},
+      ou_attr_def_min = #{record.ouAttrDefMin,jdbcType=VARCHAR},
+      ou_attr_def_res_uuid = #{record.ouAttrDefResUuid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.OuAttrDef" >
+    update ou_attr_def
+    <set >
+      <if test="ouAttrDefKey != null" >
+        ou_attr_def_key = #{ouAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefName != null" >
+        ou_attr_def_name = #{ouAttrDefName,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefDatatype != null" >
+        ou_attr_def_datatype = #{ouAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefMandatory != null" >
+        ou_attr_def_mandatory = #{ouAttrDefMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="ouAttrDefEditable != null" >
+        ou_attr_def_editable = #{ouAttrDefEditable,jdbcType=INTEGER},
+      </if>
+      <if test="ouAttrDefMax != null" >
+        ou_attr_def_max = #{ouAttrDefMax,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefMin != null" >
+        ou_attr_def_min = #{ouAttrDefMin,jdbcType=VARCHAR},
+      </if>
+      <if test="ouAttrDefResUuid != null" >
+        ou_attr_def_res_uuid = #{ouAttrDefResUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ou_attr_def_uuid = #{ouAttrDefUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.OuAttrDef" >
+    update ou_attr_def
+    set ou_attr_def_key = #{ouAttrDefKey,jdbcType=VARCHAR},
+      ou_attr_def_name = #{ouAttrDefName,jdbcType=VARCHAR},
+      ou_attr_def_datatype = #{ouAttrDefDatatype,jdbcType=VARCHAR},
+      ou_attr_def_mandatory = #{ouAttrDefMandatory,jdbcType=INTEGER},
+      ou_attr_def_editable = #{ouAttrDefEditable,jdbcType=INTEGER},
+      ou_attr_def_max = #{ouAttrDefMax,jdbcType=VARCHAR},
+      ou_attr_def_min = #{ouAttrDefMin,jdbcType=VARCHAR},
+      ou_attr_def_res_uuid = #{ouAttrDefResUuid,jdbcType=VARCHAR}
+    where ou_attr_def_uuid = #{ouAttrDefUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

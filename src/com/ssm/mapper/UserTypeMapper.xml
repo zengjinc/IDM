@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.UserTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.UserType" >
+    <id column="user_type_uuid" property="userTypeUuid" jdbcType="VARCHAR" />
+    <result column="user_type_name" property="userTypeName" jdbcType="VARCHAR" />
+    <result column="user_type_desc" property="userTypeDesc" jdbcType="VARCHAR" />
+    <result column="user_type_status" property="userTypeStatus" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_type_uuid, user_type_name, user_type_desc, user_type_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.UserTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_type
+    where user_type_uuid = #{userTypeUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_type
+    where user_type_uuid = #{userTypeUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.UserTypeExample" >
+    delete from user_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.UserType" >
+    insert into user_type (user_type_uuid, user_type_name, user_type_desc, 
+      user_type_status)
+    values (#{userTypeUuid,jdbcType=VARCHAR}, #{userTypeName,jdbcType=VARCHAR}, #{userTypeDesc,jdbcType=VARCHAR}, 
+      #{userTypeStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.UserType" >
+    insert into user_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userTypeUuid != null" >
+        user_type_uuid,
+      </if>
+      <if test="userTypeName != null" >
+        user_type_name,
+      </if>
+      <if test="userTypeDesc != null" >
+        user_type_desc,
+      </if>
+      <if test="userTypeStatus != null" >
+        user_type_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userTypeUuid != null" >
+        #{userTypeUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userTypeName != null" >
+        #{userTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="userTypeDesc != null" >
+        #{userTypeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userTypeStatus != null" >
+        #{userTypeStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.UserTypeExample" resultType="java.lang.Integer" >
+    select count(*) from user_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user_type
+    <set >
+      <if test="record.userTypeUuid != null" >
+        user_type_uuid = #{record.userTypeUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userTypeName != null" >
+        user_type_name = #{record.userTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userTypeDesc != null" >
+        user_type_desc = #{record.userTypeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userTypeStatus != null" >
+        user_type_status = #{record.userTypeStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user_type
+    set user_type_uuid = #{record.userTypeUuid,jdbcType=VARCHAR},
+      user_type_name = #{record.userTypeName,jdbcType=VARCHAR},
+      user_type_desc = #{record.userTypeDesc,jdbcType=VARCHAR},
+      user_type_status = #{record.userTypeStatus,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.UserType" >
+    update user_type
+    <set >
+      <if test="userTypeName != null" >
+        user_type_name = #{userTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="userTypeDesc != null" >
+        user_type_desc = #{userTypeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userTypeStatus != null" >
+        user_type_status = #{userTypeStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_type_uuid = #{userTypeUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.UserType" >
+    update user_type
+    set user_type_name = #{userTypeName,jdbcType=VARCHAR},
+      user_type_desc = #{userTypeDesc,jdbcType=VARCHAR},
+      user_type_status = #{userTypeStatus,jdbcType=INTEGER}
+    where user_type_uuid = #{userTypeUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

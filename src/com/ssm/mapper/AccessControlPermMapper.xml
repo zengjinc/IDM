@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.AccessControlPermMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.AccessControlPerm" >
+    <id column="role_code" property="roleCode" jdbcType="INTEGER" />
+    <result column="obj_code" property="objCode" jdbcType="INTEGER" />
+    <result column="act_code" property="actCode" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    role_code, obj_code, act_code
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.AccessControlPermExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from access_control_perm
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from access_control_perm
+    where role_code = #{roleCode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from access_control_perm
+    where role_code = #{roleCode,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.AccessControlPermExample" >
+    delete from access_control_perm
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.AccessControlPerm" >
+    insert into access_control_perm (role_code, obj_code, act_code
+      )
+    values (#{roleCode,jdbcType=INTEGER}, #{objCode,jdbcType=INTEGER}, #{actCode,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.AccessControlPerm" >
+    insert into access_control_perm
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleCode != null" >
+        role_code,
+      </if>
+      <if test="objCode != null" >
+        obj_code,
+      </if>
+      <if test="actCode != null" >
+        act_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleCode != null" >
+        #{roleCode,jdbcType=INTEGER},
+      </if>
+      <if test="objCode != null" >
+        #{objCode,jdbcType=INTEGER},
+      </if>
+      <if test="actCode != null" >
+        #{actCode,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.AccessControlPermExample" resultType="java.lang.Integer" >
+    select count(*) from access_control_perm
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update access_control_perm
+    <set >
+      <if test="record.roleCode != null" >
+        role_code = #{record.roleCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.objCode != null" >
+        obj_code = #{record.objCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.actCode != null" >
+        act_code = #{record.actCode,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update access_control_perm
+    set role_code = #{record.roleCode,jdbcType=INTEGER},
+      obj_code = #{record.objCode,jdbcType=INTEGER},
+      act_code = #{record.actCode,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.AccessControlPerm" >
+    update access_control_perm
+    <set >
+      <if test="objCode != null" >
+        obj_code = #{objCode,jdbcType=INTEGER},
+      </if>
+      <if test="actCode != null" >
+        act_code = #{actCode,jdbcType=INTEGER},
+      </if>
+    </set>
+    where role_code = #{roleCode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.AccessControlPerm" >
+    update access_control_perm
+    set obj_code = #{objCode,jdbcType=INTEGER},
+      act_code = #{actCode,jdbcType=INTEGER}
+    where role_code = #{roleCode,jdbcType=INTEGER}
+  </update>
+</mapper>

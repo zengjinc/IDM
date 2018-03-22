@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.RelUserBizroleMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.RelUserBizrole" >
+    <id column="rel_user_bizrole_user_uuid" property="relUserBizroleUserUuid" jdbcType="VARCHAR" />
+    <result column="rel_user_bizrole_bizrole_uuid" property="relUserBizroleBizroleUuid" jdbcType="VARCHAR" />
+    <result column="rel_user_bizrole_desc" property="relUserBizroleDesc" jdbcType="VARCHAR" />
+    <result column="rel_user_bizrole_pol_uuid" property="relUserBizrolePolUuid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    rel_user_bizrole_user_uuid, rel_user_bizrole_bizrole_uuid, rel_user_bizrole_desc, 
+    rel_user_bizrole_pol_uuid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.RelUserBizroleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from rel_user_bizrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from rel_user_bizrole
+    where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from rel_user_bizrole
+    where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.RelUserBizroleExample" >
+    delete from rel_user_bizrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.RelUserBizrole" >
+    insert into rel_user_bizrole (rel_user_bizrole_user_uuid, rel_user_bizrole_bizrole_uuid, 
+      rel_user_bizrole_desc, rel_user_bizrole_pol_uuid
+      )
+    values (#{relUserBizroleUserUuid,jdbcType=VARCHAR}, #{relUserBizroleBizroleUuid,jdbcType=VARCHAR}, 
+      #{relUserBizroleDesc,jdbcType=VARCHAR}, #{relUserBizrolePolUuid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.RelUserBizrole" >
+    insert into rel_user_bizrole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="relUserBizroleUserUuid != null" >
+        rel_user_bizrole_user_uuid,
+      </if>
+      <if test="relUserBizroleBizroleUuid != null" >
+        rel_user_bizrole_bizrole_uuid,
+      </if>
+      <if test="relUserBizroleDesc != null" >
+        rel_user_bizrole_desc,
+      </if>
+      <if test="relUserBizrolePolUuid != null" >
+        rel_user_bizrole_pol_uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="relUserBizroleUserUuid != null" >
+        #{relUserBizroleUserUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="relUserBizroleBizroleUuid != null" >
+        #{relUserBizroleBizroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="relUserBizroleDesc != null" >
+        #{relUserBizroleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="relUserBizrolePolUuid != null" >
+        #{relUserBizrolePolUuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.RelUserBizroleExample" resultType="java.lang.Integer" >
+    select count(*) from rel_user_bizrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update rel_user_bizrole
+    <set >
+      <if test="record.relUserBizroleUserUuid != null" >
+        rel_user_bizrole_user_uuid = #{record.relUserBizroleUserUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relUserBizroleBizroleUuid != null" >
+        rel_user_bizrole_bizrole_uuid = #{record.relUserBizroleBizroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relUserBizroleDesc != null" >
+        rel_user_bizrole_desc = #{record.relUserBizroleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relUserBizrolePolUuid != null" >
+        rel_user_bizrole_pol_uuid = #{record.relUserBizrolePolUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update rel_user_bizrole
+    set rel_user_bizrole_user_uuid = #{record.relUserBizroleUserUuid,jdbcType=VARCHAR},
+      rel_user_bizrole_bizrole_uuid = #{record.relUserBizroleBizroleUuid,jdbcType=VARCHAR},
+      rel_user_bizrole_desc = #{record.relUserBizroleDesc,jdbcType=VARCHAR},
+      rel_user_bizrole_pol_uuid = #{record.relUserBizrolePolUuid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.RelUserBizrole" >
+    update rel_user_bizrole
+    <set >
+      <if test="relUserBizroleBizroleUuid != null" >
+        rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="relUserBizroleDesc != null" >
+        rel_user_bizrole_desc = #{relUserBizroleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="relUserBizrolePolUuid != null" >
+        rel_user_bizrole_pol_uuid = #{relUserBizrolePolUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.RelUserBizrole" >
+    update rel_user_bizrole
+    set rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR},
+      rel_user_bizrole_desc = #{relUserBizroleDesc,jdbcType=VARCHAR},
+      rel_user_bizrole_pol_uuid = #{relUserBizrolePolUuid,jdbcType=VARCHAR}
+    where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

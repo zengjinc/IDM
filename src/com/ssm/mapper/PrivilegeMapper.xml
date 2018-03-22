@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.PrivilegeMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.Privilege" >
+    <id column="pvg_uuid" property="pvgUuid" jdbcType="VARCHAR" />
+    <result column="pvg_acct_uuid" property="pvgAcctUuid" jdbcType="VARCHAR" />
+    <result column="pvg_itrole_uuid" property="pvgItroleUuid" jdbcType="VARCHAR" />
+    <result column="pvg_creator_uuid" property="pvgCreatorUuid" jdbcType="VARCHAR" />
+    <result column="pvg_create_time" property="pvgCreateTime" jdbcType="TIMESTAMP" />
+    <result column="pvg_modifier" property="pvgModifier" jdbcType="VARCHAR" />
+    <result column="pvg_modified_time" property="pvgModifiedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pvg_uuid, pvg_acct_uuid, pvg_itrole_uuid, pvg_creator_uuid, pvg_create_time, pvg_modifier, 
+    pvg_modified_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.PrivilegeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from privilege
+    where pvg_uuid = #{pvgUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from privilege
+    where pvg_uuid = #{pvgUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.PrivilegeExample" >
+    delete from privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.Privilege" >
+    insert into privilege (pvg_uuid, pvg_acct_uuid, pvg_itrole_uuid, 
+      pvg_creator_uuid, pvg_create_time, pvg_modifier, 
+      pvg_modified_time)
+    values (#{pvgUuid,jdbcType=VARCHAR}, #{pvgAcctUuid,jdbcType=VARCHAR}, #{pvgItroleUuid,jdbcType=VARCHAR}, 
+      #{pvgCreatorUuid,jdbcType=VARCHAR}, #{pvgCreateTime,jdbcType=TIMESTAMP}, #{pvgModifier,jdbcType=VARCHAR}, 
+      #{pvgModifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.Privilege" >
+    insert into privilege
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pvgUuid != null" >
+        pvg_uuid,
+      </if>
+      <if test="pvgAcctUuid != null" >
+        pvg_acct_uuid,
+      </if>
+      <if test="pvgItroleUuid != null" >
+        pvg_itrole_uuid,
+      </if>
+      <if test="pvgCreatorUuid != null" >
+        pvg_creator_uuid,
+      </if>
+      <if test="pvgCreateTime != null" >
+        pvg_create_time,
+      </if>
+      <if test="pvgModifier != null" >
+        pvg_modifier,
+      </if>
+      <if test="pvgModifiedTime != null" >
+        pvg_modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pvgUuid != null" >
+        #{pvgUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgAcctUuid != null" >
+        #{pvgAcctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgItroleUuid != null" >
+        #{pvgItroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgCreatorUuid != null" >
+        #{pvgCreatorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgCreateTime != null" >
+        #{pvgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pvgModifier != null" >
+        #{pvgModifier,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgModifiedTime != null" >
+        #{pvgModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.PrivilegeExample" resultType="java.lang.Integer" >
+    select count(*) from privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update privilege
+    <set >
+      <if test="record.pvgUuid != null" >
+        pvg_uuid = #{record.pvgUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgAcctUuid != null" >
+        pvg_acct_uuid = #{record.pvgAcctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgItroleUuid != null" >
+        pvg_itrole_uuid = #{record.pvgItroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgCreatorUuid != null" >
+        pvg_creator_uuid = #{record.pvgCreatorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgCreateTime != null" >
+        pvg_create_time = #{record.pvgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pvgModifier != null" >
+        pvg_modifier = #{record.pvgModifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pvgModifiedTime != null" >
+        pvg_modified_time = #{record.pvgModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update privilege
+    set pvg_uuid = #{record.pvgUuid,jdbcType=VARCHAR},
+      pvg_acct_uuid = #{record.pvgAcctUuid,jdbcType=VARCHAR},
+      pvg_itrole_uuid = #{record.pvgItroleUuid,jdbcType=VARCHAR},
+      pvg_creator_uuid = #{record.pvgCreatorUuid,jdbcType=VARCHAR},
+      pvg_create_time = #{record.pvgCreateTime,jdbcType=TIMESTAMP},
+      pvg_modifier = #{record.pvgModifier,jdbcType=VARCHAR},
+      pvg_modified_time = #{record.pvgModifiedTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Privilege" >
+    update privilege
+    <set >
+      <if test="pvgAcctUuid != null" >
+        pvg_acct_uuid = #{pvgAcctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgItroleUuid != null" >
+        pvg_itrole_uuid = #{pvgItroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgCreatorUuid != null" >
+        pvg_creator_uuid = #{pvgCreatorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgCreateTime != null" >
+        pvg_create_time = #{pvgCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pvgModifier != null" >
+        pvg_modifier = #{pvgModifier,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgModifiedTime != null" >
+        pvg_modified_time = #{pvgModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where pvg_uuid = #{pvgUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Privilege" >
+    update privilege
+    set pvg_acct_uuid = #{pvgAcctUuid,jdbcType=VARCHAR},
+      pvg_itrole_uuid = #{pvgItroleUuid,jdbcType=VARCHAR},
+      pvg_creator_uuid = #{pvgCreatorUuid,jdbcType=VARCHAR},
+      pvg_create_time = #{pvgCreateTime,jdbcType=TIMESTAMP},
+      pvg_modifier = #{pvgModifier,jdbcType=VARCHAR},
+      pvg_modified_time = #{pvgModifiedTime,jdbcType=TIMESTAMP}
+    where pvg_uuid = #{pvgUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

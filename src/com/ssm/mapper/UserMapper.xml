@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.User" >
+    <id column="user_uuid" property="userUuid" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_employee_id" property="userEmployeeId" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="user_moible" property="userMoible" jdbcType="VARCHAR" />
+    <result column="user_phonenumber" property="userPhonenumber" jdbcType="VARCHAR" />
+    <result column="user_creator" property="userCreator" jdbcType="VARCHAR" />
+    <result column="user_createtime" property="userCreatetime" jdbcType="TIMESTAMP" />
+    <result column="user_modifier" property="userModifier" jdbcType="VARCHAR" />
+    <result column="user_modifiedtime" property="userModifiedtime" jdbcType="TIME" />
+    <result column="user_status" property="userStatus" jdbcType="INTEGER" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_uuid, user_id, user_name, user_employee_id, user_email, user_moible, user_phonenumber, 
+    user_creator, user_createtime, user_modifier, user_modifiedtime, user_status, user_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user
+    where user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.User" >
+    insert into user (user_uuid, user_id, user_name, 
+      user_employee_id, user_email, user_moible, 
+      user_phonenumber, user_creator, user_createtime, 
+      user_modifier, user_modifiedtime, user_status, 
+      user_type)
+    values (#{userUuid,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userEmployeeId,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userMoible,jdbcType=VARCHAR}, 
+      #{userPhonenumber,jdbcType=VARCHAR}, #{userCreator,jdbcType=VARCHAR}, #{userCreatetime,jdbcType=TIMESTAMP}, 
+      #{userModifier,jdbcType=VARCHAR}, #{userModifiedtime,jdbcType=TIME}, #{userStatus,jdbcType=INTEGER}, 
+      #{userType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userUuid != null" >
+        user_uuid,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userEmployeeId != null" >
+        user_employee_id,
+      </if>
+      <if test="userEmail != null" >
+        user_email,
+      </if>
+      <if test="userMoible != null" >
+        user_moible,
+      </if>
+      <if test="userPhonenumber != null" >
+        user_phonenumber,
+      </if>
+      <if test="userCreator != null" >
+        user_creator,
+      </if>
+      <if test="userCreatetime != null" >
+        user_createtime,
+      </if>
+      <if test="userModifier != null" >
+        user_modifier,
+      </if>
+      <if test="userModifiedtime != null" >
+        user_modifiedtime,
+      </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userUuid != null" >
+        #{userUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmployeeId != null" >
+        #{userEmployeeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userMoible != null" >
+        #{userMoible,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhonenumber != null" >
+        #{userPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreator != null" >
+        #{userCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreatetime != null" >
+        #{userCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userModifier != null" >
+        #{userModifier,jdbcType=VARCHAR},
+      </if>
+      <if test="userModifiedtime != null" >
+        #{userModifiedtime,jdbcType=TIME},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.userUuid != null" >
+        user_uuid = #{record.userUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userEmployeeId != null" >
+        user_employee_id = #{record.userEmployeeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userEmail != null" >
+        user_email = #{record.userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userMoible != null" >
+        user_moible = #{record.userMoible,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPhonenumber != null" >
+        user_phonenumber = #{record.userPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCreator != null" >
+        user_creator = #{record.userCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userCreatetime != null" >
+        user_createtime = #{record.userCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.userModifier != null" >
+        user_modifier = #{record.userModifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userModifiedtime != null" >
+        user_modifiedtime = #{record.userModifiedtime,jdbcType=TIME},
+      </if>
+      <if test="record.userStatus != null" >
+        user_status = #{record.userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.userType != null" >
+        user_type = #{record.userType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set user_uuid = #{record.userUuid,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      user_employee_id = #{record.userEmployeeId,jdbcType=VARCHAR},
+      user_email = #{record.userEmail,jdbcType=VARCHAR},
+      user_moible = #{record.userMoible,jdbcType=VARCHAR},
+      user_phonenumber = #{record.userPhonenumber,jdbcType=VARCHAR},
+      user_creator = #{record.userCreator,jdbcType=VARCHAR},
+      user_createtime = #{record.userCreatetime,jdbcType=TIMESTAMP},
+      user_modifier = #{record.userModifier,jdbcType=VARCHAR},
+      user_modifiedtime = #{record.userModifiedtime,jdbcType=TIME},
+      user_status = #{record.userStatus,jdbcType=INTEGER},
+      user_type = #{record.userType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.User" >
+    update user
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmployeeId != null" >
+        user_employee_id = #{userEmployeeId,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userMoible != null" >
+        user_moible = #{userMoible,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhonenumber != null" >
+        user_phonenumber = #{userPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreator != null" >
+        user_creator = #{userCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreatetime != null" >
+        user_createtime = #{userCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userModifier != null" >
+        user_modifier = #{userModifier,jdbcType=VARCHAR},
+      </if>
+      <if test="userModifiedtime != null" >
+        user_modifiedtime = #{userModifiedtime,jdbcType=TIME},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.User" >
+    update user
+    set user_id = #{userId,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      user_employee_id = #{userEmployeeId,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_moible = #{userMoible,jdbcType=VARCHAR},
+      user_phonenumber = #{userPhonenumber,jdbcType=VARCHAR},
+      user_creator = #{userCreator,jdbcType=VARCHAR},
+      user_createtime = #{userCreatetime,jdbcType=TIMESTAMP},
+      user_modifier = #{userModifier,jdbcType=VARCHAR},
+      user_modifiedtime = #{userModifiedtime,jdbcType=TIME},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=VARCHAR}
+    where user_uuid = #{userUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.AccountAttrDefMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.AccountAttrDef" >
+    <id column="acct_attr_def_key" property="acctAttrDefKey" jdbcType="VARCHAR" />
+    <result column="acct_attr_def_name" property="acctAttrDefName" jdbcType="VARCHAR" />
+    <result column="acct_attr_def_datatype" property="acctAttrDefDatatype" jdbcType="VARCHAR" />
+    <result column="acct_attr_def_mandatory" property="acctAttrDefMandatory" jdbcType="INTEGER" />
+    <result column="acct_attr_def_editable" property="acctAttrDefEditable" jdbcType="INTEGER" />
+    <result column="acct_attr_def_max" property="acctAttrDefMax" jdbcType="VARCHAR" />
+    <result column="acct_attr_def_min" property="acctAttrDefMin" jdbcType="VARCHAR" />
+    <result column="acct_attr_def_res_uuid" property="acctAttrDefResUuid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    acct_attr_def_key, acct_attr_def_name, acct_attr_def_datatype, acct_attr_def_mandatory, 
+    acct_attr_def_editable, acct_attr_def_max, acct_attr_def_min, acct_attr_def_res_uuid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.AccountAttrDefExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from account_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from account_attr_def
+    where acct_attr_def_key = #{acctAttrDefKey,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from account_attr_def
+    where acct_attr_def_key = #{acctAttrDefKey,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.AccountAttrDefExample" >
+    delete from account_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.AccountAttrDef" >
+    insert into account_attr_def (acct_attr_def_key, acct_attr_def_name, 
+      acct_attr_def_datatype, acct_attr_def_mandatory, 
+      acct_attr_def_editable, acct_attr_def_max, acct_attr_def_min, 
+      acct_attr_def_res_uuid)
+    values (#{acctAttrDefKey,jdbcType=VARCHAR}, #{acctAttrDefName,jdbcType=VARCHAR}, 
+      #{acctAttrDefDatatype,jdbcType=VARCHAR}, #{acctAttrDefMandatory,jdbcType=INTEGER}, 
+      #{acctAttrDefEditable,jdbcType=INTEGER}, #{acctAttrDefMax,jdbcType=VARCHAR}, #{acctAttrDefMin,jdbcType=VARCHAR}, 
+      #{acctAttrDefResUuid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.AccountAttrDef" >
+    insert into account_attr_def
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="acctAttrDefKey != null" >
+        acct_attr_def_key,
+      </if>
+      <if test="acctAttrDefName != null" >
+        acct_attr_def_name,
+      </if>
+      <if test="acctAttrDefDatatype != null" >
+        acct_attr_def_datatype,
+      </if>
+      <if test="acctAttrDefMandatory != null" >
+        acct_attr_def_mandatory,
+      </if>
+      <if test="acctAttrDefEditable != null" >
+        acct_attr_def_editable,
+      </if>
+      <if test="acctAttrDefMax != null" >
+        acct_attr_def_max,
+      </if>
+      <if test="acctAttrDefMin != null" >
+        acct_attr_def_min,
+      </if>
+      <if test="acctAttrDefResUuid != null" >
+        acct_attr_def_res_uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="acctAttrDefKey != null" >
+        #{acctAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefName != null" >
+        #{acctAttrDefName,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefDatatype != null" >
+        #{acctAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefMandatory != null" >
+        #{acctAttrDefMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="acctAttrDefEditable != null" >
+        #{acctAttrDefEditable,jdbcType=INTEGER},
+      </if>
+      <if test="acctAttrDefMax != null" >
+        #{acctAttrDefMax,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefMin != null" >
+        #{acctAttrDefMin,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefResUuid != null" >
+        #{acctAttrDefResUuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.AccountAttrDefExample" resultType="java.lang.Integer" >
+    select count(*) from account_attr_def
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update account_attr_def
+    <set >
+      <if test="record.acctAttrDefKey != null" >
+        acct_attr_def_key = #{record.acctAttrDefKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctAttrDefName != null" >
+        acct_attr_def_name = #{record.acctAttrDefName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctAttrDefDatatype != null" >
+        acct_attr_def_datatype = #{record.acctAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctAttrDefMandatory != null" >
+        acct_attr_def_mandatory = #{record.acctAttrDefMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="record.acctAttrDefEditable != null" >
+        acct_attr_def_editable = #{record.acctAttrDefEditable,jdbcType=INTEGER},
+      </if>
+      <if test="record.acctAttrDefMax != null" >
+        acct_attr_def_max = #{record.acctAttrDefMax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctAttrDefMin != null" >
+        acct_attr_def_min = #{record.acctAttrDefMin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctAttrDefResUuid != null" >
+        acct_attr_def_res_uuid = #{record.acctAttrDefResUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update account_attr_def
+    set acct_attr_def_key = #{record.acctAttrDefKey,jdbcType=VARCHAR},
+      acct_attr_def_name = #{record.acctAttrDefName,jdbcType=VARCHAR},
+      acct_attr_def_datatype = #{record.acctAttrDefDatatype,jdbcType=VARCHAR},
+      acct_attr_def_mandatory = #{record.acctAttrDefMandatory,jdbcType=INTEGER},
+      acct_attr_def_editable = #{record.acctAttrDefEditable,jdbcType=INTEGER},
+      acct_attr_def_max = #{record.acctAttrDefMax,jdbcType=VARCHAR},
+      acct_attr_def_min = #{record.acctAttrDefMin,jdbcType=VARCHAR},
+      acct_attr_def_res_uuid = #{record.acctAttrDefResUuid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.AccountAttrDef" >
+    update account_attr_def
+    <set >
+      <if test="acctAttrDefName != null" >
+        acct_attr_def_name = #{acctAttrDefName,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefDatatype != null" >
+        acct_attr_def_datatype = #{acctAttrDefDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefMandatory != null" >
+        acct_attr_def_mandatory = #{acctAttrDefMandatory,jdbcType=INTEGER},
+      </if>
+      <if test="acctAttrDefEditable != null" >
+        acct_attr_def_editable = #{acctAttrDefEditable,jdbcType=INTEGER},
+      </if>
+      <if test="acctAttrDefMax != null" >
+        acct_attr_def_max = #{acctAttrDefMax,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefMin != null" >
+        acct_attr_def_min = #{acctAttrDefMin,jdbcType=VARCHAR},
+      </if>
+      <if test="acctAttrDefResUuid != null" >
+        acct_attr_def_res_uuid = #{acctAttrDefResUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where acct_attr_def_key = #{acctAttrDefKey,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.AccountAttrDef" >
+    update account_attr_def
+    set acct_attr_def_name = #{acctAttrDefName,jdbcType=VARCHAR},
+      acct_attr_def_datatype = #{acctAttrDefDatatype,jdbcType=VARCHAR},
+      acct_attr_def_mandatory = #{acctAttrDefMandatory,jdbcType=INTEGER},
+      acct_attr_def_editable = #{acctAttrDefEditable,jdbcType=INTEGER},
+      acct_attr_def_max = #{acctAttrDefMax,jdbcType=VARCHAR},
+      acct_attr_def_min = #{acctAttrDefMin,jdbcType=VARCHAR},
+      acct_attr_def_res_uuid = #{acctAttrDefResUuid,jdbcType=VARCHAR}
+    where acct_attr_def_key = #{acctAttrDefKey,jdbcType=VARCHAR}
+  </update>
+</mapper>

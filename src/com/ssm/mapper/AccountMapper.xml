@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.AccountMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.Account" >
+    <id column="acct_uuid" property="acctUuid" jdbcType="VARCHAR" />
+    <result column="acct_login_id" property="acctLoginId" jdbcType="VARCHAR" />
+    <result column="acct_res_uuid" property="acctResUuid" jdbcType="VARCHAR" />
+    <result column="acct_tgt_uuid" property="acctTgtUuid" jdbcType="VARCHAR" />
+    <result column="acct_primary" property="acctPrimary" jdbcType="INTEGER" />
+    <result column="acct_status" property="acctStatus" jdbcType="INTEGER" />
+    <result column="acct_createor_uuid" property="acctCreateorUuid" jdbcType="VARCHAR" />
+    <result column="acct_createtime" property="acctCreatetime" jdbcType="TIMESTAMP" />
+    <result column="acct_modifier_uuid" property="acctModifierUuid" jdbcType="VARCHAR" />
+    <result column="acct_modifiedtime" property="acctModifiedtime" jdbcType="TIMESTAMP" />
+    <result column="acct_last_recon_time" property="acctLastReconTime" jdbcType="TIMESTAMP" />
+    <result column="acct_next_task" property="acctNextTask" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    acct_uuid, acct_login_id, acct_res_uuid, acct_tgt_uuid, acct_primary, acct_status, 
+    acct_createor_uuid, acct_createtime, acct_modifier_uuid, acct_modifiedtime, acct_last_recon_time, 
+    acct_next_task
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.AccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where acct_uuid = #{acctUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from account
+    where acct_uuid = #{acctUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.AccountExample" >
+    delete from account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.Account" >
+    insert into account (acct_uuid, acct_login_id, acct_res_uuid, 
+      acct_tgt_uuid, acct_primary, acct_status, 
+      acct_createor_uuid, acct_createtime, acct_modifier_uuid, 
+      acct_modifiedtime, acct_last_recon_time, 
+      acct_next_task)
+    values (#{acctUuid,jdbcType=VARCHAR}, #{acctLoginId,jdbcType=VARCHAR}, #{acctResUuid,jdbcType=VARCHAR}, 
+      #{acctTgtUuid,jdbcType=VARCHAR}, #{acctPrimary,jdbcType=INTEGER}, #{acctStatus,jdbcType=INTEGER}, 
+      #{acctCreateorUuid,jdbcType=VARCHAR}, #{acctCreatetime,jdbcType=TIMESTAMP}, #{acctModifierUuid,jdbcType=VARCHAR}, 
+      #{acctModifiedtime,jdbcType=TIMESTAMP}, #{acctLastReconTime,jdbcType=TIMESTAMP}, 
+      #{acctNextTask,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.Account" >
+    insert into account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="acctUuid != null" >
+        acct_uuid,
+      </if>
+      <if test="acctLoginId != null" >
+        acct_login_id,
+      </if>
+      <if test="acctResUuid != null" >
+        acct_res_uuid,
+      </if>
+      <if test="acctTgtUuid != null" >
+        acct_tgt_uuid,
+      </if>
+      <if test="acctPrimary != null" >
+        acct_primary,
+      </if>
+      <if test="acctStatus != null" >
+        acct_status,
+      </if>
+      <if test="acctCreateorUuid != null" >
+        acct_createor_uuid,
+      </if>
+      <if test="acctCreatetime != null" >
+        acct_createtime,
+      </if>
+      <if test="acctModifierUuid != null" >
+        acct_modifier_uuid,
+      </if>
+      <if test="acctModifiedtime != null" >
+        acct_modifiedtime,
+      </if>
+      <if test="acctLastReconTime != null" >
+        acct_last_recon_time,
+      </if>
+      <if test="acctNextTask != null" >
+        acct_next_task,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="acctUuid != null" >
+        #{acctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctLoginId != null" >
+        #{acctLoginId,jdbcType=VARCHAR},
+      </if>
+      <if test="acctResUuid != null" >
+        #{acctResUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctTgtUuid != null" >
+        #{acctTgtUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctPrimary != null" >
+        #{acctPrimary,jdbcType=INTEGER},
+      </if>
+      <if test="acctStatus != null" >
+        #{acctStatus,jdbcType=INTEGER},
+      </if>
+      <if test="acctCreateorUuid != null" >
+        #{acctCreateorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctCreatetime != null" >
+        #{acctCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acctModifierUuid != null" >
+        #{acctModifierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctModifiedtime != null" >
+        #{acctModifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acctLastReconTime != null" >
+        #{acctLastReconTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acctNextTask != null" >
+        #{acctNextTask,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.AccountExample" resultType="java.lang.Integer" >
+    select count(*) from account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update account
+    <set >
+      <if test="record.acctUuid != null" >
+        acct_uuid = #{record.acctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctLoginId != null" >
+        acct_login_id = #{record.acctLoginId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctResUuid != null" >
+        acct_res_uuid = #{record.acctResUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctTgtUuid != null" >
+        acct_tgt_uuid = #{record.acctTgtUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctPrimary != null" >
+        acct_primary = #{record.acctPrimary,jdbcType=INTEGER},
+      </if>
+      <if test="record.acctStatus != null" >
+        acct_status = #{record.acctStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.acctCreateorUuid != null" >
+        acct_createor_uuid = #{record.acctCreateorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctCreatetime != null" >
+        acct_createtime = #{record.acctCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.acctModifierUuid != null" >
+        acct_modifier_uuid = #{record.acctModifierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.acctModifiedtime != null" >
+        acct_modifiedtime = #{record.acctModifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.acctLastReconTime != null" >
+        acct_last_recon_time = #{record.acctLastReconTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.acctNextTask != null" >
+        acct_next_task = #{record.acctNextTask,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update account
+    set acct_uuid = #{record.acctUuid,jdbcType=VARCHAR},
+      acct_login_id = #{record.acctLoginId,jdbcType=VARCHAR},
+      acct_res_uuid = #{record.acctResUuid,jdbcType=VARCHAR},
+      acct_tgt_uuid = #{record.acctTgtUuid,jdbcType=VARCHAR},
+      acct_primary = #{record.acctPrimary,jdbcType=INTEGER},
+      acct_status = #{record.acctStatus,jdbcType=INTEGER},
+      acct_createor_uuid = #{record.acctCreateorUuid,jdbcType=VARCHAR},
+      acct_createtime = #{record.acctCreatetime,jdbcType=TIMESTAMP},
+      acct_modifier_uuid = #{record.acctModifierUuid,jdbcType=VARCHAR},
+      acct_modifiedtime = #{record.acctModifiedtime,jdbcType=TIMESTAMP},
+      acct_last_recon_time = #{record.acctLastReconTime,jdbcType=TIMESTAMP},
+      acct_next_task = #{record.acctNextTask,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Account" >
+    update account
+    <set >
+      <if test="acctLoginId != null" >
+        acct_login_id = #{acctLoginId,jdbcType=VARCHAR},
+      </if>
+      <if test="acctResUuid != null" >
+        acct_res_uuid = #{acctResUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctTgtUuid != null" >
+        acct_tgt_uuid = #{acctTgtUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctPrimary != null" >
+        acct_primary = #{acctPrimary,jdbcType=INTEGER},
+      </if>
+      <if test="acctStatus != null" >
+        acct_status = #{acctStatus,jdbcType=INTEGER},
+      </if>
+      <if test="acctCreateorUuid != null" >
+        acct_createor_uuid = #{acctCreateorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctCreatetime != null" >
+        acct_createtime = #{acctCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acctModifierUuid != null" >
+        acct_modifier_uuid = #{acctModifierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="acctModifiedtime != null" >
+        acct_modifiedtime = #{acctModifiedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acctLastReconTime != null" >
+        acct_last_recon_time = #{acctLastReconTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acctNextTask != null" >
+        acct_next_task = #{acctNextTask,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where acct_uuid = #{acctUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Account" >
+    update account
+    set acct_login_id = #{acctLoginId,jdbcType=VARCHAR},
+      acct_res_uuid = #{acctResUuid,jdbcType=VARCHAR},
+      acct_tgt_uuid = #{acctTgtUuid,jdbcType=VARCHAR},
+      acct_primary = #{acctPrimary,jdbcType=INTEGER},
+      acct_status = #{acctStatus,jdbcType=INTEGER},
+      acct_createor_uuid = #{acctCreateorUuid,jdbcType=VARCHAR},
+      acct_createtime = #{acctCreatetime,jdbcType=TIMESTAMP},
+      acct_modifier_uuid = #{acctModifierUuid,jdbcType=VARCHAR},
+      acct_modifiedtime = #{acctModifiedtime,jdbcType=TIMESTAMP},
+      acct_last_recon_time = #{acctLastReconTime,jdbcType=TIMESTAMP},
+      acct_next_task = #{acctNextTask,jdbcType=VARCHAR}
+    where acct_uuid = #{acctUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

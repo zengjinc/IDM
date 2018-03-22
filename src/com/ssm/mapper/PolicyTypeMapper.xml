@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.PolicyTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.PolicyType" >
+    <id column="pol_type_uuid" property="polTypeUuid" jdbcType="VARCHAR" />
+    <result column="pol_type_name" property="polTypeName" jdbcType="VARCHAR" />
+    <result column="pol_type_name_desc" property="polTypeNameDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    pol_type_uuid, pol_type_name, pol_type_name_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.PolicyTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from policy_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from policy_type
+    where pol_type_uuid = #{polTypeUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from policy_type
+    where pol_type_uuid = #{polTypeUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.PolicyTypeExample" >
+    delete from policy_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.PolicyType" >
+    insert into policy_type (pol_type_uuid, pol_type_name, pol_type_name_desc
+      )
+    values (#{polTypeUuid,jdbcType=VARCHAR}, #{polTypeName,jdbcType=VARCHAR}, #{polTypeNameDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.PolicyType" >
+    insert into policy_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="polTypeUuid != null" >
+        pol_type_uuid,
+      </if>
+      <if test="polTypeName != null" >
+        pol_type_name,
+      </if>
+      <if test="polTypeNameDesc != null" >
+        pol_type_name_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="polTypeUuid != null" >
+        #{polTypeUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="polTypeName != null" >
+        #{polTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="polTypeNameDesc != null" >
+        #{polTypeNameDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.PolicyTypeExample" resultType="java.lang.Integer" >
+    select count(*) from policy_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update policy_type
+    <set >
+      <if test="record.polTypeUuid != null" >
+        pol_type_uuid = #{record.polTypeUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.polTypeName != null" >
+        pol_type_name = #{record.polTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.polTypeNameDesc != null" >
+        pol_type_name_desc = #{record.polTypeNameDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update policy_type
+    set pol_type_uuid = #{record.polTypeUuid,jdbcType=VARCHAR},
+      pol_type_name = #{record.polTypeName,jdbcType=VARCHAR},
+      pol_type_name_desc = #{record.polTypeNameDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.PolicyType" >
+    update policy_type
+    <set >
+      <if test="polTypeName != null" >
+        pol_type_name = #{polTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="polTypeNameDesc != null" >
+        pol_type_name_desc = #{polTypeNameDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pol_type_uuid = #{polTypeUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.PolicyType" >
+    update policy_type
+    set pol_type_name = #{polTypeName,jdbcType=VARCHAR},
+      pol_type_name_desc = #{polTypeNameDesc,jdbcType=VARCHAR}
+    where pol_type_uuid = #{polTypeUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

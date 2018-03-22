@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.ItroleMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.Itrole" >
+    <id column="itrole_uuid" property="itroleUuid" jdbcType="VARCHAR" />
+    <result column="itrole_id" property="itroleId" jdbcType="VARCHAR" />
+    <result column="itrole_name" property="itroleName" jdbcType="VARCHAR" />
+    <result column="itrole_desc" property="itroleDesc" jdbcType="VARCHAR" />
+    <result column="itrole_res_uuid" property="itroleResUuid" jdbcType="VARCHAR" />
+    <result column="itrole_tgt_role_uuid" property="itroleTgtRoleUuid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    itrole_uuid, itrole_id, itrole_name, itrole_desc, itrole_res_uuid, itrole_tgt_role_uuid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.ItroleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from itrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from itrole
+    where itrole_uuid = #{itroleUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from itrole
+    where itrole_uuid = #{itroleUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.ItroleExample" >
+    delete from itrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.Itrole" >
+    insert into itrole (itrole_uuid, itrole_id, itrole_name, 
+      itrole_desc, itrole_res_uuid, itrole_tgt_role_uuid
+      )
+    values (#{itroleUuid,jdbcType=VARCHAR}, #{itroleId,jdbcType=VARCHAR}, #{itroleName,jdbcType=VARCHAR}, 
+      #{itroleDesc,jdbcType=VARCHAR}, #{itroleResUuid,jdbcType=VARCHAR}, #{itroleTgtRoleUuid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.Itrole" >
+    insert into itrole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itroleUuid != null" >
+        itrole_uuid,
+      </if>
+      <if test="itroleId != null" >
+        itrole_id,
+      </if>
+      <if test="itroleName != null" >
+        itrole_name,
+      </if>
+      <if test="itroleDesc != null" >
+        itrole_desc,
+      </if>
+      <if test="itroleResUuid != null" >
+        itrole_res_uuid,
+      </if>
+      <if test="itroleTgtRoleUuid != null" >
+        itrole_tgt_role_uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itroleUuid != null" >
+        #{itroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleId != null" >
+        #{itroleId,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleName != null" >
+        #{itroleName,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleDesc != null" >
+        #{itroleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleResUuid != null" >
+        #{itroleResUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleTgtRoleUuid != null" >
+        #{itroleTgtRoleUuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.ItroleExample" resultType="java.lang.Integer" >
+    select count(*) from itrole
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update itrole
+    <set >
+      <if test="record.itroleUuid != null" >
+        itrole_uuid = #{record.itroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itroleId != null" >
+        itrole_id = #{record.itroleId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itroleName != null" >
+        itrole_name = #{record.itroleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itroleDesc != null" >
+        itrole_desc = #{record.itroleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itroleResUuid != null" >
+        itrole_res_uuid = #{record.itroleResUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itroleTgtRoleUuid != null" >
+        itrole_tgt_role_uuid = #{record.itroleTgtRoleUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update itrole
+    set itrole_uuid = #{record.itroleUuid,jdbcType=VARCHAR},
+      itrole_id = #{record.itroleId,jdbcType=VARCHAR},
+      itrole_name = #{record.itroleName,jdbcType=VARCHAR},
+      itrole_desc = #{record.itroleDesc,jdbcType=VARCHAR},
+      itrole_res_uuid = #{record.itroleResUuid,jdbcType=VARCHAR},
+      itrole_tgt_role_uuid = #{record.itroleTgtRoleUuid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Itrole" >
+    update itrole
+    <set >
+      <if test="itroleId != null" >
+        itrole_id = #{itroleId,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleName != null" >
+        itrole_name = #{itroleName,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleDesc != null" >
+        itrole_desc = #{itroleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleResUuid != null" >
+        itrole_res_uuid = #{itroleResUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="itroleTgtRoleUuid != null" >
+        itrole_tgt_role_uuid = #{itroleTgtRoleUuid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where itrole_uuid = #{itroleUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Itrole" >
+    update itrole
+    set itrole_id = #{itroleId,jdbcType=VARCHAR},
+      itrole_name = #{itroleName,jdbcType=VARCHAR},
+      itrole_desc = #{itroleDesc,jdbcType=VARCHAR},
+      itrole_res_uuid = #{itroleResUuid,jdbcType=VARCHAR},
+      itrole_tgt_role_uuid = #{itroleTgtRoleUuid,jdbcType=VARCHAR}
+    where itrole_uuid = #{itroleUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

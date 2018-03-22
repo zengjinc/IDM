@@ -1,0 +1,23 @@
+/* Custom Styles */
+.center-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+body {
+	background: #f2f2f2;
+}
+
+.row {
+	margin: 5px;
+}
+
+.container {
+	background: #ffffff;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	width: 90%;
+}

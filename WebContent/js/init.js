@@ -1,0 +1,57 @@
+function fixNavigation(){
+	//修改附导航栏的高度
+    var height = $(".container").height();
+//		    var height = $(".subject").height();
+    $("#myScrollspy").height(height*0.8);
+//	console.log("fix navigation height : " + height);
+}
+
+$(function(){
+			//导航栏点击变色
+			var nav = $(".nav.navbar-nav.navbar-left");
+			var pageUrl = window.location.href;
+		    var aArray = nav.children("li").children("a");
+//		    console.log("pageUrl:"+pageUrl);
+		    for (var i = 0; i < aArray.length; i++) {
+		        //高亮当前栏目，如果为子栏目时，则匹配 href 亮父栏目
+//		    	console.log("url" + i + ":" + aArray[i].href);
+		    	var url = aArray[i].href.split(".")[0];
+//		    	console.log("url" + i + ":" + url)
+		        if (pageUrl.substring(0, url.length) == url) {
+		            $(aArray[i]).parent().addClass("active");
+		        }
+		    }
+		    //附导航栏
+		    var subNav = $(".nav.nav-pills.nav-stacked");
+		    var bArray = subNav.children("li").children("a");
+//		    console.log("pageUrl:" + pageUrl);
+		    for(var i = 0; i < bArray.length; i++){
+// 		    console.log("arrayUrl:" + bArray[i].href);
+		    	var url = bArray[i].href.split(".")[0];
+//		    	console.log(url);
+		    	if(pageUrl.substring(0,url.length) == url){
+					$(bArray[i]).parent().addClass("active");
+		    	}
+		    }
+		    
+		    //修改附导航栏的高度
+		    fixNavigation();
+//		    var height = $(".container").height();
+//		    var height = $(".subject").height();
+//		    $("#myScrollspy").height(height*0.8);
+			
+			//设置面包屑导航
+			
+			var navActive = $(".nav.navbar-nav").children(".active");
+			var navText = navActive.text();
+			var navHref = navActive.children("a").attr("href");
+			
+			var subNav = $(".nav.nav-pills.nav-stacked").children(".active");
+			var subNavText = subNav.text();
+
+			$(".breadcrumb").append("<li><a href='"+navHref+"'>"+navText+"</a></li>");
+			$(".breadcrumb").append("<li>"+subNavText+"</li>");
+			
+			
+		
+		})
