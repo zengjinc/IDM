@@ -13,6 +13,8 @@ public class Resource {
 
     private String resTypeUuid;
 
+    private String resJsonAttr;
+
     public String getResUuid() {
         return resUuid;
     }
@@ -59,5 +61,13 @@ public class Resource {
 
     public void setResTypeUuid(String resTypeUuid) {
         this.resTypeUuid = resTypeUuid == null ? null : resTypeUuid.trim();
+    }
+
+    public String getResJsonAttr() {
+        return resJsonAttr;
+    }
+
+    public void setResJsonAttr(String resJsonAttr) {
+        this.resJsonAttr = resJsonAttr == null ? null : resJsonAttr.trim();
     }
 }

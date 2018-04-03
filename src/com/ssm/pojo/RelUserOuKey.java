@@ -1,6 +1,6 @@
 package com.ssm.pojo;
 
-public class RelUserOu {
+public class RelUserOuKey {
     private String relUserOuUserUuid;
 
     private String relUserOuOuUuid;

@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.ssm.pojo.UserAttribute" >
     <id column="user_attr_uuid" property="userAttrUuid" jdbcType="VARCHAR" />
     <result column="user_uuid" property="userUuid" jdbcType="VARCHAR" />
-    <result column="user_attr_def_key" property="userAttrDefKey" jdbcType="VARCHAR" />
+    <result column="user_attr_def_uuid" property="userAttrDefUuid" jdbcType="VARCHAR" />
     <result column="user_attri_value" property="userAttriValue" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -66,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    user_attr_uuid, user_uuid, user_attr_def_key, user_attri_value
+    user_attr_uuid, user_uuid, user_attr_def_uuid, user_attri_value
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.UserAttributeExample" >
     select
@@ -99,9 +99,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.ssm.pojo.UserAttribute" >
-    insert into user_attribute (user_attr_uuid, user_uuid, user_attr_def_key, 
+    insert into user_attribute (user_attr_uuid, user_uuid, user_attr_def_uuid, 
       user_attri_value)
-    values (#{userAttrUuid,jdbcType=VARCHAR}, #{userUuid,jdbcType=VARCHAR}, #{userAttrDefKey,jdbcType=VARCHAR}, 
+    values (#{userAttrUuid,jdbcType=VARCHAR}, #{userUuid,jdbcType=VARCHAR}, #{userAttrDefUuid,jdbcType=VARCHAR}, 
       #{userAttriValue,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ssm.pojo.UserAttribute" >
@@ -113,8 +113,8 @@
       <if test="userUuid != null" >
         user_uuid,
       </if>
-      <if test="userAttrDefKey != null" >
-        user_attr_def_key,
+      <if test="userAttrDefUuid != null" >
+        user_attr_def_uuid,
       </if>
       <if test="userAttriValue != null" >
         user_attri_value,
@@ -127,8 +127,8 @@
       <if test="userUuid != null" >
         #{userUuid,jdbcType=VARCHAR},
       </if>
-      <if test="userAttrDefKey != null" >
-        #{userAttrDefKey,jdbcType=VARCHAR},
+      <if test="userAttrDefUuid != null" >
+        #{userAttrDefUuid,jdbcType=VARCHAR},
       </if>
       <if test="userAttriValue != null" >
         #{userAttriValue,jdbcType=VARCHAR},
@@ -150,8 +150,8 @@
       <if test="record.userUuid != null" >
         user_uuid = #{record.userUuid,jdbcType=VARCHAR},
       </if>
-      <if test="record.userAttrDefKey != null" >
-        user_attr_def_key = #{record.userAttrDefKey,jdbcType=VARCHAR},
+      <if test="record.userAttrDefUuid != null" >
+        user_attr_def_uuid = #{record.userAttrDefUuid,jdbcType=VARCHAR},
       </if>
       <if test="record.userAttriValue != null" >
         user_attri_value = #{record.userAttriValue,jdbcType=VARCHAR},
@@ -165,7 +165,7 @@
     update user_attribute
     set user_attr_uuid = #{record.userAttrUuid,jdbcType=VARCHAR},
       user_uuid = #{record.userUuid,jdbcType=VARCHAR},
-      user_attr_def_key = #{record.userAttrDefKey,jdbcType=VARCHAR},
+      user_attr_def_uuid = #{record.userAttrDefUuid,jdbcType=VARCHAR},
       user_attri_value = #{record.userAttriValue,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,8 +177,8 @@
       <if test="userUuid != null" >
         user_uuid = #{userUuid,jdbcType=VARCHAR},
       </if>
-      <if test="userAttrDefKey != null" >
-        user_attr_def_key = #{userAttrDefKey,jdbcType=VARCHAR},
+      <if test="userAttrDefUuid != null" >
+        user_attr_def_uuid = #{userAttrDefUuid,jdbcType=VARCHAR},
       </if>
       <if test="userAttriValue != null" >
         user_attri_value = #{userAttriValue,jdbcType=VARCHAR},
@@ -189,7 +189,7 @@
   <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.UserAttribute" >
     update user_attribute
     set user_uuid = #{userUuid,jdbcType=VARCHAR},
-      user_attr_def_key = #{userAttrDefKey,jdbcType=VARCHAR},
+      user_attr_def_uuid = #{userAttrDefUuid,jdbcType=VARCHAR},
       user_attri_value = #{userAttriValue,jdbcType=VARCHAR}
     where user_attr_uuid = #{userAttrUuid,jdbcType=VARCHAR}
   </update>

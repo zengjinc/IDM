@@ -2,6 +2,7 @@ package com.ssm.mapper;
 
 import com.ssm.pojo.RelUserBizrole;
 import com.ssm.pojo.RelUserBizroleExample;
+import com.ssm.pojo.RelUserBizroleKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,7 @@ public interface RelUserBizroleMapper {
 
     int deleteByExample(RelUserBizroleExample example);
 
-    int deleteByPrimaryKey(String relUserBizroleUserUuid);
+    int deleteByPrimaryKey(RelUserBizroleKey key);
 
     int insert(RelUserBizrole record);
 
@@ -18,7 +19,7 @@ public interface RelUserBizroleMapper {
 
     List<RelUserBizrole> selectByExample(RelUserBizroleExample example);
 
-    RelUserBizrole selectByPrimaryKey(String relUserBizroleUserUuid);
+    RelUserBizrole selectByPrimaryKey(RelUserBizroleKey key);
 
     int updateByExampleSelective(@Param("record") RelUserBizrole record, @Param("example") RelUserBizroleExample example);
 

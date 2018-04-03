@@ -244,73 +244,73 @@ public class UserAttributeExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyIsNull() {
-            addCriterion("user_attr_def_key is null");
+        public Criteria andUserAttrDefUuidIsNull() {
+            addCriterion("user_attr_def_uuid is null");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyIsNotNull() {
-            addCriterion("user_attr_def_key is not null");
+        public Criteria andUserAttrDefUuidIsNotNull() {
+            addCriterion("user_attr_def_uuid is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyEqualTo(String value) {
-            addCriterion("user_attr_def_key =", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidEqualTo(String value) {
+            addCriterion("user_attr_def_uuid =", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyNotEqualTo(String value) {
-            addCriterion("user_attr_def_key <>", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidNotEqualTo(String value) {
+            addCriterion("user_attr_def_uuid <>", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyGreaterThan(String value) {
-            addCriterion("user_attr_def_key >", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidGreaterThan(String value) {
+            addCriterion("user_attr_def_uuid >", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyGreaterThanOrEqualTo(String value) {
-            addCriterion("user_attr_def_key >=", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidGreaterThanOrEqualTo(String value) {
+            addCriterion("user_attr_def_uuid >=", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyLessThan(String value) {
-            addCriterion("user_attr_def_key <", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidLessThan(String value) {
+            addCriterion("user_attr_def_uuid <", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyLessThanOrEqualTo(String value) {
-            addCriterion("user_attr_def_key <=", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidLessThanOrEqualTo(String value) {
+            addCriterion("user_attr_def_uuid <=", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyLike(String value) {
-            addCriterion("user_attr_def_key like", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidLike(String value) {
+            addCriterion("user_attr_def_uuid like", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyNotLike(String value) {
-            addCriterion("user_attr_def_key not like", value, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidNotLike(String value) {
+            addCriterion("user_attr_def_uuid not like", value, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyIn(List<String> values) {
-            addCriterion("user_attr_def_key in", values, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidIn(List<String> values) {
+            addCriterion("user_attr_def_uuid in", values, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyNotIn(List<String> values) {
-            addCriterion("user_attr_def_key not in", values, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidNotIn(List<String> values) {
+            addCriterion("user_attr_def_uuid not in", values, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyBetween(String value1, String value2) {
-            addCriterion("user_attr_def_key between", value1, value2, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidBetween(String value1, String value2) {
+            addCriterion("user_attr_def_uuid between", value1, value2, "userAttrDefUuid");
             return (Criteria) this;
         }
 
-        public Criteria andUserAttrDefKeyNotBetween(String value1, String value2) {
-            addCriterion("user_attr_def_key not between", value1, value2, "userAttrDefKey");
+        public Criteria andUserAttrDefUuidNotBetween(String value1, String value2) {
+            addCriterion("user_attr_def_uuid not between", value1, value2, "userAttrDefUuid");
             return (Criteria) this;
         }
 

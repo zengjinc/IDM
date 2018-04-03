@@ -25,8 +25,6 @@ public class Ou {
 
     private Date ouLastReconTime;
 
-    private String oucol;
-
     public String getOuUuid() {
         return ouUuid;
     }
@@ -113,13 +111,5 @@ public class Ou {
 
     public void setOuLastReconTime(Date ouLastReconTime) {
         this.ouLastReconTime = ouLastReconTime;
-    }
-
-    public String getOucol() {
-        return oucol;
-    }
-
-    public void setOucol(String oucol) {
-        this.oucol = oucol == null ? null : oucol.trim();
     }
 }

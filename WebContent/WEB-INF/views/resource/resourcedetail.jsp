@@ -16,6 +16,7 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- custom style -->
 <link href="css/custom.css?version=<%=Math.random()%>" rel="stylesheet">
+<link href="css/animate.css?version=<%=Math.random()%>" rel="stylesheet">
 <script type="text/javascript" src="js/loading.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -41,14 +42,12 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">资源标识</span> <input id="resource_id" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">资源标识</span> <input id="resource_id" type="text" class="form-control" placeholder="">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">资源名称</span> <input id="resource_name" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">资源名称</span> <input id="resource_name" type="text" class="form-control" placeholder="">
 						</div>
 					</div>
 				</div>
@@ -60,7 +59,7 @@
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">资源类型</span> <input id="resource_type" value="JDBC连接器" type="text" class="form-control" placeholder="" readonly="readonly">
+							<span class="input-group-addon">资源类型</span> <input id="resource_type" value="com.ssm.connector.JDBCConnector" type="text" class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
@@ -88,9 +87,9 @@
 				</div>
 
 				<ul id="myTab" class="nav nav-tabs">
-					<li class="active"><a href="#config" data-toggle="tab">配置</a></li>
-					<li><a href="#account" data-toggle="tab">账号架构</a></li>
-					<li><a href="#role" data-toggle="tab">基本角色架构</a></li>
+					<li class="active" id="tab_config"><a href="#config" data-toggle="tab">配置</a></li>
+					<li id="tab_acct"><a href="#account" data-toggle="tab">账号架构</a></li>
+					<li id="tab_role"><a href="#role" data-toggle="tab">基本角色架构</a></li>
 					<li id="ou_nav"><a href="#orgunit" data-toggle="tab">组织单位架构</a></li>
 				</ul>
 				<div id="myTabContent" class="tab-content">
@@ -107,7 +106,8 @@
 								<tr>
 									<td>JDBC驱动类</td>
 									<td><input id="jdbc_drive" type="text" class="form-control" value="com.mysql.jdbc.Driver" /></td>
-									<td></td>
+									<td>MSSQL: jdbc:sqlserver:// &lt;SERVER_NAME&gt;:&lt;PORT&gt; <br /> OracleThin: jdbc:oracle:thin:@&lt;HOST&gt;:&lt;PORT&gt;:&lt;SID&gt; <br /> MySql:
+										jdbc: mysql:com.mysql.jdbc.Driver</td>
 								</tr>
 								<tr>
 									<td style="vertical-align: middle;">JDBC URL</td>
@@ -295,16 +295,16 @@
 							<tfoot>
 								<tr>
 									<th><select id="attr_mapping">
-											<option>用户标识</option>
-											<option>用户名称</option>
-											<option>组织单位</option>
-											<option>用户状态</option>
-											<option>用户类型</option>
-											<option>开始时间</option>
-											<option>结束时间</option>
-											<option>电子邮箱</option>
-											<option>员工标识</option>
-											<option>电话号码</option>
+											<option value="user_uuid">用户标识</option>
+											<option value="user_name">用户名称</option>
+											<option value="user_ou">组织单位</option>
+											<option value="user_status">用户状态</option>
+											<option value="user_type">用户类型</option>
+											<option value="user_bengin_time">开始时间</option>
+											<option value="user_end_time">结束时间</option>
+											<option value="user_email">电子邮箱</option>
+											<option value="user_employee_id">员工标识</option>
+											<option value="user_phonenumber">电话号码</option>
 									</select></th>
 									<th><select id="account_attr"></select></td>
 									<th><button class="btn btn-primary" id="account_btn_add_mapping">添&nbsp;&nbsp;加</button></td>
@@ -633,10 +633,37 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap.js"></script>
 	<!-- initial page -->
 	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<script src="js/bootstrap-notify.js?version=<%=Math.random()%>"></script>
 	<script src="js/resource.js?version=<%=Math.random()%>"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('#myTab a:first').tab('show');//初始化显示哪个tab  
+
+			$('#myTab a').click(function(e) {
+				e.preventDefault();//阻止a链接的跳转行为  
+				$(this).tab('show');//显示当前选中的链接及关联的content 
+				var id = $(this).parent().attr("id");
+				if(id == "tab_acct"){
+					setTimeout(function() {
+						$("#myScrollspy").height("100px");
+						var height = $(".container").height();
+						$("#myScrollspy").height(height * 0.9);
+					}, 500);
+				}else{
+					setTimeout(function() {
+						$("#myScrollspy").height("100px");
+						var height = $(".container").height();
+						$("#myScrollspy").height(height * 0.8);
+					}, 500);
+				}
+
+			})
+		})
+	</script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 	<%@ include file="../subnav.jsp" %>
 	
 	<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toou/ou.action'>组织单位</a></li>");

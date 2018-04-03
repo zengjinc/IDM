@@ -3,7 +3,7 @@
 <mapper namespace="com.ssm.mapper.EntitlementMapper" >
   <resultMap id="BaseResultMap" type="com.ssm.pojo.Entitlement" >
     <id column="etm_user_uuid" property="etmUserUuid" jdbcType="VARCHAR" />
-    <result column="etm_acct_uuid" property="etmAcctUuid" jdbcType="VARCHAR" />
+    <id column="etm_acct_uuid" property="etmAcctUuid" jdbcType="VARCHAR" />
     <result column="etm_status" property="etmStatus" jdbcType="INTEGER" />
     <result column="etm_creator_uuid" property="etmCreatorUuid" jdbcType="VARCHAR" />
     <result column="etm_create_time" property="etmCreateTime" jdbcType="TIMESTAMP" />
@@ -86,15 +86,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ssm.pojo.EntitlementKey" >
     select 
     <include refid="Base_Column_List" />
     from entitlement
     where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="com.ssm.pojo.EntitlementKey" >
     delete from entitlement
     where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.ssm.pojo.EntitlementExample" >
     delete from entitlement
@@ -210,9 +212,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Entitlement" >
     update entitlement
     <set >
-      <if test="etmAcctUuid != null" >
-        etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR},
-      </if>
       <if test="etmStatus != null" >
         etm_status = #{etmStatus,jdbcType=INTEGER},
       </if>
@@ -230,15 +229,16 @@
       </if>
     </set>
     where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Entitlement" >
     update entitlement
-    set etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR},
-      etm_status = #{etmStatus,jdbcType=INTEGER},
+    set etm_status = #{etmStatus,jdbcType=INTEGER},
       etm_creator_uuid = #{etmCreatorUuid,jdbcType=VARCHAR},
       etm_create_time = #{etmCreateTime,jdbcType=TIMESTAMP},
       etm_modifier_uuid = #{etmModifierUuid,jdbcType=VARCHAR},
       etm_modified_time = #{etmModifiedTime,jdbcType=TIMESTAMP}
     where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.SchedulejobMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.Schedulejob" >
+    <id column="scd_uuid" property="scdUuid" jdbcType="VARCHAR" />
+    <result column="csd_cron" property="csdCron" jdbcType="VARCHAR" />
+    <result column="scd_last_run_time" property="scdLastRunTime" jdbcType="TIMESTAMP" />
+    <result column="scd_next_run_time" property="scdNextRunTime" jdbcType="TIMESTAMP" />
+    <result column="scd_id" property="scdId" jdbcType="VARCHAR" />
+    <result column="scd_name" property="scdName" jdbcType="VARCHAR" />
+    <result column="scd_desc" property="scdDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ssm.pojo.Schedulejob" extends="BaseResultMap" >
+    <result column="scd_json_attr" property="scdJsonAttr" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    scd_uuid, csd_cron, scd_last_run_time, scd_next_run_time, scd_id, scd_name, scd_desc
+  </sql>
+  <sql id="Blob_Column_List" >
+    scd_json_attr
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ssm.pojo.SchedulejobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from schedulejob
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.SchedulejobExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from schedulejob
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from schedulejob
+    where scd_uuid = #{scdUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from schedulejob
+    where scd_uuid = #{scdUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.SchedulejobExample" >
+    delete from schedulejob
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.Schedulejob" >
+    insert into schedulejob (scd_uuid, csd_cron, scd_last_run_time, 
+      scd_next_run_time, scd_id, scd_name, 
+      scd_desc, scd_json_attr)
+    values (#{scdUuid,jdbcType=VARCHAR}, #{csdCron,jdbcType=VARCHAR}, #{scdLastRunTime,jdbcType=TIMESTAMP}, 
+      #{scdNextRunTime,jdbcType=TIMESTAMP}, #{scdId,jdbcType=VARCHAR}, #{scdName,jdbcType=VARCHAR}, 
+      #{scdDesc,jdbcType=VARCHAR}, #{scdJsonAttr,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.Schedulejob" >
+    insert into schedulejob
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="scdUuid != null" >
+        scd_uuid,
+      </if>
+      <if test="csdCron != null" >
+        csd_cron,
+      </if>
+      <if test="scdLastRunTime != null" >
+        scd_last_run_time,
+      </if>
+      <if test="scdNextRunTime != null" >
+        scd_next_run_time,
+      </if>
+      <if test="scdId != null" >
+        scd_id,
+      </if>
+      <if test="scdName != null" >
+        scd_name,
+      </if>
+      <if test="scdDesc != null" >
+        scd_desc,
+      </if>
+      <if test="scdJsonAttr != null" >
+        scd_json_attr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="scdUuid != null" >
+        #{scdUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="csdCron != null" >
+        #{csdCron,jdbcType=VARCHAR},
+      </if>
+      <if test="scdLastRunTime != null" >
+        #{scdLastRunTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scdNextRunTime != null" >
+        #{scdNextRunTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scdId != null" >
+        #{scdId,jdbcType=VARCHAR},
+      </if>
+      <if test="scdName != null" >
+        #{scdName,jdbcType=VARCHAR},
+      </if>
+      <if test="scdDesc != null" >
+        #{scdDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="scdJsonAttr != null" >
+        #{scdJsonAttr,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.SchedulejobExample" resultType="java.lang.Integer" >
+    select count(*) from schedulejob
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update schedulejob
+    <set >
+      <if test="record.scdUuid != null" >
+        scd_uuid = #{record.scdUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csdCron != null" >
+        csd_cron = #{record.csdCron,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdLastRunTime != null" >
+        scd_last_run_time = #{record.scdLastRunTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.scdNextRunTime != null" >
+        scd_next_run_time = #{record.scdNextRunTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.scdId != null" >
+        scd_id = #{record.scdId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdName != null" >
+        scd_name = #{record.scdName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdDesc != null" >
+        scd_desc = #{record.scdDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdJsonAttr != null" >
+        scd_json_attr = #{record.scdJsonAttr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update schedulejob
+    set scd_uuid = #{record.scdUuid,jdbcType=VARCHAR},
+      csd_cron = #{record.csdCron,jdbcType=VARCHAR},
+      scd_last_run_time = #{record.scdLastRunTime,jdbcType=TIMESTAMP},
+      scd_next_run_time = #{record.scdNextRunTime,jdbcType=TIMESTAMP},
+      scd_id = #{record.scdId,jdbcType=VARCHAR},
+      scd_name = #{record.scdName,jdbcType=VARCHAR},
+      scd_desc = #{record.scdDesc,jdbcType=VARCHAR},
+      scd_json_attr = #{record.scdJsonAttr,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update schedulejob
+    set scd_uuid = #{record.scdUuid,jdbcType=VARCHAR},
+      csd_cron = #{record.csdCron,jdbcType=VARCHAR},
+      scd_last_run_time = #{record.scdLastRunTime,jdbcType=TIMESTAMP},
+      scd_next_run_time = #{record.scdNextRunTime,jdbcType=TIMESTAMP},
+      scd_id = #{record.scdId,jdbcType=VARCHAR},
+      scd_name = #{record.scdName,jdbcType=VARCHAR},
+      scd_desc = #{record.scdDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Schedulejob" >
+    update schedulejob
+    <set >
+      <if test="csdCron != null" >
+        csd_cron = #{csdCron,jdbcType=VARCHAR},
+      </if>
+      <if test="scdLastRunTime != null" >
+        scd_last_run_time = #{scdLastRunTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scdNextRunTime != null" >
+        scd_next_run_time = #{scdNextRunTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scdId != null" >
+        scd_id = #{scdId,jdbcType=VARCHAR},
+      </if>
+      <if test="scdName != null" >
+        scd_name = #{scdName,jdbcType=VARCHAR},
+      </if>
+      <if test="scdDesc != null" >
+        scd_desc = #{scdDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="scdJsonAttr != null" >
+        scd_json_attr = #{scdJsonAttr,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where scd_uuid = #{scdUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ssm.pojo.Schedulejob" >
+    update schedulejob
+    set csd_cron = #{csdCron,jdbcType=VARCHAR},
+      scd_last_run_time = #{scdLastRunTime,jdbcType=TIMESTAMP},
+      scd_next_run_time = #{scdNextRunTime,jdbcType=TIMESTAMP},
+      scd_id = #{scdId,jdbcType=VARCHAR},
+      scd_name = #{scdName,jdbcType=VARCHAR},
+      scd_desc = #{scdDesc,jdbcType=VARCHAR},
+      scd_json_attr = #{scdJsonAttr,jdbcType=LONGVARCHAR}
+    where scd_uuid = #{scdUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Schedulejob" >
+    update schedulejob
+    set csd_cron = #{csdCron,jdbcType=VARCHAR},
+      scd_last_run_time = #{scdLastRunTime,jdbcType=TIMESTAMP},
+      scd_next_run_time = #{scdNextRunTime,jdbcType=TIMESTAMP},
+      scd_id = #{scdId,jdbcType=VARCHAR},
+      scd_name = #{scdName,jdbcType=VARCHAR},
+      scd_desc = #{scdDesc,jdbcType=VARCHAR}
+    where scd_uuid = #{scdUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

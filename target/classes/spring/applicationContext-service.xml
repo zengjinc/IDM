@@ -13,8 +13,16 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd ">
 
-<!-- 配置service接口。 -->
+	<!-- 配置service接口。 -->
 
+	<bean id="beanUtil" class="com.ssm.utils.BeanUtil"></bean>
+	<bean id="jobManager" class="com.ssm.shedule.JobManager"></bean>
+	<bean id="reconAccountScheduleJob" class="com.ssm.shedule.ReconAccountScheduleJob"></bean>
+	<bean id="assignAccountOwnerScheduleJob" class="com.ssm.shedule.AssignAccountOwnerScheduleJob"></bean>
+	<bean id="reconOUJob" class="com.ssm.shedule.ReconOUJob"></bean>
+	<bean id="reconRoleScheduleJob" class="com.ssm.shedule.ReconRoleScheduleJob"></bean>
+	<bean id="userSynchronisedScheduleJob" class="com.ssm.shedule.UserSynchronisedScheduleJob"></bean>
+	<bean id="schedulejobService" class="com.ssm.service.SchedulejobService"></bean>
 	
 </beans>
 

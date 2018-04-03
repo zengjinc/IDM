@@ -10,6 +10,7 @@
 	<!-- 导入子导航栏 -->
 	<%@ include file="../subnav.jsp" %>
 	<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/platformrole.action'>平台角色</a></li>");

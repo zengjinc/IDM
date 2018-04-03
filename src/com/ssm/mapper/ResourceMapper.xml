@@ -9,6 +9,9 @@
     <result column="res_trust" property="resTrust" jdbcType="INTEGER" />
     <result column="res_type_uuid" property="resTypeUuid" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ssm.pojo.Resource" extends="BaseResultMap" >
+    <result column="res_json_attr" property="resJsonAttr" jdbcType="LONGVARCHAR" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -70,6 +73,25 @@
   <sql id="Base_Column_List" >
     res_uuid, res_id, res_name, res_desc, res_trust, res_type_uuid
   </sql>
+  <sql id="Blob_Column_List" >
+    res_json_attr
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ssm.pojo.ResourceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.ResourceExample" >
     select
     <if test="distinct" >
@@ -84,9 +106,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from resource
     where res_uuid = #{resUuid,jdbcType=VARCHAR}
   </select>
@@ -102,11 +126,11 @@
   </delete>
   <insert id="insert" parameterType="com.ssm.pojo.Resource" >
     insert into resource (res_uuid, res_id, res_name, 
-      res_desc, res_trust, res_type_uuid
-      )
+      res_desc, res_trust, res_type_uuid, 
+      res_json_attr)
     values (#{resUuid,jdbcType=VARCHAR}, #{resId,jdbcType=VARCHAR}, #{resName,jdbcType=VARCHAR}, 
-      #{resDesc,jdbcType=VARCHAR}, #{resTrust,jdbcType=INTEGER}, #{resTypeUuid,jdbcType=VARCHAR}
-      )
+      #{resDesc,jdbcType=VARCHAR}, #{resTrust,jdbcType=INTEGER}, #{resTypeUuid,jdbcType=VARCHAR}, 
+      #{resJsonAttr,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ssm.pojo.Resource" >
     insert into resource
@@ -129,6 +153,9 @@
       <if test="resTypeUuid != null" >
         res_type_uuid,
       </if>
+      <if test="resJsonAttr != null" >
+        res_json_attr,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="resUuid != null" >
@@ -148,6 +175,9 @@
       </if>
       <if test="resTypeUuid != null" >
         #{resTypeUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="resJsonAttr != null" >
+        #{resJsonAttr,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -178,7 +208,23 @@
       <if test="record.resTypeUuid != null" >
         res_type_uuid = #{record.resTypeUuid,jdbcType=VARCHAR},
       </if>
+      <if test="record.resJsonAttr != null" >
+        res_json_attr = #{record.resJsonAttr,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update resource
+    set res_uuid = #{record.resUuid,jdbcType=VARCHAR},
+      res_id = #{record.resId,jdbcType=VARCHAR},
+      res_name = #{record.resName,jdbcType=VARCHAR},
+      res_desc = #{record.resDesc,jdbcType=VARCHAR},
+      res_trust = #{record.resTrust,jdbcType=INTEGER},
+      res_type_uuid = #{record.resTypeUuid,jdbcType=VARCHAR},
+      res_json_attr = #{record.resJsonAttr,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -213,7 +259,20 @@
       <if test="resTypeUuid != null" >
         res_type_uuid = #{resTypeUuid,jdbcType=VARCHAR},
       </if>
+      <if test="resJsonAttr != null" >
+        res_json_attr = #{resJsonAttr,jdbcType=LONGVARCHAR},
+      </if>
     </set>
+    where res_uuid = #{resUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ssm.pojo.Resource" >
+    update resource
+    set res_id = #{resId,jdbcType=VARCHAR},
+      res_name = #{resName,jdbcType=VARCHAR},
+      res_desc = #{resDesc,jdbcType=VARCHAR},
+      res_trust = #{resTrust,jdbcType=INTEGER},
+      res_type_uuid = #{resTypeUuid,jdbcType=VARCHAR},
+      res_json_attr = #{resJsonAttr,jdbcType=LONGVARCHAR}
     where res_uuid = #{resUuid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Resource" >
@@ -222,7 +281,7 @@
       res_name = #{resName,jdbcType=VARCHAR},
       res_desc = #{resDesc,jdbcType=VARCHAR},
       res_trust = #{resTrust,jdbcType=INTEGER},
-      res_type_uuid = #{resTypeUuid,jdbcType=VARCHAR}
+      res_type_uuid = #{resTypeUuid,jdbcType=VARCHAR},
     where res_uuid = #{resUuid,jdbcType=VARCHAR}
   </update>
 </mapper>

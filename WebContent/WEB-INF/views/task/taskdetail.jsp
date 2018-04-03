@@ -40,21 +40,20 @@
 				<div class="row">
 					<div class="col-md-5">
 						<div class="input-group">
-							<span class="input-group-addon">计划任务标识</span> <input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">计划任务标识</span> <input id="scd_job_id" name="date" type="text" class="form-control" placeholder="" >
 						</div>
 					</div>
 					<div class="col-md-5 col-md-offset-1">
 						<div class="input-group">
 							<span class="input-group-addon">计划任务类型</span> 
-							<select class="form-control">
+							<select class="form-control" id="scd_job_type">
 								<option>-</option>
-								<option>账号回收任务</option>
-								<option>角色回收任务</option>
-								<option>组织单位回收任务</option>
-								<option>用户同步任务</option>
-								<option>账号拥有者分配任务</option>
-								<option>用户重新评估任务</option>
+								<option value="reconAccountScheduleJob">账号回收任务</option>
+								<option value="reconRoleScheduleJob">角色回收任务</option>
+								<option value="reconOUJob">组织单位回收任务</option>
+								<option value="userSynchronisedScheduleJob">用户同步任务</option>
+								<option value="assignAccountOwnerScheduleJob">账号拥有者分配任务</option>
+								<option value="">用户重新评估任务</option>
 							</select>
 						</div>
 					</div>
@@ -62,36 +61,31 @@
 				<div class="row">
 					<div class="col-md-5">
 						<div class="input-group">
-							<span class="input-group-addon">Cron表达式</span> <input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">Cron表达式</span> <input id="scd_job_cron" name="date" type="text" class="form-control" placeholder="" >
 						</div>
 					</div>
 					<div class="col-md-5 col-md-offset-1">
 						<div class="input-group">
-							<span class="input-group-addon">计划任务状态</span> <input id="date_end" name="date2" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">计划任务状态</span> <input id="scd_job_status" name="date2" data-value="" type="text" class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-5">
 						<div class="input-group">
-							<span class="input-group-addon">上一次运行时间</span> <input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">上一次运行时间</span> <input id="scd_job_last_run_time" name="date" type="text" class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 					<div class="col-md-5 col-md-offset-1">
 						<div class="input-group">
-							<span class="input-group-addon">下一次运行时间</span> <input id="date_end" name="date2" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">下一次运行时间</span> <input id="scd_job_next_run_time" name="date2" type="text" class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-5">
 						<div class="input-group">
-							<span class="input-group-addon">计划任务描述</span> <input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">计划任务描述</span> <input id="scd_job_desc" name="date" type="text" class="form-control" placeholder="" >
 						</div>
 					</div>
 				</div>
@@ -112,45 +106,47 @@
 							<tbody>
 								<tr>
 									<td>资源标识</td>
-									<td><select>
+									<td><select id="resource_uuid_sel">
 											<option>-</option>
 									</select></td>
 									<td></td>
 								</tr>
-								<tr>
-									<td>完全回收</td>
-									<td><select>
-											<option>否</option>
-											<option>是</option>
-									</select></td>
-									<td>选择是则进行完整回收，否则为增量回收</td>
-								</tr>
+<!-- 								<tr> -->
+<!-- 									<td>完全回收</td> -->
+<!-- 									<td><select id="full_recon_sel"> -->
+<!-- 											<option value="false">否</option> -->
+<!-- 											<option value="true">是</option> -->
+<!-- 									</select></td> -->
+<!-- 									<td>选择是则进行完整回收，否则为增量回收</td> -->
+<!-- 								</tr> -->
 							</tbody>
 						</table>
 					</div>
 					<div class="tab-pane fade" id="taskchain">
-						<table class="table table-striped">
+						<table class="table table-striped" id="taskchain_table">
 							<thead>
 								<tr>
 									<th>计划任务标识</th>
-									<th>计划任务类型</th>
+<!-- 									<th>计划任务类型</th> -->
 									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
+<!-- 							
+ -->
 							</tbody>
 						</table>
-						<form action="" class="form-inline">
-							<select class="form-control">
+						<form class="form-inline" onsubmit="return false">
+							<select class="form-control" id="schedule_uuid_sel">
 								<option>-</option>
 							</select>
-							<button type="submit" class="btn btn-primary">添&nbsp;&nbsp;加</button>
+							<button class="btn btn-primary" id="add_scd_chain_btn">添&nbsp;&nbsp;加</button>
 						</form>
 					</div>
 				</div>
-				<div class="center-block">
-					<button class="btn btn-primary">编&nbsp;&nbsp;辑</button>
-					<button class="btn btn-primary">删&nbsp;&nbsp;除</button>
+				<div class="center-block" id="button_div">
+					<button class="btn btn-primary" id="save_scd_btn">保&nbsp;&nbsp;存</button>
+					<a class="btn btn-primary" id="cancel_scd_btn" href="totask/task.action">取&nbsp;&nbsp;消</a>
 				</div>
 			</div>
 		</div>
@@ -158,9 +154,12 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap.js"></script>
 	<!-- initial page -->
 	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<script src="js/bootstrap-notify.js?version=<%=Math.random()%>"></script>
+	<script src="js/task.js?version=<%=Math.random()%>"></script>
 </body>
 </html>

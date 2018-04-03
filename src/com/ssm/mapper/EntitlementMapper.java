@@ -2,6 +2,7 @@ package com.ssm.mapper;
 
 import com.ssm.pojo.Entitlement;
 import com.ssm.pojo.EntitlementExample;
+import com.ssm.pojo.EntitlementKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,7 @@ public interface EntitlementMapper {
 
     int deleteByExample(EntitlementExample example);
 
-    int deleteByPrimaryKey(String etmUserUuid);
+    int deleteByPrimaryKey(EntitlementKey key);
 
     int insert(Entitlement record);
 
@@ -18,7 +19,7 @@ public interface EntitlementMapper {
 
     List<Entitlement> selectByExample(EntitlementExample example);
 
-    Entitlement selectByPrimaryKey(String etmUserUuid);
+    Entitlement selectByPrimaryKey(EntitlementKey key);
 
     int updateByExampleSelective(@Param("record") Entitlement record, @Param("example") EntitlementExample example);
 

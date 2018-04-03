@@ -13,7 +13,6 @@
     <result column="ou_parent_uuid" property="ouParentUuid" jdbcType="VARCHAR" />
     <result column="ou_tgt_uuid" property="ouTgtUuid" jdbcType="VARCHAR" />
     <result column="ou_last_recon_time" property="ouLastReconTime" jdbcType="TIMESTAMP" />
-    <result column="oucol" property="oucol" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +74,7 @@
   </sql>
   <sql id="Base_Column_List" >
     ou_uuid, ou_res_uuid, ou_type, ou_id, ou_name, ou_name2, ou_desc, ou_manager_uuid, 
-    ou_parent_uuid, ou_tgt_uuid, ou_last_recon_time, oucol
+    ou_parent_uuid, ou_tgt_uuid, ou_last_recon_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.OuExample" >
     select
@@ -111,13 +110,11 @@
     insert into ou (ou_uuid, ou_res_uuid, ou_type, 
       ou_id, ou_name, ou_name2, 
       ou_desc, ou_manager_uuid, ou_parent_uuid, 
-      ou_tgt_uuid, ou_last_recon_time, oucol
-      )
+      ou_tgt_uuid, ou_last_recon_time)
     values (#{ouUuid,jdbcType=VARCHAR}, #{ouResUuid,jdbcType=VARCHAR}, #{ouType,jdbcType=INTEGER}, 
       #{ouId,jdbcType=VARCHAR}, #{ouName,jdbcType=VARCHAR}, #{ouName2,jdbcType=VARCHAR}, 
       #{ouDesc,jdbcType=VARCHAR}, #{ouManagerUuid,jdbcType=VARCHAR}, #{ouParentUuid,jdbcType=VARCHAR}, 
-      #{ouTgtUuid,jdbcType=VARCHAR}, #{ouLastReconTime,jdbcType=TIMESTAMP}, #{oucol,jdbcType=VARCHAR}
-      )
+      #{ouTgtUuid,jdbcType=VARCHAR}, #{ouLastReconTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ssm.pojo.Ou" >
     insert into ou
@@ -155,9 +152,6 @@
       <if test="ouLastReconTime != null" >
         ou_last_recon_time,
       </if>
-      <if test="oucol != null" >
-        oucol,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="ouUuid != null" >
@@ -192,9 +186,6 @@
       </if>
       <if test="ouLastReconTime != null" >
         #{ouLastReconTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oucol != null" >
-        #{oucol,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -240,9 +231,6 @@
       <if test="record.ouLastReconTime != null" >
         ou_last_recon_time = #{record.ouLastReconTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.oucol != null" >
-        oucol = #{record.oucol,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -260,8 +248,7 @@
       ou_manager_uuid = #{record.ouManagerUuid,jdbcType=VARCHAR},
       ou_parent_uuid = #{record.ouParentUuid,jdbcType=VARCHAR},
       ou_tgt_uuid = #{record.ouTgtUuid,jdbcType=VARCHAR},
-      ou_last_recon_time = #{record.ouLastReconTime,jdbcType=TIMESTAMP},
-      oucol = #{record.oucol,jdbcType=VARCHAR}
+      ou_last_recon_time = #{record.ouLastReconTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -299,9 +286,6 @@
       <if test="ouLastReconTime != null" >
         ou_last_recon_time = #{ouLastReconTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="oucol != null" >
-        oucol = #{oucol,jdbcType=VARCHAR},
-      </if>
     </set>
     where ou_uuid = #{ouUuid,jdbcType=VARCHAR}
   </update>
@@ -316,8 +300,7 @@
       ou_manager_uuid = #{ouManagerUuid,jdbcType=VARCHAR},
       ou_parent_uuid = #{ouParentUuid,jdbcType=VARCHAR},
       ou_tgt_uuid = #{ouTgtUuid,jdbcType=VARCHAR},
-      ou_last_recon_time = #{ouLastReconTime,jdbcType=TIMESTAMP},
-      oucol = #{oucol,jdbcType=VARCHAR}
+      ou_last_recon_time = #{ouLastReconTime,jdbcType=TIMESTAMP}
     where ou_uuid = #{ouUuid,jdbcType=VARCHAR}
   </update>
 </mapper>

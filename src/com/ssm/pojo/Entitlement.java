@@ -2,11 +2,7 @@ package com.ssm.pojo;
 
 import java.util.Date;
 
-public class Entitlement {
-    private String etmUserUuid;
-
-    private String etmAcctUuid;
-
+public class Entitlement extends EntitlementKey {
     private Integer etmStatus;
 
     private String etmCreatorUuid;
@@ -16,22 +12,6 @@ public class Entitlement {
     private String etmModifierUuid;
 
     private Date etmModifiedTime;
-
-    public String getEtmUserUuid() {
-        return etmUserUuid;
-    }
-
-    public void setEtmUserUuid(String etmUserUuid) {
-        this.etmUserUuid = etmUserUuid == null ? null : etmUserUuid.trim();
-    }
-
-    public String getEtmAcctUuid() {
-        return etmAcctUuid;
-    }
-
-    public void setEtmAcctUuid(String etmAcctUuid) {
-        this.etmAcctUuid = etmAcctUuid == null ? null : etmAcctUuid.trim();
-    }
 
     public Integer getEtmStatus() {
         return etmStatus;

@@ -5,13 +5,25 @@ import java.util.Date;
 public class Schedulejob {
     private String scdUuid;
 
-    private String csdCron;
+    private String scdId;
+
+    private String scdName;
+
+    private String scdJobGroup;
+
+    private String scdCron;
 
     private Date scdLastRunTime;
 
     private Date scdNextRunTime;
 
-    private String schedulejobcol;
+    private String scdJobType;
+
+    private String scdDesc;
+
+    private Integer scdStatus;
+
+    private String scdJsonAttr;
 
     public String getScdUuid() {
         return scdUuid;
@@ -21,12 +33,36 @@ public class Schedulejob {
         this.scdUuid = scdUuid == null ? null : scdUuid.trim();
     }
 
-    public String getCsdCron() {
-        return csdCron;
+    public String getScdId() {
+        return scdId;
     }
 
-    public void setCsdCron(String csdCron) {
-        this.csdCron = csdCron == null ? null : csdCron.trim();
+    public void setScdId(String scdId) {
+        this.scdId = scdId == null ? null : scdId.trim();
+    }
+
+    public String getScdName() {
+        return scdName;
+    }
+
+    public void setScdName(String scdName) {
+        this.scdName = scdName == null ? null : scdName.trim();
+    }
+
+    public String getScdJobGroup() {
+        return scdJobGroup;
+    }
+
+    public void setScdJobGroup(String scdJobGroup) {
+        this.scdJobGroup = scdJobGroup == null ? null : scdJobGroup.trim();
+    }
+
+    public String getScdCron() {
+        return scdCron;
+    }
+
+    public void setScdCron(String scdCron) {
+        this.scdCron = scdCron == null ? null : scdCron.trim();
     }
 
     public Date getScdLastRunTime() {
@@ -45,11 +81,35 @@ public class Schedulejob {
         this.scdNextRunTime = scdNextRunTime;
     }
 
-    public String getSchedulejobcol() {
-        return schedulejobcol;
+    public String getScdJobType() {
+        return scdJobType;
     }
 
-    public void setSchedulejobcol(String schedulejobcol) {
-        this.schedulejobcol = schedulejobcol == null ? null : schedulejobcol.trim();
+    public void setScdJobType(String scdJobType) {
+        this.scdJobType = scdJobType == null ? null : scdJobType.trim();
+    }
+
+    public String getScdDesc() {
+        return scdDesc;
+    }
+
+    public void setScdDesc(String scdDesc) {
+        this.scdDesc = scdDesc == null ? null : scdDesc.trim();
+    }
+
+    public Integer getScdStatus() {
+        return scdStatus;
+    }
+
+    public void setScdStatus(Integer scdStatus) {
+        this.scdStatus = scdStatus;
+    }
+
+    public String getScdJsonAttr() {
+        return scdJsonAttr;
+    }
+
+    public void setScdJsonAttr(String scdJsonAttr) {
+        this.scdJsonAttr = scdJsonAttr == null ? null : scdJsonAttr.trim();
     }
 }

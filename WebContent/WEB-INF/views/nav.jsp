@@ -31,9 +31,9 @@
 			        
 			      </ul>
 			      <ul class="nav navbar-nav navbar-right">
-			        <li><a href="#">隐藏导航</a></li>
-			        <li><a href="#">修改密码</a></li>
-			        <li><a href="#">退出</a></li>
+			        <li><a href="#"id="toggle_nav" onclick="return false">隐藏导航</a></li>
+			        <li><a href="#" onclick="return false">修改密码</a></li>
+			        <li><a href="#" onclick="return false">退出</a></li>
 			      </ul>
 			    </div><!-- /.navbar-collapse -->
 			  </div><!-- /.container-fluid -->

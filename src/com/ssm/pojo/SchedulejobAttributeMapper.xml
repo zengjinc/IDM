@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.SchedulejobAttributeMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.SchedulejobAttribute" >
+    <id column="scd_attr_scd_uuid" property="scdAttrScdUuid" jdbcType="VARCHAR" />
+    <result column="scd_attr_datatype" property="scdAttrDatatype" jdbcType="VARCHAR" />
+    <result column="scd_attr_name" property="scdAttrName" jdbcType="VARCHAR" />
+    <result column="scd_attr_val" property="scdAttrVal" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    scd_attr_scd_uuid, scd_attr_datatype, scd_attr_name, scd_attr_val
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.SchedulejobAttributeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from schedulejob_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from schedulejob_attribute
+    where scd_attr_scd_uuid = #{scdAttrScdUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from schedulejob_attribute
+    where scd_attr_scd_uuid = #{scdAttrScdUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.SchedulejobAttributeExample" >
+    delete from schedulejob_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.SchedulejobAttribute" >
+    insert into schedulejob_attribute (scd_attr_scd_uuid, scd_attr_datatype, 
+      scd_attr_name, scd_attr_val)
+    values (#{scdAttrScdUuid,jdbcType=VARCHAR}, #{scdAttrDatatype,jdbcType=VARCHAR}, 
+      #{scdAttrName,jdbcType=VARCHAR}, #{scdAttrVal,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.SchedulejobAttribute" >
+    insert into schedulejob_attribute
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="scdAttrScdUuid != null" >
+        scd_attr_scd_uuid,
+      </if>
+      <if test="scdAttrDatatype != null" >
+        scd_attr_datatype,
+      </if>
+      <if test="scdAttrName != null" >
+        scd_attr_name,
+      </if>
+      <if test="scdAttrVal != null" >
+        scd_attr_val,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="scdAttrScdUuid != null" >
+        #{scdAttrScdUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="scdAttrDatatype != null" >
+        #{scdAttrDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="scdAttrName != null" >
+        #{scdAttrName,jdbcType=VARCHAR},
+      </if>
+      <if test="scdAttrVal != null" >
+        #{scdAttrVal,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.SchedulejobAttributeExample" resultType="java.lang.Integer" >
+    select count(*) from schedulejob_attribute
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update schedulejob_attribute
+    <set >
+      <if test="record.scdAttrScdUuid != null" >
+        scd_attr_scd_uuid = #{record.scdAttrScdUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdAttrDatatype != null" >
+        scd_attr_datatype = #{record.scdAttrDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdAttrName != null" >
+        scd_attr_name = #{record.scdAttrName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scdAttrVal != null" >
+        scd_attr_val = #{record.scdAttrVal,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update schedulejob_attribute
+    set scd_attr_scd_uuid = #{record.scdAttrScdUuid,jdbcType=VARCHAR},
+      scd_attr_datatype = #{record.scdAttrDatatype,jdbcType=VARCHAR},
+      scd_attr_name = #{record.scdAttrName,jdbcType=VARCHAR},
+      scd_attr_val = #{record.scdAttrVal,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.SchedulejobAttribute" >
+    update schedulejob_attribute
+    <set >
+      <if test="scdAttrDatatype != null" >
+        scd_attr_datatype = #{scdAttrDatatype,jdbcType=VARCHAR},
+      </if>
+      <if test="scdAttrName != null" >
+        scd_attr_name = #{scdAttrName,jdbcType=VARCHAR},
+      </if>
+      <if test="scdAttrVal != null" >
+        scd_attr_val = #{scdAttrVal,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where scd_attr_scd_uuid = #{scdAttrScdUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.SchedulejobAttribute" >
+    update schedulejob_attribute
+    set scd_attr_datatype = #{scdAttrDatatype,jdbcType=VARCHAR},
+      scd_attr_name = #{scdAttrName,jdbcType=VARCHAR},
+      scd_attr_val = #{scdAttrVal,jdbcType=VARCHAR}
+    where scd_attr_scd_uuid = #{scdAttrScdUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

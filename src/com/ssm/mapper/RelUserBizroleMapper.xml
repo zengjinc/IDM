@@ -3,7 +3,7 @@
 <mapper namespace="com.ssm.mapper.RelUserBizroleMapper" >
   <resultMap id="BaseResultMap" type="com.ssm.pojo.RelUserBizrole" >
     <id column="rel_user_bizrole_user_uuid" property="relUserBizroleUserUuid" jdbcType="VARCHAR" />
-    <result column="rel_user_bizrole_bizrole_uuid" property="relUserBizroleBizroleUuid" jdbcType="VARCHAR" />
+    <id column="rel_user_bizrole_bizrole_uuid" property="relUserBizroleBizroleUuid" jdbcType="VARCHAR" />
     <result column="rel_user_bizrole_desc" property="relUserBizroleDesc" jdbcType="VARCHAR" />
     <result column="rel_user_bizrole_pol_uuid" property="relUserBizrolePolUuid" jdbcType="VARCHAR" />
   </resultMap>
@@ -83,15 +83,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ssm.pojo.RelUserBizroleKey" >
     select 
     <include refid="Base_Column_List" />
     from rel_user_bizrole
     where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+      and rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="com.ssm.pojo.RelUserBizroleKey" >
     delete from rel_user_bizrole
     where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+      and rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.ssm.pojo.RelUserBizroleExample" >
     delete from rel_user_bizrole
@@ -177,9 +179,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.RelUserBizrole" >
     update rel_user_bizrole
     <set >
-      <if test="relUserBizroleBizroleUuid != null" >
-        rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR},
-      </if>
       <if test="relUserBizroleDesc != null" >
         rel_user_bizrole_desc = #{relUserBizroleDesc,jdbcType=VARCHAR},
       </if>
@@ -188,12 +187,13 @@
       </if>
     </set>
     where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+      and rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.RelUserBizrole" >
     update rel_user_bizrole
-    set rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR},
-      rel_user_bizrole_desc = #{relUserBizroleDesc,jdbcType=VARCHAR},
+    set rel_user_bizrole_desc = #{relUserBizroleDesc,jdbcType=VARCHAR},
       rel_user_bizrole_pol_uuid = #{relUserBizrolePolUuid,jdbcType=VARCHAR}
     where rel_user_bizrole_user_uuid = #{relUserBizroleUserUuid,jdbcType=VARCHAR}
+      and rel_user_bizrole_bizrole_uuid = #{relUserBizroleBizroleUuid,jdbcType=VARCHAR}
   </update>
 </mapper>

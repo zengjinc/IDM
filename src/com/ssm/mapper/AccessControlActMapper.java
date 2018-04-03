@@ -1,11 +1,9 @@
 package com.ssm.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.ssm.pojo.AccessControlAct;
 import com.ssm.pojo.AccessControlActExample;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface AccessControlActMapper {
     int countByExample(AccessControlActExample example);

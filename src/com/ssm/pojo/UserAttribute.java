@@ -5,7 +5,7 @@ public class UserAttribute {
 
     private String userUuid;
 
-    private String userAttrDefKey;
+    private String userAttrDefUuid;
 
     private String userAttriValue;
 
@@ -25,12 +25,12 @@ public class UserAttribute {
         this.userUuid = userUuid == null ? null : userUuid.trim();
     }
 
-    public String getUserAttrDefKey() {
-        return userAttrDefKey;
+    public String getUserAttrDefUuid() {
+        return userAttrDefUuid;
     }
 
-    public void setUserAttrDefKey(String userAttrDefKey) {
-        this.userAttrDefKey = userAttrDefKey == null ? null : userAttrDefKey.trim();
+    public void setUserAttrDefUuid(String userAttrDefUuid) {
+        this.userAttrDefUuid = userAttrDefUuid == null ? null : userAttrDefUuid.trim();
     }
 
     public String getUserAttriValue() {

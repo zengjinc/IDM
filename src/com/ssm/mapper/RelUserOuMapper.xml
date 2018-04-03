@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ssm.mapper.RelUserOuMapper" >
-  <resultMap id="BaseResultMap" type="com.ssm.pojo.RelUserOu" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.RelUserOuKey" >
     <id column="rel_user_ou_user_uuid" property="relUserOuUserUuid" jdbcType="VARCHAR" />
-    <result column="rel_user_ou_ou_uuid" property="relUserOuOuUuid" jdbcType="VARCHAR" />
+    <id column="rel_user_ou_ou_uuid" property="relUserOuOuUuid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -80,15 +80,10 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from rel_user_ou
-    where rel_user_ou_user_uuid = #{relUserOuUserUuid,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="com.ssm.pojo.RelUserOuKey" >
     delete from rel_user_ou
     where rel_user_ou_user_uuid = #{relUserOuUserUuid,jdbcType=VARCHAR}
+      and rel_user_ou_ou_uuid = #{relUserOuOuUuid,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.ssm.pojo.RelUserOuExample" >
     delete from rel_user_ou
@@ -96,13 +91,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ssm.pojo.RelUserOu" >
+  <insert id="insert" parameterType="com.ssm.pojo.RelUserOuKey" >
     insert into rel_user_ou (rel_user_ou_user_uuid, rel_user_ou_ou_uuid
       )
     values (#{relUserOuUserUuid,jdbcType=VARCHAR}, #{relUserOuOuUuid,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ssm.pojo.RelUserOu" >
+  <insert id="insertSelective" parameterType="com.ssm.pojo.RelUserOuKey" >
     insert into rel_user_ou
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="relUserOuUserUuid != null" >
@@ -148,19 +143,5 @@
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.RelUserOu" >
-    update rel_user_ou
-    <set >
-      <if test="relUserOuOuUuid != null" >
-        rel_user_ou_ou_uuid = #{relUserOuOuUuid,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where rel_user_ou_user_uuid = #{relUserOuUserUuid,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.RelUserOu" >
-    update rel_user_ou
-    set rel_user_ou_ou_uuid = #{relUserOuOuUuid,jdbcType=VARCHAR}
-    where rel_user_ou_user_uuid = #{relUserOuUserUuid,jdbcType=VARCHAR}
   </update>
 </mapper>
