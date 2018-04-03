@@ -3,6 +3,7 @@ package com.ssm.controller;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,8 @@ public class ResourceManagerController {
 		try {
 			Class.forName(jdbcDrive);
 			connection = DriverManager.getConnection(jdbcUrl, jdbcUserName, jdbcPwd);
+			Statement statement = connection.createStatement();
+			
 			result.put("result", "success");
 		} catch (ClassNotFoundException e) {
 			result.put("result", e.getMessage());

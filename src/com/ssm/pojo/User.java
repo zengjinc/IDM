@@ -7,6 +7,8 @@ public class User {
 
     private String userId;
 
+    private String userPwd;
+
     private String userName;
 
     private String userEmployeeId;
@@ -43,6 +45,14 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
+    }
+
+    public String getUserPwd() {
+        return userPwd;
+    }
+
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd == null ? null : userPwd.trim();
     }
 
     public String getUserName() {
