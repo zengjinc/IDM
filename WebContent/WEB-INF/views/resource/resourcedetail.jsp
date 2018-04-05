@@ -106,8 +106,8 @@
 								<tr>
 									<td>JDBC驱动类</td>
 									<td><input id="jdbc_drive" type="text" class="form-control" value="com.mysql.jdbc.Driver" /></td>
-									<td>MSSQL: jdbc:sqlserver:// &lt;SERVER_NAME&gt;:&lt;PORT&gt; <br /> OracleThin: jdbc:oracle:thin:@&lt;HOST&gt;:&lt;PORT&gt;:&lt;SID&gt; <br /> MySql:
-										jdbc: mysql:com.mysql.jdbc.Driver</td>
+									<td>MSSQL: com.microsoft.sqlserver.jdbc.SQLServerDriver（2005版本及以后） <br /> Oracle: oracle.jdbc.driver.OracleDriver <br /> MySql:
+										com.mysql.jdbc.Driver</td>
 								</tr>
 								<tr>
 									<td style="vertical-align: middle;">JDBC URL</td>

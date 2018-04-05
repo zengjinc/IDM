@@ -3,7 +3,13 @@ package com.ssm.connector;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +17,18 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ssm.mapper.AccountAttributeMapper;
+import com.ssm.mapper.AccountMapper;
+import com.ssm.mapper.ItroleAttributeMapper;
+import com.ssm.mapper.ItroleMapper;
+import com.ssm.pojo.Account;
+import com.ssm.pojo.AccountAttribute;
+import com.ssm.pojo.Itrole;
+import com.ssm.pojo.ItroleAttribute;
 import com.ssm.pojo.Resource;
+import com.ssm.utils.CommonUtil;
 
 public class JDBCConnector implements IConnector,IConnector.IPassword, IConnector.IRole, IConnector.IOrganizationUnit, IConnector.ILockAccount{
 	private static Logger logger = LoggerFactory.getLogger(JDBCConnector.class);
@@ -24,6 +40,18 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	JsonNode acctJson;
 	JsonNode roleJson;
 	JsonNode ouJson;
+	
+	@Autowired
+	private AccountAttributeMapper acctAttrMapper;
+	
+	@Autowired
+	private AccountMapper acctMapper;
+	
+	@Autowired
+	private ItroleAttributeMapper itroleAttrMapper;
+	
+	@Autowired
+	private ItroleMapper itroleMapper;
 	
 	public Resource getResource() {
 		return resource;
@@ -47,21 +75,24 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	
 	@Override
 	public boolean connect() {
-		if(configJson != null){
-			String jdbcDrive = configJson.get("jdbc_drive").asText();
-			String jdbcUrl = configJson.get("jdbc_url").asText();
-			String jdbcUserName = configJson.get("jdbc_username").asText();
-			String jdbcPwd = configJson.get("jdbc_pwd").asText();
-			try {
-				Class.forName(jdbcDrive);
-				connection = DriverManager.getConnection(jdbcUrl, jdbcUserName, jdbcPwd);
-				return true;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			if(configJson != null){
+				String jdbcDrive = configJson.get("jdbc_drive").asText();
+				String jdbcUrl = configJson.get("jdbc_url").asText();
+				String jdbcUserName = configJson.get("jdbc_username").asText();
+				String jdbcPwd = configJson.get("jdbc_pwd").asText();
+				try {
+					Class.forName(jdbcDrive);
+					connection = DriverManager.getConnection(jdbcUrl, jdbcUserName, jdbcPwd);
+					return true;
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+					return false;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
-		}
+		
 		return false;
 	}
 
@@ -72,6 +103,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return false;
 			}
 		}
 		return true;
@@ -85,6 +117,87 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 
 	@Override
 	public List<Map<String, List<String>>> listAccounts(Condition[] conditions, String[] attributesToRetrieve) {
+		String acctTable = acctJson.get("user_table").asText();
+		
+		Map<String,String> targetNameMap = new HashMap<>();
+		List<String> targetNameList = new ArrayList<>();
+		JsonNode acctAttrDef = acctJson.get("acct_attr_def");
+		Iterator<JsonNode> iterator = acctAttrDef.getElements();
+		while(iterator.hasNext()){
+			JsonNode tempNode = iterator.next();
+			String targetName = tempNode.get("target_name").getTextValue();
+			targetNameMap.put(tempNode.get("show_name").getTextValue(),targetName);
+			targetNameList.add(targetName);
+		}
+		
+		StringBuffer sql = new StringBuffer("select ");	//select 1,2,3 from table where status = 1
+		int size = targetNameList.size();
+		for (int i = 0; i < size; i++) {
+			if(i != size - 1){
+				sql.append(targetNameList.get(i) + ",");
+			}else{
+				sql.append(targetNameList.get(i));
+			}
+		}
+		if(acctTable != null && acctTable != ""){
+			sql.append(" from " + acctTable + " where 1 = 1");
+		}else{
+			throw new RuntimeException("user_table is null");
+		}
+		
+		String acctStatus = acctJson.get("account_status").asText();
+		String acctStatusEnable = acctJson.get("account_status_enable").asText();
+		
+		if(acctStatus != null && acctStatus != ""){
+			sql.append(" and " + targetNameMap.get(acctStatus) + "='" + acctStatusEnable + "'");
+		}
+		
+		try {
+			if(connect()){
+				PreparedStatement prepareStatement = connection.prepareStatement(sql.toString());
+				ResultSet resultSet = prepareStatement.executeQuery();
+				while(resultSet.next()){
+//					resultSet.getString(columnLabel);
+					String acctUuid = CommonUtil.generateUUID();	//账号的uuid，account表和account_attribute表公用
+					/*
+					 * 插入account_attribute表格中的数据
+					 */
+					Account account = new Account();
+					AccountAttribute acctAttr = new AccountAttribute();
+					acctAttr.setAcctAttrAcctUuid(acctUuid);
+					for(String s : targetNameList){
+						String value = resultSet.getString(s);
+						acctAttr.setAcctAttrKey(s);
+						acctAttr.setAcctAttrVal(value);
+						acctAttrMapper.insert(acctAttr);
+						
+						//account表中的uuid和id
+						if(s.equals(targetNameMap.get(acctJson.get("account_uuid").asText()))){
+							account.setAcctTgtUuid(resultSet.getString(s));
+						}
+						
+						if(s.equals(targetNameMap.get(acctJson.get("account_id").asText()))){
+							account.setAcctLoginId(resultSet.getString(s));
+						}
+						
+					}
+					/*
+					 * 插入account表格的数据
+					 */
+					account.setAcctUuid(acctUuid);
+					account.setAcctResUuid(this.getResource().getResUuid());
+					account.setAcctPrimary(1);
+					account.setAcctStatus(1);
+					account.setAcctLastReconTime(new Date());
+					acctMapper.insert(account);
+					
+				}
+				//释放连接资源
+				disconnect();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return null;
 	}
@@ -137,6 +250,85 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 
 	@Override
 	public List<Map<String, List<String>>> listRoles(String[] attributesToRetrieve) {
+		String roleTable = roleJson.get("role_tablename").asText();
+		//获取属性定义，保存到map中
+		Map<String,String> targetNameMap = new HashMap<>();
+		JsonNode acctAttrDef = roleJson.get("role_attr_def");
+		Iterator<JsonNode> iterator = acctAttrDef.getElements();
+		while(iterator.hasNext()){
+			JsonNode tempNode = iterator.next();
+			String targetName = tempNode.get("target_name").getTextValue();
+			targetNameMap.put(tempNode.get("show_name").getTextValue(),targetName);
+		}
+		
+		StringBuffer sql = new StringBuffer("select ");	//select 1,2,3 from table where status = 1
+		int size = targetNameMap.keySet().size();
+		for(String s : targetNameMap.keySet()){
+			if(--size != 0){
+				sql.append(targetNameMap.get(s) + ",");
+			}else{
+				sql.append(targetNameMap.get(s));
+			}
+		}
+		
+		if(roleTable != null && roleTable != ""){
+			sql.append(" from " + roleTable);
+		}else{
+			throw new RuntimeException("role_table is null");
+		}
+		
+		if(connect()){
+			PreparedStatement prepareStatement;
+			try {
+				prepareStatement = connection.prepareStatement(sql.toString());
+				ResultSet resultSet = prepareStatement.executeQuery();
+				
+				while(resultSet.next()){
+					String roleUuid = CommonUtil.generateUUID();	//角色uuid，role表和role_attribute表公用
+					/*
+					 * 插入role_attribute表格中的数据
+					 */
+//					Account account = new Account();
+					Itrole itrole = new Itrole();
+					ItroleAttribute roleAttr = new ItroleAttribute();
+					roleAttr.setItroleAttrItroleUuid(roleUuid);
+					for(String s : targetNameMap.keySet()){
+						String value = resultSet.getString(targetNameMap.get(s));
+						roleAttr.setItroleAttrItroleKey(targetNameMap.get(s));
+						roleAttr.setItroleAttrItroleVal(value);
+						itroleAttrMapper.insert(roleAttr);
+						
+						//account表中的uuid和id
+						if(s.equals(roleJson.get("role_uuid").asText())){
+							itrole.setItroleTgtRoleUuid(resultSet.getString(targetNameMap.get(s)));
+						}
+						
+						if(s.equals(roleJson.get("role_id").asText())){
+							itrole.setItroleId(resultSet.getString(targetNameMap.get(s)));
+						}
+						
+						if(s.equals(roleJson.get("role_name").asText())){
+							itrole.setItroleName(resultSet.getString(targetNameMap.get(s)));
+						}
+					}
+					/*
+					 * 插入account表格的数据
+					 */
+					itrole.setItroleUuid(roleUuid);
+					itrole.setItroleDesc(null);
+					itrole.setItroleResUuid(this.getResource().getResUuid());
+					itroleMapper.insert(itrole);
+					
+				}
+				//释放连接资源
+				disconnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
 		return null;
 	}
 

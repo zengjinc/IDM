@@ -120,7 +120,7 @@ $(function(){
 				
 				//taskChain
 				var taskchain = resJsonAttr.taskchainJson;
-				console.log("taskchain : " + taskchain);
+//				console.log("taskchain : " + taskchain);
 				for (var i = 0; i < taskchain.length; i++) {
 					var scdid = taskchain[i].scdJobId;
 					$("#taskchain_table").append("<tr class='taskchain_tr'><td>"+scdid+"</td><td><button class='btn btn-primary taskchan_del'>删除</button></td></tr>");
@@ -289,6 +289,23 @@ $(function(){
 	
 	$(".container").on("click", ".taskchan_del", function() {
 		$(this).parent().parent().remove();
+	})
+	
+	$(".container").on("click", "#run_button", function() {
+		// 发送到后台
+		$.ajax({
+			type : 'post',
+			url : 'totask/runtask.action',
+			contentType : 'application/json;charset=utf-8',// 指定为json类型
+			dataType : 'text', // 服务器响应类型
+			data : JSON.stringify(scduuid), // JSON.stringify(jdbc),
+			success : function() {// 返回json结果
+				console.log("请求发送成功");
+			},
+			error : function() {
+				console.log("请求发送失败");
+			}
+		});
 	})
 	
 })

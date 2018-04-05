@@ -2,6 +2,7 @@ package com.ssm.mapper;
 
 import com.ssm.pojo.AccountAttribute;
 import com.ssm.pojo.AccountAttributeExample;
+import com.ssm.pojo.AccountAttributeKey;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,7 @@ public interface AccountAttributeMapper {
 
     int deleteByExample(AccountAttributeExample example);
 
-    int deleteByPrimaryKey(String acctAttrAcctUuid);
+    int deleteByPrimaryKey(AccountAttributeKey key);
 
     int insert(AccountAttribute record);
 
@@ -18,7 +19,7 @@ public interface AccountAttributeMapper {
 
     List<AccountAttribute> selectByExample(AccountAttributeExample example);
 
-    AccountAttribute selectByPrimaryKey(String acctAttrAcctUuid);
+    AccountAttribute selectByPrimaryKey(AccountAttributeKey key);
 
     int updateByExampleSelective(@Param("record") AccountAttribute record, @Param("example") AccountAttributeExample example);
 

@@ -3,7 +3,7 @@
 <mapper namespace="com.ssm.mapper.AccountAttributeMapper" >
   <resultMap id="BaseResultMap" type="com.ssm.pojo.AccountAttribute" >
     <id column="acct_attr_acct_uuid" property="acctAttrAcctUuid" jdbcType="VARCHAR" />
-    <result column="acct_attr_key" property="acctAttrKey" jdbcType="VARCHAR" />
+    <id column="acct_attr_key" property="acctAttrKey" jdbcType="VARCHAR" />
     <result column="acct_attr_val" property="acctAttrVal" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -81,15 +81,17 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ssm.pojo.AccountAttributeKey" >
     select 
     <include refid="Base_Column_List" />
     from account_attribute
     where acct_attr_acct_uuid = #{acctAttrAcctUuid,jdbcType=VARCHAR}
+      and acct_attr_key = #{acctAttrKey,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="com.ssm.pojo.AccountAttributeKey" >
     delete from account_attribute
     where acct_attr_acct_uuid = #{acctAttrAcctUuid,jdbcType=VARCHAR}
+      and acct_attr_key = #{acctAttrKey,jdbcType=VARCHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.ssm.pojo.AccountAttributeExample" >
     delete from account_attribute
@@ -163,19 +165,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.AccountAttribute" >
     update account_attribute
     <set >
-      <if test="acctAttrKey != null" >
-        acct_attr_key = #{acctAttrKey,jdbcType=VARCHAR},
-      </if>
       <if test="acctAttrVal != null" >
         acct_attr_val = #{acctAttrVal,jdbcType=VARCHAR},
       </if>
     </set>
     where acct_attr_acct_uuid = #{acctAttrAcctUuid,jdbcType=VARCHAR}
+      and acct_attr_key = #{acctAttrKey,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.AccountAttribute" >
     update account_attribute
-    set acct_attr_key = #{acctAttrKey,jdbcType=VARCHAR},
-      acct_attr_val = #{acctAttrVal,jdbcType=VARCHAR}
+    set acct_attr_val = #{acctAttrVal,jdbcType=VARCHAR}
     where acct_attr_acct_uuid = #{acctAttrAcctUuid,jdbcType=VARCHAR}
+      and acct_attr_key = #{acctAttrKey,jdbcType=VARCHAR}
   </update>
 </mapper>
