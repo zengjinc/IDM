@@ -1,14 +1,17 @@
-package com.ssm.service;
+package com.ssm.service.impl;
 
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ssm.mapper.SchedulejobMapper;
 import com.ssm.pojo.Schedulejob;
+import com.ssm.service.ISchedulejobService;
 import com.ssm.shedule.JobManager;
 
-public class SchedulejobService {
+@Service
+public class SchedulejobService implements ISchedulejobService{
 
 	@Autowired
 	private SchedulejobMapper scheduleMapper;

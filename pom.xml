@@ -196,6 +196,20 @@
 			<artifactId>quartz-jobs</artifactId>
 			<version>2.2.1</version>
 		</dependency>
+		
+		<!-- commons-codec 加密 -->
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.10</version>
+		</dependency>
+		
+		<!-- beanshell -->
+		<dependency>
+		    <groupId>org.beanshell</groupId>
+		    <artifactId>bsh</artifactId>
+		    <version>2.0b5</version>
+		</dependency>
 
 	</dependencies>
 

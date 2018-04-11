@@ -6,6 +6,14 @@ function fixNavigation() {
 	// console.log("fix navigation height : " + height);
 }
 
+//获取url中的参数
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
 $(function() {
 	// 导航栏点击变色
 	var nav = $(".nav.navbar-nav.navbar-left");

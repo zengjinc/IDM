@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import com.ssm.pojo.Resource;
+
 public interface IConnector {
 		
 	
@@ -12,6 +14,8 @@ public interface IConnector {
 	 * Basic connector interface
 	 */
 //	ConfigurationAttributeDefinition[] getConfiguration();
+	Resource getResource();
+	void setResource(Resource resource);
 	boolean connect();
 	boolean disconnect();
 	
@@ -30,8 +34,8 @@ public interface IConnector {
 	 */
 	int createAccount(StringBuilder password, Map<String, List<String>> attributes);
 	int updateAccount(String identifier, Map<String, List<String>> attributes);
-	boolean enableAccount(String identifier, Map<String, List<String>> attributes);
-	boolean disableAccount(String identifier, Map<String, List<String>> attributes);
+	boolean enableAccount(String identifier);
+	boolean disableAccount(String identifier);
 	boolean deleteAccount(String identifier, Map<String, List<String>> attributes);
 	
 	
@@ -39,8 +43,8 @@ public interface IConnector {
 	 * Password interface
 	 */
 	public interface IPassword {
-		boolean verifyPassword(String identifier, StringBuilder password, Map<String, List<String>> attributes);
-		boolean resetPassword(String identifier, StringBuilder password, Map<String, List<String>> attributes);
+		boolean verifyPassword(String identifier, StringBuilder password);
+		boolean resetPassword(String identifier, StringBuilder password);
 	}
 	/**
 	 * Role provisioning
@@ -77,4 +81,5 @@ public interface IConnector {
 		boolean lockAccount(String identifier, Map<String, List<String>> attributes);
 		boolean unlockAccount(String identifier, Map<String, List<String>> attributes);
 	}
+	
 }

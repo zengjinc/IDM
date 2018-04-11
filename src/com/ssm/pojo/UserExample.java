@@ -692,6 +692,76 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserResUuidIsNull() {
+            addCriterion("user_res_uuid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidIsNotNull() {
+            addCriterion("user_res_uuid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidEqualTo(String value) {
+            addCriterion("user_res_uuid =", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidNotEqualTo(String value) {
+            addCriterion("user_res_uuid <>", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidGreaterThan(String value) {
+            addCriterion("user_res_uuid >", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidGreaterThanOrEqualTo(String value) {
+            addCriterion("user_res_uuid >=", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidLessThan(String value) {
+            addCriterion("user_res_uuid <", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidLessThanOrEqualTo(String value) {
+            addCriterion("user_res_uuid <=", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidLike(String value) {
+            addCriterion("user_res_uuid like", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidNotLike(String value) {
+            addCriterion("user_res_uuid not like", value, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidIn(List<String> values) {
+            addCriterion("user_res_uuid in", values, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidNotIn(List<String> values) {
+            addCriterion("user_res_uuid not in", values, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidBetween(String value1, String value2) {
+            addCriterion("user_res_uuid between", value1, value2, "userResUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserResUuidNotBetween(String value1, String value2) {
+            addCriterion("user_res_uuid not between", value1, value2, "userResUuid");
+            return (Criteria) this;
+        }
+
         public Criteria andUserCreatorIsNull() {
             addCriterion("user_creator is null");
             return (Criteria) this;

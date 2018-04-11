@@ -1,5 +1,6 @@
 package com.ssm.mapper;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.pojo.User;
 import com.ssm.pojo.UserExample;
 import java.util.List;
@@ -18,6 +19,8 @@ public interface UserMapper {
 
     List<User> selectByExample(UserExample example);
 
+    List<User> selectByExample(UserExample example, PageBounds pageBounds);
+    
     User selectByPrimaryKey(String userUuid);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);

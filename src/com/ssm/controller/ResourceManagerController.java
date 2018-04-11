@@ -141,7 +141,7 @@ public class ResourceManagerController {
 		resource.setResDesc(baseJson.get("resource_desc").asText());
 		resource.setResTrust(baseJson.get("resource_trust").asText().equalsIgnoreCase("false") ? 0 : 1);
 		ResourceTypeExample example = new ResourceTypeExample();
-		example.createCriteria().andResTypeHandlerEqualTo(baseJson.get("resource_type").asText());
+		example.createCriteria().andResTypeNameEqualTo(baseJson.get("resource_type").asText());
 		List<ResourceType> selectByExample = resourceTypeMapper.selectByExample(example);
 		resource.setResTypeUuid(selectByExample.get(0).getResTypeUuid());
 		resource.setResJsonAttr(attrJson.toString());

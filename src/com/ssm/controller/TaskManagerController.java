@@ -205,7 +205,7 @@ public class TaskManagerController {
 		Schedulejob schedulejob = schedulejobMapper.selectByPrimaryKey(scdUuid.replace("\"",""));
 		
 		
-		BaseScheduleJob baseschedulejob = (BaseScheduleJob) BeanUtil.getBean(schedulejob.getScdJobType());
+		BaseScheduleJob baseschedulejob = (BaseScheduleJob) BeanUtil.getBean(schedulejob.getScdJobType());//com.ssm.shedule.UserSynchronisedScheduleJob
 		baseschedulejob.setSchedulejob(schedulejob);
 		((TaskService)baseschedulejob).exec();
 		

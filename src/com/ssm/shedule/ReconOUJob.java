@@ -1,7 +1,7 @@
 package com.ssm.shedule;
 
-import com.ssm.service.SchedulejobService;
 import com.ssm.service.TaskService;
+import com.ssm.service.impl.SchedulejobService;
 import com.ssm.utils.BeanUtil;
 
 public class ReconOUJob extends BaseScheduleJob implements TaskService{

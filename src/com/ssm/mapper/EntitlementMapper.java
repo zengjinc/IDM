@@ -1,10 +1,14 @@
 package com.ssm.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.pojo.Entitlement;
 import com.ssm.pojo.EntitlementExample;
 import com.ssm.pojo.EntitlementKey;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
+import com.ssm.pojo.to.EntitlementTo;
 
 public interface EntitlementMapper {
     int countByExample(EntitlementExample example);
@@ -18,6 +22,8 @@ public interface EntitlementMapper {
     int insertSelective(Entitlement record);
 
     List<Entitlement> selectByExample(EntitlementExample example);
+    
+    List<EntitlementTo> getEntitlementByUserUuid(String userUuid,PageBounds pageBounds);
 
     Entitlement selectByPrimaryKey(EntitlementKey key);
 

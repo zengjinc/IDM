@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -41,70 +42,93 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" value="${user['userId']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" value="${user['userId']}" type="text" class="form-control"
+								placeholder="" readonly="readonly">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">用户名称</span> <input id="user_name" name="user_name" value="${user['userName']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">用户名称</span> <input id="user_name" name="user_name" value="${user['userName']}" type="text" class="form-control"
+								placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">组织单位</span> <input id="user_ou" name="user_ou" value="" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">组织单位</span> <input id="user_ou" name="user_ou" value="" type="text" class="form-control" placeholder=""
+								readonly="readonly">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">用户状态</span> <input id="user_status" name="user_status" value="${user['userStatus']}" type="text" class="form-control" placeholder="" readonly="readonly">
+							<span class="input-group-addon">用户状态</span> <input id="user_status" name="user_status" value="${user['userStatus']}" type="text"
+								class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">用户类型</span> <input id="user_type" name="user_type" value="${user['userType']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">用户类型</span> <input id="user_type" name="user_type" value="${user['userType']}" type="text" class="form-control"
+								placeholder="" readonly="readonly">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" value="${user['userEmail']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" value="${user['userEmail']}" type="text"
+								class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" value="${user['userEmployeeId']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" value="${user['userEmployeeId']}" type="text"
+								class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" value="${user['userPhonenumber']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" value="${user['userPhonenumber']}" type="text"
+								class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
 
 				<ul id="myTab" class="nav nav-tabs">
-					<li class="active"><a href="#home" data-toggle="tab"> 平台角色 </a></li>
-					<li><a href="#ios" data-toggle="tab">岗位</a></li>
+					<li class="active"><a href="#home" data-toggle="tab"> 权限 </a></li>
+					<!-- 					<li><a href="#ios" data-toggle="tab">岗位</a></li> -->
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="home">
-						<p>平台角色</p>
-					</div>
-					<div class="tab-pane fade" id="ios">
-						<p>岗位</p>
+						<table class="table table-bordered table-hover table-striped" id="user_table">
+							<caption id="search_result">&nbsp;</caption>
+							<thead>
+								<tr>
+<!-- 									<th><input type="checkbox" /></th> -->
+									<th>资源标识</th>
+									<th>资源名称</th>
+									<th>账号登录名称</th>
+									<th>账号状态</th>
+									<th>操作</th>	<!-- 查看权限	编辑权限 -->
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+						<!-- 控制分页的元素 用 class进行分页的话可以有上下两个分页导航，要求要在表格上面也有一个一样的ul -->
+						<center>
+							<ul class="pagination" id="pagination0"></ul>
+						</center>
 					</div>
 				</div>
-				
+
 				<div class="row">
 					<div class="center-block">
-					      <button class="btn btn-primary">保&nbsp;&nbsp;存</button>
-					      <a class="btn btn-primary" href="toidentity/user.action">取&nbsp;&nbsp;消</a>
-				    </div>
+						<button class="btn btn-primary">分配权限</button>
+						<a class="btn btn-primary" href="toidentity/privilege.action">取&nbsp;&nbsp;消</a>
+					</div>
 				</div>
 
 			</div>
@@ -119,16 +143,15 @@
 	<!-- initial page -->
 	<script src="js/init.js?version=<%=Math.random()%>"></script>
 	<script type="text/javascript">
-	$(function(){
-		var status = $("#user_status").val();
-		if(status == '1'){
-			$("#user_status").val("已激活");
-		}
-		if(status == '0'){
-			$("#user_status").val("已禁用");
-		}
-	})
-		
+		$(function() {
+			var status = $("#user_status").val();
+			if (status == '1') {
+				$("#user_status").val("已激活");
+			}
+			if (status == '0') {
+				$("#user_status").val("已禁用");
+			}
+		})
 	</script>
 </body>
 </html>

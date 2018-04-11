@@ -59,7 +59,7 @@
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">资源类型</span> <input id="resource_type" value="com.ssm.connector.JDBCConnector" type="text" class="form-control" placeholder="" readonly="readonly">
+							<span class="input-group-addon">资源类型</span> <input id="resource_type" value="jdbcConnector" type="text" class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
 				</div>
@@ -91,6 +91,7 @@
 					<li id="tab_acct"><a href="#account" data-toggle="tab">账号架构</a></li>
 					<li id="tab_role"><a href="#role" data-toggle="tab">基本角色架构</a></li>
 					<li id="ou_nav"><a href="#orgunit" data-toggle="tab">组织单位架构</a></li>
+					<li id="ou_nav"><a href="#accounts" data-toggle="tab">账号</a></li>
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="config">
@@ -155,13 +156,13 @@
 											<option value="SQL">SQL</option>
 											<option value="Auto Increment">Auto Increment</option>
 									</select></td>
-									<td style="vertical-align: middle;">静态：UIM将生成UUID。<br> SQL生成器：使用SQL生成UUID。<br> 自动递增：数据库根据身份列生成UUID。
+									<td style="vertical-align: middle;">静态：身份管理系统将生成UUID。<br> SQL生成器：使用SQL生成UUID。<br> 自动递增：数据库根据身份列生成UUID。
 									</td>
 								</tr>
 								<tr>
 									<td style="vertical-align: middle;">用户UUID生产器脚本</td>
 									<td style="vertical-align: middle;"><textarea class="form-control" rows="8" id="uuidgener_text"></textarea></td>
-									<td style="vertical-align: middle;">使用所提供的脚本来生成UUID。 <br>@param logger org.apache.log4j.Logger<br> @返回UUID
+									<td style="vertical-align: middle;">使用所提供的脚本来生成UUID。 <br>@param logger org.slf4j.Logger<br> @返回UUID
 									</td>
 								</tr>
 							</tbody>
@@ -268,9 +269,9 @@
 							<tbody>
 								<tr>
 									<td>已启用/激活</td>
-									<td><input id="account_status_enable" type="text" class="form-control" /></td>
+									<td><input id="account_status_enable" value="1" type="text" class="form-control" /></td>
 									<td>已锁定</td>
-									<td><input id="account_lock_lock" type="text" class="form-control" /></td>
+									<td><input id="account_lock_lock" type="text" value="0" class="form-control" /></td>
 								</tr>
 								<tr>
 									<td>已禁用</td>
@@ -295,13 +296,13 @@
 							<tfoot>
 								<tr>
 									<th><select id="attr_mapping">
-											<option value="user_uuid">用户标识</option>
+											<option value="user_id">用户标识</option>
 											<option value="user_name">用户名称</option>
 											<option value="user_ou">组织单位</option>
 											<option value="user_status">用户状态</option>
 											<option value="user_type">用户类型</option>
-											<option value="user_bengin_time">开始时间</option>
-											<option value="user_end_time">结束时间</option>
+<!-- 											<option value="user_bengin_time">开始时间</option> -->
+<!-- 											<option value="user_end_time">结束时间</option> -->
 											<option value="user_email">电子邮箱</option>
 											<option value="user_employee_id">员工标识</option>
 											<option value="user_phonenumber">电话号码</option>
@@ -510,6 +511,10 @@
 								</tr>
 							</tbody>
 						</table>
+					</div>
+					<div class="tab-pane fade" id="accounts">
+						<!-- 账号：通过定时任务回收回来的账号 -->
+						<p>通过定时任务回收回来的账号</p>
 					</div>
 				</div>
 

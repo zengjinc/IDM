@@ -79,6 +79,7 @@ $(function(){
 	if(scduuid != null && scduuid != "" && scduuid != "null"){
 		$.ajax({
 			type : 'post',
+			async: false,
 			url : 'totask/gettask.action',
 			contentType : 'application/json;charset=utf-8',// 指定为json类型
 			dataType : 'json', // 服务器响应类型
@@ -114,8 +115,8 @@ $(function(){
 				//attr				错误：应该添加该类型可选的全部资源，并且将当前获取的资源选中
 				var attrJson = resJsonAttr.attrJson;
 				getResource();
-//				$("#resource_uuidp_sel").append("<option value='"+attrJson.resource_uuid_sel+"'>"+attrJson.resource_uuid_sel+"</option>");
-				$("#resource_uuid_sel").val(attrJson.resource_uuid_sel);
+				//等待ajax完成
+				setTimeout(function(){$("#resource_uuid_sel").val(attrJson.resource_uuid_sel);}, 1000);
 				
 				
 				//taskChain

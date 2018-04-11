@@ -10,6 +10,7 @@
     <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
     <result column="user_moible" property="userMoible" jdbcType="VARCHAR" />
     <result column="user_phonenumber" property="userPhonenumber" jdbcType="VARCHAR" />
+    <result column="user_res_uuid" property="userResUuid" jdbcType="VARCHAR" />
     <result column="user_creator" property="userCreator" jdbcType="VARCHAR" />
     <result column="user_createtime" property="userCreatetime" jdbcType="TIMESTAMP" />
     <result column="user_modifier" property="userModifier" jdbcType="VARCHAR" />
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List" >
     user_uuid, user_id, user_pwd, user_name, user_employee_id, user_email, user_moible, 
-    user_phonenumber, user_creator, user_createtime, user_modifier, user_modifiedtime, 
+    user_phonenumber, user_res_uuid, user_creator, user_createtime, user_modifier, user_modifiedtime, 
     user_status, user_type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.UserExample" >
@@ -113,14 +114,16 @@
   <insert id="insert" parameterType="com.ssm.pojo.User" >
     insert into user (user_uuid, user_id, user_pwd, 
       user_name, user_employee_id, user_email, 
-      user_moible, user_phonenumber, user_creator, 
-      user_createtime, user_modifier, user_modifiedtime, 
-      user_status, user_type)
+      user_moible, user_phonenumber, user_res_uuid, 
+      user_creator, user_createtime, user_modifier, 
+      user_modifiedtime, user_status, user_type
+      )
     values (#{userUuid,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userName,jdbcType=VARCHAR}, #{userEmployeeId,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, 
-      #{userMoible,jdbcType=VARCHAR}, #{userPhonenumber,jdbcType=VARCHAR}, #{userCreator,jdbcType=VARCHAR}, 
-      #{userCreatetime,jdbcType=TIMESTAMP}, #{userModifier,jdbcType=VARCHAR}, #{userModifiedtime,jdbcType=TIME}, 
-      #{userStatus,jdbcType=INTEGER}, #{userType,jdbcType=VARCHAR})
+      #{userMoible,jdbcType=VARCHAR}, #{userPhonenumber,jdbcType=VARCHAR}, #{userResUuid,jdbcType=VARCHAR}, 
+      #{userCreator,jdbcType=VARCHAR}, #{userCreatetime,jdbcType=TIMESTAMP}, #{userModifier,jdbcType=VARCHAR}, 
+      #{userModifiedtime,jdbcType=TIME}, #{userStatus,jdbcType=INTEGER}, #{userType,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ssm.pojo.User" >
     insert into user
@@ -148,6 +151,9 @@
       </if>
       <if test="userPhonenumber != null" >
         user_phonenumber,
+      </if>
+      <if test="userResUuid != null" >
+        user_res_uuid,
       </if>
       <if test="userCreator != null" >
         user_creator,
@@ -192,6 +198,9 @@
       </if>
       <if test="userPhonenumber != null" >
         #{userPhonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userResUuid != null" >
+        #{userResUuid,jdbcType=VARCHAR},
       </if>
       <if test="userCreator != null" >
         #{userCreator,jdbcType=VARCHAR},
@@ -246,6 +255,9 @@
       <if test="record.userPhonenumber != null" >
         user_phonenumber = #{record.userPhonenumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.userResUuid != null" >
+        user_res_uuid = #{record.userResUuid,jdbcType=VARCHAR},
+      </if>
       <if test="record.userCreator != null" >
         user_creator = #{record.userCreator,jdbcType=VARCHAR},
       </if>
@@ -279,6 +291,7 @@
       user_email = #{record.userEmail,jdbcType=VARCHAR},
       user_moible = #{record.userMoible,jdbcType=VARCHAR},
       user_phonenumber = #{record.userPhonenumber,jdbcType=VARCHAR},
+      user_res_uuid = #{record.userResUuid,jdbcType=VARCHAR},
       user_creator = #{record.userCreator,jdbcType=VARCHAR},
       user_createtime = #{record.userCreatetime,jdbcType=TIMESTAMP},
       user_modifier = #{record.userModifier,jdbcType=VARCHAR},
@@ -313,6 +326,9 @@
       <if test="userPhonenumber != null" >
         user_phonenumber = #{userPhonenumber,jdbcType=VARCHAR},
       </if>
+      <if test="userResUuid != null" >
+        user_res_uuid = #{userResUuid,jdbcType=VARCHAR},
+      </if>
       <if test="userCreator != null" >
         user_creator = #{userCreator,jdbcType=VARCHAR},
       </if>
@@ -343,6 +359,7 @@
       user_email = #{userEmail,jdbcType=VARCHAR},
       user_moible = #{userMoible,jdbcType=VARCHAR},
       user_phonenumber = #{userPhonenumber,jdbcType=VARCHAR},
+      user_res_uuid = #{userResUuid,jdbcType=VARCHAR},
       user_creator = #{userCreator,jdbcType=VARCHAR},
       user_createtime = #{userCreatetime,jdbcType=TIMESTAMP},
       user_modifier = #{userModifier,jdbcType=VARCHAR},

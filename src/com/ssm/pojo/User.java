@@ -19,6 +19,8 @@ public class User {
 
     private String userPhonenumber;
 
+    private String userResUuid;
+
     private String userCreator;
 
     private Date userCreatetime;
@@ -93,6 +95,14 @@ public class User {
 
     public void setUserPhonenumber(String userPhonenumber) {
         this.userPhonenumber = userPhonenumber == null ? null : userPhonenumber.trim();
+    }
+
+    public String getUserResUuid() {
+        return userResUuid;
+    }
+
+    public void setUserResUuid(String userResUuid) {
+        this.userResUuid = userResUuid == null ? null : userResUuid.trim();
     }
 
     public String getUserCreator() {

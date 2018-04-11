@@ -22,7 +22,7 @@
 	<bean id="reconOUJob" class="com.ssm.shedule.ReconOUJob"></bean>
 	<bean id="reconRoleScheduleJob" class="com.ssm.shedule.ReconRoleScheduleJob"></bean>
 	<bean id="userSynchronisedScheduleJob" class="com.ssm.shedule.UserSynchronisedScheduleJob"></bean>
-	<bean id="schedulejobService" class="com.ssm.service.SchedulejobService"></bean>
+	<bean id="schedulejobService" class="com.ssm.service.impl.SchedulejobService"></bean>
 	<bean id="jdbcConnector" class="com.ssm.connector.JDBCConnector"></bean>
 	
 </beans>

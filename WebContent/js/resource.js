@@ -31,48 +31,58 @@ function fill_attr(attr_def_table) {
 //填充账号属性下拉框
 function fill_attr_mapping(){
 	$("#account_attr").empty();
-	var account_uuid = $("#account_uuid").val();
-	var account_id = $("#account_id").val();
-	var account_ou_uuid = $("#account_ou_uuid").val();
-	var account_createtime = $("#account_createtime").val();
-	var account_modifytime = $("#account_modifytime").val();
-	var account_status = $("#account_status").val();
-	var account_lock = $("#account_lock").val();
-	if(account_uuid != ""){
-		$("#account_attr").append(
-				"<option value='" + account_uuid + "'>" + account_uuid
-						+ "</option>");
-	}
-	if(account_id != ""){
-		$("#account_attr").append(
-				"<option value='" + account_id + "'>" + account_id
-						+ "</option>");
-	}
-	if(account_ou_uuid != ""){
-		$("#account_attr").append(
-				"<option value='" + account_ou_uuid + "'>" + account_ou_uuid
-						+ "</option>");
-	}
-	if(account_createtime != ""){
-		$("#account_attr").append(
-				"<option value='" + account_createtime + "'>" + account_createtime
-						+ "</option>");
-	}
-	if(account_modifytime != ""){
-		$("#account_attr").append(
-				"<option value='" + account_modifytime + "'>" + account_modifytime
-						+ "</option>");
-	}
-	if(account_status != ""){
-		$("#account_attr").append(
-				"<option value='" + account_status + "'>" + account_status
-						+ "</option>");
-	}
-	if(account_lock != ""){
-		$("#account_attr").append(
-				"<option value='" + account_lock + "'>" + account_lock
-						+ "</option>");
-	}
+	$("#attrdef_table tr").each(
+			function() {
+				var targetname = $(this).children("td:eq(1)").text();
+				var showname = $(this).children("td:eq(2)").text();
+				if (showname != "") {
+					$("#account_attr").append(
+							"<option value='" + targetname + "'>" + showname
+									+ "</option>");
+				}
+			})
+//	var account_uuid = $("#account_uuid").val();
+//	var account_id = $("#account_id").val();
+//	var account_ou_uuid = $("#account_ou_uuid").val();
+//	var account_createtime = $("#account_createtime").val();
+//	var account_modifytime = $("#account_modifytime").val();
+//	var account_status = $("#account_status").val();
+//	var account_lock = $("#account_lock").val();
+//	if(account_uuid != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_uuid + "'>" + account_uuid
+//						+ "</option>");
+//	}
+//	if(account_id != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_id + "'>" + account_id
+//						+ "</option>");
+//	}
+//	if(account_ou_uuid != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_ou_uuid + "'>" + account_ou_uuid
+//						+ "</option>");
+//	}
+//	if(account_createtime != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_createtime + "'>" + account_createtime
+//						+ "</option>");
+//	}
+//	if(account_modifytime != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_modifytime + "'>" + account_modifytime
+//						+ "</option>");
+//	}
+//	if(account_status != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_status + "'>" + account_status
+//						+ "</option>");
+//	}
+//	if(account_lock != ""){
+//		$("#account_attr").append(
+//				"<option value='" + account_lock + "'>" + account_lock
+//						+ "</option>");
+//	}
 }
 
 // 目标资源回收的账号拥有者匹配规则 下拉框填充
@@ -141,7 +151,7 @@ $(function() {
 				var acctJson = resJsonAttr.acctJson;
 				$("#user_table").val(acctJson.user_table);
 				$("#user_uuidgener_sel").val(acctJson.user_uuidgener_sel);
-				$("#uuidgener_text").val(acctJson.user_table);
+				$("#uuidgener_text").val(acctJson.uuidgener_text);
 				$("#pwd_table").val(acctJson.pwd_table);
 				$("#pwd_col").val(acctJson.pwd_col);
 				$("#pwd_rel").val(acctJson.pwd_rel);
@@ -773,6 +783,8 @@ $(function() {
 
 						// 更新账号属性
 						updateAccountAttr();
+						//更新用户属性映射
+						fill_attr_mapping();
 					})
 
 	// 模态框，增加属性定义按钮(角色)
@@ -1051,6 +1063,8 @@ $(function() {
 
 		// 更新账号属性
 		updateAccountAttr();
+		//更新用户属性映射
+		fill_attr_mapping();
 	})
 
 	// 删除属性定义（角色）
@@ -1148,7 +1162,7 @@ $(function() {
 		// 更改输入框的值
 		obj_attrdetail.val(selected_value);
 		//刷新用户属性映射
-		fill_attr_mapping();
+//		fill_attr_mapping();
 	})
 
 	// 填充属性详细资料（角色）

@@ -10,57 +10,66 @@
 		<div class="form-group">
 			<label for="userUuid" class="col-md-5 control-label">用户标识</label>
 			<div class="col-md-3">
-				<input type="text" class="form-control" id="userUuid" placeholder="">
+				<input type="text" class="form-control" id="userUuid" name="userUuid" placeholder="">
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="userName" class="col-md-5 control-label">用户名称</label>
 			<div class="col-md-3">
-				<input type="text" class="form-control" id="userName" placeholder="">
+				<input type="text" class="form-control" id="userName" name="userName" placeholder="">
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="userOu" class="col-md-5 control-label">组织单位</label>
 			<div class="col-md-3">
-				<input type="text" class="form-control" id="userOu" placeholder="">
+				<input type="text" class="form-control" id="userOu" name="userOu" placeholder="">
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="userBizRole" class="col-md-5 control-label">岗位</label>
 			<div class="col-md-3">
-				<select class="form-control">
-					<option>-</option>
+				<select class="form-control" id="userBizRole" name="userBizRole">
+					<option value="">-</option>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="userStatus" class="col-md-5 control-label">状态</label>
 			<div class="col-md-3">
-				<select class="form-control">
+				<select class="form-control" id="userStatus" name="userStatus">
 					<option>-</option>
-					<option>已激活</option>
-					<option>已禁用</option>
+					<option value="1">已激活</option>
+					<option value="0">已禁用</option>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="userType" class="col-md-5 control-label">用户类型</label>
 			<div class="col-md-3">
-				<select class="form-control">
+				<select class="form-control" id="userType" name="userType">
 					<option>-</option>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="userTrustResource" class="col-md-5 control-label">信任资源</label>
+			<label for="trust_res" class="col-md-5 control-label">信任资源</label>
 			<div class="col-md-3">
-				<select class="form-control">
-					<option>-</option>
-					<option>是</option>
-					<option>否</option>
+				<select class="form-control" id="trust_res" name="trust_res">
+					<option value="">-</option>
+					<option value="true">是</option>
+					<option value="false">否</option>
 				</select>
 			</div>
 		</div>
+		<div class="form-group" id="resources_div" style="display: none;">
+			<label for="resources" class="col-md-5 control-label">资源</label>
+			<div class="col-md-3">
+				<select class="form-control" id="resources" name="resources">
+					<option value="">-</option>
+				</select>
+			</div>
+		</div>
+
 
 		<div class="form-group">
 			<div class="col-md-12">
@@ -69,8 +78,8 @@
 		</div>
 	</form>
 	<hr>
-	<table class="table table-bordered table-hover table-striped">
-		<caption>查询用户结果</caption>
+	<table class="table table-bordered table-hover table-striped" id="user_table">
+		<caption id="search_result">查询用户结果</caption>
 		<thead>
 			<tr>
 				<th><input type="checkbox" /></th>
@@ -83,36 +92,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td><input type="checkbox" /></td>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-				<td><a href="toidentity/userdetail.action">查看</a></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" /></td>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-				<td>test</td>
-				<td><a href="toidentity/userdetail.action">查看</a></td>
-			</tr>
 		</tbody>
 	</table>
-	<div class="center-block">
-		<ul class="pagination">
-			<li><a href="#">&laquo;</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li><a href="#">&raquo;</a></li>
-		</ul>
-	</div>
+	<!-- 控制分页的元素 用 class进行分页的话可以有上下两个分页导航，要求要在表格上面也有一个一样的ul -->
+	<center>
+		<ul class="pagination" id="pagination0"></ul>
+	</center>
 </body>
 </html>

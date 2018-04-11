@@ -1,7 +1,5 @@
 package com.ssm.shedule;
 
-import java.util.List;
-
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -13,8 +11,8 @@ import com.ssm.mapper.ResourceMapper;
 import com.ssm.mapper.SchedulejobMapper;
 import com.ssm.pojo.Resource;
 import com.ssm.pojo.ResourceExample;
-import com.ssm.service.SchedulejobService;
 import com.ssm.service.TaskService;
+import com.ssm.service.impl.SchedulejobService;
 import com.ssm.utils.BeanUtil;
 
 public class ReconAccountScheduleJob extends BaseScheduleJob implements TaskService{

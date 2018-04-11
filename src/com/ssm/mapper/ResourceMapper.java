@@ -18,7 +18,11 @@ public interface ResourceMapper {
     int insertSelective(Resource record);
 
     List<Resource> selectByExampleWithBLOBs(ResourceExample example);
+    
+    List<Resource> selectByExampleWithBLOBs(ResourceExample example, PageBounds pageBounds);
 
+    List<Resource> selectByExample(ResourceExample example);
+    
     List<Resource> selectByExample(ResourceExample example, PageBounds pageBounds);
 
     Resource selectByPrimaryKey(String resUuid);
