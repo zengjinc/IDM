@@ -335,6 +335,9 @@ $(function() {
 				
 			}
 		});
+	}else{
+		$("#uuidgener_text").val('import com.ssm.utils.CommonUtil;\n\nreturn CommonUtil.generateUUID();');
+		$("#pwd_encoding_text").val('import org.apache.commons.codec.digest.DigestUtils;\n\nlogger.info(\"Password encoding.\");\nreturn DigestUtils.sha256Hex(password+salt);\nlogger.info(\"Password encoding succeed\");');
 	}
 	
 	// 点击测试连接的时候出发ajax

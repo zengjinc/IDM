@@ -1,8 +1,11 @@
 package com.ssm.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,29 +13,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import com.ssm.pojo.Account;
 import com.ssm.pojo.AccountAttribute;
+import com.ssm.pojo.BusinessRole;
+import com.ssm.pojo.Itrole;
 import com.ssm.pojo.Resource;
 import com.ssm.pojo.User;
 import com.ssm.pojo.to.EntitlementTo;
+import com.ssm.pojo.to.PrivilegeTo;
+import com.ssm.pojo.to.UserQueryTo;
 import com.ssm.service.IAccountAttributeService;
 import com.ssm.service.IAccountService;
 import com.ssm.service.IEntitlementService;
+import com.ssm.service.IItroleService;
+import com.ssm.service.IPrivilegeService;
 import com.ssm.service.IResourceService;
+import com.ssm.service.IUserBizRoleService;
 import com.ssm.service.IUserService;
+import com.ssm.utils.CommonUtil;
 
 @Controller
 @RequestMapping("/toidentity")
 public class IdentityManagerController {
-
+	
 	private static Logger logger = LoggerFactory.getLogger(IdentityManagerController.class);	
 	
 	@Autowired
@@ -51,14 +65,75 @@ public class IdentityManagerController {
 	@Autowired
 	private IAccountAttributeService accountAttributeService;
 	
+	@Autowired
+	private IItroleService itroleService;
+	
+	@Autowired
+	private IPrivilegeService privilegeService;
+	
+	@Autowired
+	private IUserBizRoleService userBizRoleService;
+	
 	@RequestMapping("/user")
-	public String toUser(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{	//使用 @Value 从文件从读取 defaultValue，保持全局统一
+	public String toUser(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit,@ModelAttribute UserQueryTo userQueryTo) throws Exception{	//使用 @Value 从文件从读取 defaultValue，保持全局统一
 		logger.debug("to user page");
+		System.out.println(userQueryTo);
 		PageBounds pageBounds = new PageBounds(page,limit);
 		List<User> userList = userService.getUserByExample(null , pageBounds);
 		modelMap.put("userList", userList);
 		return "identity/user";
 	}
+	
+	@RequestMapping("/usercreate")
+	public String createUser(){
+		
+		return "identity/userdetail";
+	}
+	
+	@RequestMapping("/saveuser")
+	@ResponseBody
+	public String saveUser(@RequestBody String jsonStr){
+		try{
+			JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+			String userUuid = rootNode.get("userUuid").asText();
+			String userId = rootNode.get("userId").asText();
+			String userName = rootNode.get("userName").asText();
+			String userStatus = rootNode.get("userStatus").asText();
+			String userType = rootNode.get("userType").asText();
+			String userEmail = rootNode.get("userEmail").asText();
+			String userEmployeeId = rootNode.get("userEmployeeId").asText();
+			String userPhoneNumber = rootNode.get("userPhoneNumber").asText();
+			
+			User user = new User();
+			if(userId != ""){user.setUserId(userId);}
+			if(userName != ""){user.setUserName(userName);}
+			if(userStatus != ""){user.setUserStatus(Integer.parseInt(userStatus));}
+			if(userType != ""){user.setUserType(userType);}
+			if(userEmail != ""){user.setUserEmail(userEmail);}
+			if(userEmployeeId != ""){user.setUserEmployeeId(userEmployeeId);}
+			if(userPhoneNumber != ""){user.setUserPhonenumber(userPhoneNumber);}
+			
+			int flag = 0;
+			if(userUuid != ""){
+				user.setUserUuid(userUuid);
+				flag = userService.updateUserByPrimaryKey(user);
+			}else{
+				user.setUserUuid(CommonUtil.generateUUID());
+				user.setUserStatus(1);
+				flag = userService.addUser(user);
+			}
+			
+			if(flag > 0){
+				return "success";
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getMessage();
+		}
+		return "failure";
+	}
+	
 	
 	@RequestMapping("/account")
 	public String toAccount(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{
@@ -82,7 +157,14 @@ public class IdentityManagerController {
 	public String toUserDetail(ModelMap modelMap, @RequestParam(required = true,value="useruuid") String userUuid) throws Exception{
 		System.out.println(userUuid);
 		User user = userService.getUserByPrimaryKey(userUuid);
+		List<BusinessRole> userBizRoleList = userBizRoleService.getUserBizRole(userUuid);
+		
+		StringBuffer sb = new StringBuffer();
+		for(BusinessRole bizRole : userBizRoleList){
+			sb.append(bizRole.getBizRoleId() + "(" + bizRole.getBizRoleName() + ");\n");
+		}
 		modelMap.put("user", user);
+		modelMap.put("userBizRoleList", sb.toString());
 		return "identity/userdetail";
 	}
 	
@@ -98,22 +180,104 @@ public class IdentityManagerController {
 	}
 	
 	@RequestMapping("/privilegedetail")
-	public String toPrivilegeDetail(ModelMap modelMap, @RequestParam(required = true,value="userprivilegeuuid") String userUuid) throws Exception{
+	public String toPrivilegeDetail(ModelMap modelMap, @RequestParam(required = true,value="userprivilegeuuid") String userUuid,@RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{
 		User user = userService.getUserByPrimaryKey(userUuid);
+		PageBounds pageBounds = new PageBounds(page, limit);
+		List<PrivilegeTo> privilegeToList = privilegeService.getPrivilegeByUserUuid(userUuid,pageBounds);
+		
+		PageList<PrivilegeTo> pageList = (PageList<PrivilegeTo>) privilegeToList;
+		int totalPages = pageList.getPaginator().getTotalPages();
+		int currPage = pageList.getPaginator().getPage();
+		
+		Map<String,Integer> privilegeToListPaginator = new HashMap<>();
+		privilegeToListPaginator.put("totalPages", totalPages);
+		privilegeToListPaginator.put("page", currPage);
+		
 		modelMap.put("user", user);
+		modelMap.put("privilegeToList", privilegeToList);
+		modelMap.put("privilegeToListPaginator", privilegeToListPaginator);
 		return "identity/privilegedetail";
 	}
 	
 	@RequestMapping("/enableuser")
-	public String enableUser(){
+	@ResponseBody
+	public String enableUser(@RequestBody String jsonStr) throws Exception{
 		//获取用户id
-		//该用户对应的账号
-		/*
-		 * 禁用该账号
-		 */
-		//账号对应的resource
-		//将 resource 对象注入jdbc连接器
-		//调用连接器禁用账号的方法，传入账号id 或者 tgt_uuid
+		JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+		Iterator<JsonNode> it = rootNode.get("userList").elements();
+		while(it.hasNext()){
+			//更改用户和账号的状态
+			String userUuid = it.next().asText();
+			
+			User user = userService.getUserByPrimaryKey(userUuid);
+			user.setUserStatus(1);
+			userService.updateUserByPrimaryKey(user);
+			
+			Account account = accountService.getAccountByAcctUuid(userUuid);
+			account.setAcctStatus(1);
+			accountService.updateAccountByPrimaryKey(account);
+			
+			List<Account> userAccounts = entitlementService.getUserAccounts(userUuid);
+			
+			//禁用该账号
+			for(Account acct : userAccounts){
+				entitlementService.enableEntitlement(userUuid, acct.getAcctTgtUuid(), acct.getAcctResUuid());
+			}
+			
+		}
+		return "success";
+	}
+	
+	@RequestMapping("/disableuser")
+	@ResponseBody
+	public String disableUser(@RequestBody String jsonStr) throws Exception{
+		//获取用户id
+		JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+		Iterator<JsonNode> it = rootNode.get("userList").elements();
+		while(it.hasNext()){
+			//更改用户和账号的状态
+			String userUuid = it.next().asText();
+			
+			User user = userService.getUserByPrimaryKey(userUuid);
+			user.setUserStatus(0);
+			userService.updateUserByPrimaryKey(user);
+			
+			Account account = accountService.getAccountByAcctUuid(userUuid);
+			account.setAcctStatus(0);
+			accountService.updateAccountByPrimaryKey(account);
+			
+			List<Account> userAccounts = entitlementService.getUserAccounts(userUuid);
+			
+			//禁用该账号
+			for(Account acct : userAccounts){
+				entitlementService.disableEntitlement(userUuid, acct.getAcctTgtUuid(), acct.getAcctResUuid());
+			}
+			
+		}
+		return "success";
+	}
+	
+	@RequestMapping("/deleteuser")
+	@ResponseBody
+	public String deleteUser(@RequestBody String jsonStr) throws Exception{
+		//获取用户id
+		JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+		Iterator<JsonNode> it = rootNode.get("userList").elements();
+		while(it.hasNext()){
+			
+			//删除目标资源中的授权
+			String userUuid = it.next().asText();
+			List<Account> userAccounts = entitlementService.getUserAccounts(userUuid);
+			
+			for(Account acct : userAccounts){
+				entitlementService.deleteEntitlement(userUuid, acct.getAcctTgtUuid(), acct.getAcctResUuid());
+			}
+			
+			//删除账号和用户
+			accountService.deleteAccount(userUuid);
+			userService.deleteUser(userUuid);
+			
+		}
 		return "success";
 	}
 	
@@ -130,6 +294,15 @@ public class IdentityManagerController {
 		System.out.println(resUuid);
 		List<Account> accountList = accountService.getAccountsByResUuid(resUuid.replace("\"", ""));
 		return accountList;
+	}
+	
+	@RequestMapping("/getitrolebyresuuid")
+	@ResponseBody
+	public Map<String,List<Itrole>> getItroleByResUuid(@RequestBody String jsonStr) throws Exception{
+		JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+		String resUuid = rootNode.get("resUuid").asText();
+		String acctUuid = rootNode.get("acctUuid").asText();
+		return itroleService.getItroleByResourceUuid(resUuid,acctUuid);
 	}
 	
 	@RequestMapping("/getacctattrbyresuuid")
@@ -157,6 +330,43 @@ public class IdentityManagerController {
 		}
 		return "success";
 	}
+	
+	@RequestMapping("/assignitrole")
+	@ResponseBody
+	public String privilege(@RequestBody String jsonStr){
+		try{
+			JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+			String acctUuid = rootNode.get("acctUuid").asText();
+			String itroleUuid = rootNode.get("itroleUuid").asText();
+			String resUuid = rootNode.get("resUuid").asText();
+			if(privilegeService.entitlement(acctUuid, itroleUuid, resUuid) > 0){
+				return "success";
+			}else{
+				return "身份管理系统本地分配权限失败";
+			}
+		}catch(Exception e){
+			return e.getMessage();
+		}
+	}
+	
+	@RequestMapping("/unassignitrole")
+	@ResponseBody
+	public String revokePrivilege(@RequestBody String jsonStr){
+		try{
+			JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+			String acctUuid = rootNode.get("acctUuid").asText();
+			String itroleUuid = rootNode.get("itroleUuid").asText();
+			String resUuid = rootNode.get("resUuid").asText();
+			if(privilegeService.revokeEntitlement(acctUuid, itroleUuid, resUuid) > 0){
+				return "success";
+			}else{
+				return "身份管理系统本地取消分配权限失败";
+			}
+		}catch(Exception e){
+			return e.getMessage();
+		}
+	}
+	
 	
 	@RequestMapping("/disableentitlement")
 	@ResponseBody
@@ -257,10 +467,25 @@ public class IdentityManagerController {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(jsonStr);
-			/*
-			 *	*************************************未完待续********************************************* 
-			 */
-			logger.debug("test : " + rootNode);
+			String resUuid = rootNode.get("resUuid").asText();
+			String acctUuid = rootNode.get("acctUuid").asText();
+			JsonNode acctAttrNode = rootNode.get("acctAttr");
+			
+			Map<String,String> attributesMap = new HashMap<>();
+			Iterator<JsonNode> it = acctAttrNode.elements();
+			while(it.hasNext()){
+				JsonNode tempNode = it.next();
+				Iterator<String> fieldNames = tempNode.fieldNames();
+				while(fieldNames.hasNext()){
+					String key = fieldNames.next();
+					String value = tempNode.get(key).asText();
+					attributesMap.put(key, value);
+				}
+			}
+			
+			if(entitlementService.updataAccountAttribute(acctUuid, attributesMap, resUuid)){
+				return "success";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
@@ -268,4 +493,73 @@ public class IdentityManagerController {
 		return "failure";
 	}
 	
+	/*
+	 * 创建对应资源的账号，并分配给当前账号
+	 */
+	@RequestMapping("/createaccount")
+	@ResponseBody
+	public String createAccount(@RequestBody String jsonStr){
+		logger.debug(jsonStr);
+		try{
+			JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+			String userId = rootNode.get("userId").asText();
+			String userUuid = rootNode.get("userUuid").asText();
+			String resId = rootNode.get("resId").asText();
+			String resUuid = rootNode.get("resUuid").asText();
+			String acctId = rootNode.get("acctId").asText();
+			String acctPwd = rootNode.get("acttPwd").asText();
+			String acctPwd2 = rootNode.get("acttPwd2").asText();
+			
+			Map<String,String> basicAttrsMap = new HashMap<>();
+			basicAttrsMap.put("userId", userId);
+			basicAttrsMap.put("userUuid", userUuid);
+			basicAttrsMap.put("resId", resId);
+			basicAttrsMap.put("resUuid", resUuid);
+			basicAttrsMap.put("acctId", acctId);
+			basicAttrsMap.put("acctPwd", acctPwd);
+			basicAttrsMap.put("acctPwd2", acctPwd2);
+			
+			Map<String,String> acctAttrsMap = new HashMap<>();
+			JsonNode acctAttrNode = rootNode.get("acctAttr");
+			Iterator<JsonNode> it = acctAttrNode.elements();
+			while(it.hasNext()){
+				JsonNode next = it.next();
+				Iterator<String> fieldNames = next.fieldNames();
+				while(fieldNames.hasNext()){
+					String key = fieldNames.next();
+					String value = next.get(key).asText();
+					acctAttrsMap.put(key, value);
+				}
+			}
+		if(accountService.createAccount(basicAttrsMap,acctAttrsMap)){
+			return "success";
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getMessage();
+		}
+		return "failure";
+	}
+	
+	@RequestMapping("/userbizrole")
+	@ResponseBody
+	public String userBizRole(@RequestBody String jsonStr){
+		try{
+			JsonNode rootNode = new ObjectMapper().readTree(jsonStr);
+			String userUuid = rootNode.get("userUuid").asText();
+			Iterator<JsonNode> it = rootNode.get("bizRoleArr").elements();
+			
+			List<String> bizRoleList = new ArrayList<>();
+			while(it.hasNext()){
+				bizRoleList.add(it.next().asText());
+			}
+			if(userBizRoleService.updateUserBizRole(userUuid, bizRoleList)){
+				return "success";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getMessage();
+		}
+		return "failure";
+	}
 }

@@ -1,5 +1,6 @@
 package com.ssm.mapper;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.pojo.BusinessRole;
 import com.ssm.pojo.BusinessRoleExample;
 import java.util.List;
@@ -18,6 +19,8 @@ public interface BusinessRoleMapper {
 
     List<BusinessRole> selectByExample(BusinessRoleExample example);
 
+    List<BusinessRole> selectByExample(BusinessRoleExample example,PageBounds pageBounds);
+    
     BusinessRole selectByPrimaryKey(String bizRoleUuid);
 
     int updateByExampleSelective(@Param("record") BusinessRole record, @Param("example") BusinessRoleExample example);

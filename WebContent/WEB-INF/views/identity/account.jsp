@@ -89,7 +89,7 @@
 					<div class="form-group">
 						<label for="trust_res" class="col-md-5 control-label">信任资源</label>
 						<div class="col-md-3">
-							<select class="form-control" id="trust_res" name="trust_res">
+							<select class="form-control" id="trustResource" name="trustResource">
 								<option value="">-</option>
 								<option value="true">是</option>
 								<option value="false">否</option>

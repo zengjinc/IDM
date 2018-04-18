@@ -27,7 +27,6 @@
 <title>用户详情</title>
 </head>
 <body>
-
 	<div class="container">
 		<!-- 导航栏  -->
 		<%@ include file="../nav.jsp"%>
@@ -42,7 +41,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" value="${user['userId']}" type="text" class="form-control"
+							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" value="${user['userId']}" data-value="${user['userUuid']}" type="text" class="form-control"
 								placeholder="" readonly="readonly">
 						</div>
 					</div>
@@ -100,7 +99,7 @@
 					<li class="active"><a href="#home" data-toggle="tab"> 权限 </a></li>
 					<!-- 					<li><a href="#ios" data-toggle="tab">岗位</a></li> -->
 				</ul>
-				<div id="myTabContent" class="tab-content">
+				<div id="myTabContent" class="tab-content" style="min-height:50vh;">
 					<div class="tab-pane fade in active" id="home">
 						<table class="table table-bordered table-hover table-striped" id="user_table">
 							<caption id="search_result">&nbsp;</caption>
@@ -115,6 +114,22 @@
 								</tr>
 							</thead>
 							<tbody>
+								<c:forEach items="${privilegeToList}" var="privilegeTo">
+									<tr>
+										<td data-value="${privilegeTo.resource.resUuid}">${privilegeTo.resource.resId}</td>
+										<td>${privilegeTo.resource.resName}</td>
+										<td data-value="${privilegeTo.account.acctUuid}">${privilegeTo.account.acctLoginId}</td>
+										<c:if test="${privilegeTo.account.acctStatus == 1}">
+										<td>已激活</td>
+										</c:if>
+										<c:if test="${privilegeTo.account.acctStatus == 0}">
+										<td>已禁用</td>
+										</c:if>
+										<td>
+											<button class="btn btn-primary assign" data-toggle="modal" data-target="#assign_itrole_modal">分配权限</button>
+										</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 						<!-- 控制分页的元素 用 class进行分页的话可以有上下两个分页导航，要求要在表格上面也有一个一样的ul -->
@@ -126,11 +141,88 @@
 
 				<div class="row">
 					<div class="center-block">
-						<button class="btn btn-primary">分配权限</button>
 						<a class="btn btn-primary" href="toidentity/privilege.action">取&nbsp;&nbsp;消</a>
 					</div>
 				</div>
 
+			</div>
+		</div>
+		<!-- 模态框（Modal） 分配权限 -->
+		<div class="modal fade" id="assign_itrole_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">分配角色</h4>
+					</div>
+					<!-- modal 主体-->
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+							<div class="form-group">
+								<label for="user_id" class="col-md-2 control-label">目标账号</label>
+								<div class="col-md-5">
+									<label class="control-label" id="account_id_label" data-value=""></label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="user_id" class="col-md-2 control-label">目标资源</label>
+								<div class="col-md-5">
+									<label class="control-label" id="res_id_label" data-value=""></label>
+								</div>
+							</div>
+						</form>
+						<!-- tab2 -->
+						<ul id="myTab2" class="nav nav-tabs">
+							<li class="active" id="tab_assign"><a href="#assign_itrole" data-toggle="tab">已分配</a></li>
+							<li id="tab_unassign"><a href="#unassign_itrole" data-toggle="tab">可分配</a></li>
+						</ul>
+						<div id="myTabContent2" class="tab-content">
+							<div class="tab-pane fade in active" id="assign_itrole">
+								<!-- 显示已分配角色	 -->
+								<table class="table table-bordered table-hover table-striped" id="assigned_itrole_table">
+									<caption id="search_result">&nbsp;</caption>
+									<thead>
+										<tr>
+											<th>角色标识</th>
+											<th>操作</th>	<!--  取消 -->
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								<table class="table table-bordered table-hover table-striped" id="itrole_hidden_table" style="display:none;">
+									<caption id="search_result">&nbsp;</caption>
+									<thead>
+										<tr>
+											<th>角色标识</th>
+											<th>操作</th>	<!--  取消 -->
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div class="tab-pane fade" id="unassign_itrole">
+								<!-- 显示可分配角色	 -->
+								<table class="table table-bordered table-hover table-striped" id="assignable_itrole_table">
+									<caption id="search_result">&nbsp;</caption>
+									<thead>
+										<tr>
+											<th>角色标识</th>
+											<th>操作</th>	<!--  分配    class 为 assign_role,在js中已编写事件 -->
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<a type="button" class="btn btn-primary" data-dismiss="modal" id="assign_itrole_modal_confirm">确认</a> 
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -140,9 +232,14 @@
 	<script src="js/jquery.cookie.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-notify.js?version=<%=Math.random()%>"></script>
+	<!-- jqPaginator分页 -->
+	<script src="js/jqPaginator.js?version=<%=Math.random()%>"></script>
 	<!-- initial page -->
 	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<script src="js/privilege.js?version=<%=Math.random()%>"></script>
 	<script type="text/javascript">
+		
 		$(function() {
 			var status = $("#user_status").val();
 			if (status == '1') {
@@ -151,6 +248,25 @@
 			if (status == '0') {
 				$("#user_status").val("已禁用");
 			}
+
+			$('#pagination0')
+					.jqPaginator(
+							{
+								totalPages : parseInt('${privilegeToListPaginator.totalPages}'), //${resourceListPaginator.totalPages}
+								visiblePages : 5,
+								currentPage : parseInt('${privilegeToListPaginator.page}'), //${resourceListPaginator.page}
+								first : '<li class="prev"><a href="javascript:;">首页</a></li>',
+								prev : '<li class="prev"><a href="javascript:;">上一页</a></li>',
+								next : '<li class="next"><a href="javascript:;">下一页</a></li>',
+								last : '<li class="prev"><a href="javascript:;">末页</a></li>',
+								page : '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+								onPageChange : function(num, type) {
+									if (type == "change") {
+										location.href = "toidentity/user.action?page="
+												+ num;
+									}
+								}
+							});
 		})
 	</script>
 </body>

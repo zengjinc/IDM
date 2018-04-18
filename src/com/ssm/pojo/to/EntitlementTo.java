@@ -1,4 +1,4 @@
-package com.ssm.pojo.to;
+	package com.ssm.pojo.to;
 
 public class EntitlementTo {
 	private String resUuid;

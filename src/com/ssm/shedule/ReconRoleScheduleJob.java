@@ -49,7 +49,7 @@ public class ReconRoleScheduleJob extends BaseScheduleJob implements TaskService
 		jdbcConnector.setResource(resource);
 		
 		//回收角色
-		jdbcConnector.listRoles(null);
+		jdbcConnector.listRoles();
 		
 		SchedulejobService schedulejobService = (SchedulejobService)BeanUtil.getBean("schedulejobService");
 		schedulejobService.updateSchedulejobTime(this.getSchedulejob());

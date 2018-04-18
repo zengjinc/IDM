@@ -253,15 +253,15 @@
 															<input type="text" class="form-control" id="account_id" name="account_id" placeholder="">
 														</div>
 													</div>
-													<div class="form-group">
-														<label for="account_type" class="col-md-2 control-label">账户类型</label>
-														<div class="col-md-5">
-															<select class="form-control" id="account_type" name="account_type">
-																<option value="1">主账户</option>
-																<option value="0">次账户</option>
-															</select>
-														</div>
-													</div>
+<!-- 													<div class="form-group"> -->
+<!-- 														<label for="account_type" class="col-md-2 control-label">账户类型</label> -->
+<!-- 														<div class="col-md-5"> -->
+<!-- 															<select class="form-control" id="account_type" name="account_type"> -->
+<!-- 																<option value="1">主账户</option> -->
+<!-- 																<option value="0">次账户</option> -->
+<!-- 															</select> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
 													<div class="form-group">
 														<label for="account_pwd" class="col-md-2 control-label">密码</label>
 														<div class="col-md-5">

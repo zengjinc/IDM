@@ -40,36 +40,25 @@
 				<div class="row">
 					<div class="col-md-5">
 						<div class="input-group">
-							<span class="input-group-addon">岗位标识</span> <input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">岗位标识</span> <input id="bizrole_id" name="date" type="text" class="form-control">
 						</div>
 					</div>
 					<div class="col-md-5 col-md-offset-1">
 						<div class="input-group">
 							<span class="input-group-addon">岗位名称</span> 
-							<input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<input id="bizrole_name" name="date" type="text" class="form-control">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-5">
 						<div class="input-group">
-							<span class="input-group-addon">岗位描述</span> <input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
-						</div>
-					</div>
-					<div class="col-md-5 col-md-offset-1">
-						<div class="input-group">
-							<span class="input-group-addon">岗位拥有者</span> 
-							<input id="date_start" name="date" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')"
-								oninput="setCustomValidity('')">
+							<span class="input-group-addon">岗位描述</span> <input id="bizrole_desc" name="date" type="text" class="form-control">
 						</div>
 					</div>
 				</div>
 				<ul id="myTab" class="nav nav-tabs">
 					<li class="active"><a href="#home" data-toggle="tab">属性</a></li>
-<!-- 					<li><a href="#taskchain" data-toggle="tab">任务链</a></li> -->
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="home">
@@ -86,29 +75,10 @@
 						</table>
 						<button class="btn btn-primary">添加自定义属性</button>
 					</div>
-<!-- 					<div class="tab-pane fade" id="taskchain"> -->
-<!-- 						<table class="table table-striped"> -->
-<!-- 							<thead> -->
-<!-- 								<tr> -->
-<!-- 									<th>计划任务标识</th> -->
-<!-- 									<th>计划任务类型</th> -->
-<!-- 									<th>操作</th> -->
-<!-- 								</tr> -->
-<!-- 							</thead> -->
-<!-- 							<tbody> -->
-<!-- 							</tbody> -->
-<!-- 						</table> -->
-<!-- 						<form action="" class="form-inline"> -->
-<!-- 							<select class="form-control"> -->
-<!-- 								<option>-</option> -->
-<!-- 							</select> -->
-<!-- 							<button type="submit" class="btn btn-primary">添&nbsp;&nbsp;加</button> -->
-<!-- 						</form> -->
-<!-- 					</div> -->
 				</div>
 				<div class="center-block">
-					<button class="btn btn-primary">编&nbsp;&nbsp;辑</button>
-					<button class="btn btn-primary">删&nbsp;&nbsp;除</button>
+					<button class="btn btn-primary" id="save_bizrole_btn">保&nbsp;&nbsp;存</button>
+					<a class="btn btn-primary" href="toconfig/bizrole.action">取&nbsp;&nbsp;消</a>
 				</div>
 			</div>
 		</div>
@@ -119,7 +89,9 @@
 	<script src="js/jquery.cookie.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-notify.js?version=<%=Math.random()%>"></script>
 	<!-- initial page -->
 	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<script src="js/configure.js?version=<%=Math.random()%>"></script>
 </body>
 </html>

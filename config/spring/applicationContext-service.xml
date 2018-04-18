@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd ">
 
 	<!-- 配置service接口。 -->
-
+	
 	<bean id="beanUtil" class="com.ssm.utils.BeanUtil"></bean>
 	<bean id="jobManager" class="com.ssm.shedule.JobManager"></bean>
 	<bean id="reconAccountScheduleJob" class="com.ssm.shedule.ReconAccountScheduleJob"></bean>

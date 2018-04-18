@@ -51,7 +51,7 @@ public class ReconAccountScheduleJob extends BaseScheduleJob implements TaskServ
 		jdbcConnector.setResource(resource);
 		
 		//回收账号
-		jdbcConnector.listAccounts(null, null);
+		jdbcConnector.listAccounts();
 		
 		
 		SchedulejobService schedulejobService = (SchedulejobService)BeanUtil.getBean("schedulejobService");

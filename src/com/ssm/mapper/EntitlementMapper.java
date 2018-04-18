@@ -23,6 +23,8 @@ public interface EntitlementMapper {
 
     List<Entitlement> selectByExample(EntitlementExample example);
     
+    List<Entitlement> selectByExample(EntitlementExample example, PageBounds pageBounds);
+    
     List<EntitlementTo> getEntitlementByUserUuid(String userUuid,PageBounds pageBounds);
 
     Entitlement selectByPrimaryKey(EntitlementKey key);

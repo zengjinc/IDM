@@ -38,11 +38,11 @@
 			<!-- 主体右 -->
 			<div class="col-md-10 subject">
 				<div class="col-md-12">
-					<button class="btn btn-primary">创&nbsp;&nbsp;建</button>
+					<a class="btn btn-primary" href="toidentity/usercreate.action">创&nbsp;&nbsp;建</a>
 				</div>
 				<!-- 用户、账号、权限公共部分 -->
 				<%-- 				<%@ include file="userTable.jsp"%> --%>
-				<form class="form-horizontal center-block" role="form">
+				<form class="form-horizontal center-block" role="form" action="toidentity/user.action" method="post">
 					<div class="form-group">
 						<label for="userUuid" class="col-md-5 control-label">用户标识</label>
 						<div class="col-md-3">
@@ -90,7 +90,7 @@
 					<div class="form-group">
 						<label for="trust_res" class="col-md-5 control-label">信任资源</label>
 						<div class="col-md-3">
-							<select class="form-control" id="trust_res" name="trust_res">
+							<select class="form-control" id="trustResource" name="trustResource">
 								<option value="">-</option>
 								<option value="true">是</option>
 								<option value="false">否</option>
@@ -136,7 +136,7 @@
 						<c:forEach items="${userList}" var="user">
 							<tr>
 								<td><input type="checkbox" class="check"/></td>
-								<td>${user['userId']}</td>
+								<td data-value="${user['userUuid']}">${user['userId']}</td>
 								<td>${user['userName']}</td>
 								<c:if test="${user['userStatus'] == '1'}">
 								<td>已激活</td>
@@ -170,6 +170,7 @@
 	<script src="js/init.js?version=<%=Math.random()%>"></script>
 	<!-- jqPaginator分页 -->
 	<script src="js/jqPaginator.js?version=<%=Math.random()%>"></script>
+	<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
 	<script type="text/javascript">
 	$(function() {
 
@@ -204,12 +205,25 @@
 			var user_id_list = new Array();
 			$(".check").each(function() {
 				if ($(this).is(':checked')) {
-					user_id_list.push($(this).parent().parent().children("td:eq(1)").text());
+					user_id_list.push($(this).parent().parent().children("td:eq(1)").attr('data-value'));
 					$(this).prop("checked", false);
 				}
 			})
-			console.log(user_id_list);
 			$(".check_all").prop("checked", false);
+			
+			var jsonStr = {"userList" : user_id_list};
+			$.ajax({
+				type : 'post',
+				url : 'toidentity/enableuser.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(jsonStr),
+				dataType : 'text',
+				success : function(result){
+					if(result == "success"){
+						window.location.href="toidentity/user.action";
+					}
+				}
+			});
 			
 		});
 		//禁用
@@ -217,12 +231,25 @@
 			var user_id_list = new Array();
 			$(".check").each(function() {
 				if ($(this).is(':checked')) {
-					user_id_list.push($(this).parent().parent().children("td:eq(1)").text());
+					user_id_list.push($(this).parent().parent().children("td:eq(1)").attr('data-value'));
 					$(this).prop("checked", false);
 				}
 			})
-			console.log(user_id_list);
 			$(".check_all").prop("checked", false);
+			
+			var jsonStr = {"userList" : user_id_list};
+			$.ajax({
+				type : 'post',
+				url : 'toidentity/disableuser.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(jsonStr),
+				dataType : 'text',
+				success : function(result){
+					if(result == "success"){
+						window.location.href="toidentity/user.action";
+					}
+				}
+			});
 			
 		});
 		//删除
@@ -230,14 +257,28 @@
 			var user_id_list = new Array();
 			$(".check").each(function() {
 				if ($(this).is(':checked')) {
-					user_id_list.push($(this).parent().parent().children("td:eq(1)").text());
+					user_id_list.push($(this).parent().parent().children("td:eq(1)").attr('data-value'));
 					$(this).prop("checked", false);
 				}
 			})
-			console.log(user_id_list);
 			$(".check_all").prop("checked", false);
 			
+			var jsonStr = {"userList" : user_id_list};
+			$.ajax({
+				type : 'post',
+				url : 'toidentity/deleteuser.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(jsonStr),
+				dataType : 'text',
+				success : function(result){
+					if(result == "success"){
+						window.location.href="toidentity/user.action";
+					}
+				}
+			});
+			
 		});
+		
 	});
 	</script>
 </body>

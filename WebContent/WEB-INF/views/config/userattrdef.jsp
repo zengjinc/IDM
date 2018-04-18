@@ -41,7 +41,7 @@
 					<button class="btn btn-primary">创&nbsp;&nbsp;建</button>
 					<!-- 点击创建按钮的时候弹出模态框，选择后进入资源详情页面 -->
 				</div>
-				<form class="form-horizontal center-block" role="form">
+				<form class="form-horizontal center-block" role="form" method="post" action="">
 					<div class="form-group">
 						<label for="userUuid" class="col-md-5 control-label">用户属性定义标识</label>
 						<div class="col-md-3">
@@ -52,6 +52,11 @@
 						<label for="userName" class="col-md-5 control-label">用户属性定义名称</label>
 						<div class="col-md-3">
 							<input type="text" class="form-control" id="userName" placeholder="">
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<button type="submit" class="btn btn-primary">查&nbsp;&nbsp;询</button>
 						</div>
 					</div>
 				</form>

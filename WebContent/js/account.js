@@ -17,7 +17,7 @@ $(function() {
 // data : jdbc, // JSON.stringify(jdbc),
 					success : function(resourceList) {// 返回json结果
 						for (var i = 0; i < resourceList.length; i++) {
-							$("#resource_table").append("<tr><td>"+resourceList[i].resId+"</td><td>"+resourceList[i].resName+
+							$("#resource_table").append("<tr><td data-value='"+resourceList[i].resUuid+"'>"+resourceList[i].resId+"</td><td>"+resourceList[i].resName+
 									"</td><td><button class='btn btn-primary create_account' data-value='"+resourceList[i].resId+"' data-value2='"+resourceList[i].resUuid+"'>创&nbsp;&nbsp;建</button>&nbsp;&nbsp;&nbsp;&nbsp;" +
 									"<button class='btn btn-primary assign_account' data-value='"+resourceList[i].resUuid+"'>分&nbsp;&nbsp;配</button></td></tr>");
 							
@@ -63,10 +63,13 @@ $(function() {
 				$("#accountdetail_modal_confirm").css("display","none");
 				
 				var user_id = $("#user_id").val();
+				var user_uuid = $("#user_id").attr('data-value');
 				var resId = $(this).attr("data-value");
 				var resUuid = $(this).attr("data-value2");
 				$("#user_id_label").text(user_id);
+				$("#user_id_label").attr('data-value',user_uuid);
 				$("#resource_id_label").text(resId);
+				$("#resource_id_label").attr('data-value',resUuid);
 				// 获取资源中定义的属性
 				$.ajax({
 					type : 'post',
@@ -118,9 +121,6 @@ $(function() {
 						for (var i = 0; i < accountList.length; i++) {
 							if(accountList[i].acctPrimary == '1'){
 								$("#primary_account_table").append("<tr><td data-value='"+ accountList[i].acctResUuid +"'>"+accountList[i].acctLoginId+"</td>" +
-										"<td><button class='btn btn-primary assign' data-value='"+accountList[i].acctTgtUuid+"'>分&nbsp;&nbsp;配</button></td></tr>");
-							}else{
-								$("#secondary_account_table").append("<tr><td data-value='"+ accountList[i].acctResUuid +"'>"+accountList[i].acctLoginId+"</td>" +
 										"<td><button class='btn btn-primary assign' data-value='"+accountList[i].acctTgtUuid+"'>分&nbsp;&nbsp;配</button></td></tr>");
 							}
 						}
@@ -431,7 +431,6 @@ $(function() {
 					"userUuid" : userUuid,
 				};
 				jsonStr['acctAttr'] = arr;
-				console.log("test :" + jsonStr);
 				//发送到服务器，更新账号属性
 				$.ajax({
 					type : 'post',
@@ -440,19 +439,14 @@ $(function() {
 					dataType : 'text', // 服务器响应类型
 					data : JSON.stringify(jsonStr),
 					success : function(information) {// 返回json结果
+						console.log(information);
 						if(information == "success"){
-							$.notify({
-								icon : 'glyphicon glyphicon-danger-sign',
-								title : '<strong>重设密码</strong>',
-								message : information
-							}, {
-								type : 'success', // danger warning info success
-								mouse_over : 'pause',
-							});
+							//刷新当前页面
+							window.location.reload();
 						}else{
 							$.notify({
 								icon : 'glyphicon glyphicon-danger-sign',
-								title : '<strong>重设密码</strong>',
+								title : '<strong>更新账号属性</strong>',
 								message : information
 							}, {
 								type : 'warning', // danger warning info success
@@ -471,5 +465,79 @@ $(function() {
 						});
 					}
 				});
+			})
+			
+			//创建对应资源中的账号
+			$("#create_account_confirm").click(function(){
+//				var resUuid = $("#res_uuid_hidden").val();
+//				var acctUuid = $("#acct_uuid_hidden").val();
+//				var userUuid = $("#user_uuid_hidden").val();
+				
+				//获取基本属性
+				var userId=$("#user_id_label").text();
+				var userUuid=$("#user_id_label").attr('data-value');
+				var resId=$("#resource_id_label").text();
+				var resUuid=$("#resource_id_label").attr("data-value");
+				var acctId=$("#account_id").val();
+				var acttPwd=$("#account_pwd").val();
+				var acttPwd2=$("#account_pwd2").val();
+				
+				console.log("test : " + resUuid);
+				
+				//获取账号属性
+				var arr = new Array();
+				$(".addbyajax").each(function(){
+					var attrKey = $(this).attr('name');
+					var attrVal = $(this).val();
+					var tempJson = {};
+					tempJson[attrKey] = attrVal;
+					arr.push(tempJson);
+				})
+				var jsonStr = {
+					"userId" : userId,
+					"userUuid" : userUuid,
+					"resId" : resId,
+					"resUuid" : resUuid,
+					"acctId" : acctId,
+					"acttPwd" : acttPwd,
+					"acttPwd2" : acttPwd2
+				};
+				jsonStr['acctAttr'] = arr;
+				
+				//发送到服务器，更新账号属性
+				$.ajax({
+					type : 'post',
+					url : 'toidentity/createaccount.action',
+					contentType : 'application/json;charset=utf-8',// 指定为json类型
+					dataType : 'text', // 服务器响应类型
+					data : JSON.stringify(jsonStr),
+					success : function(information) {// 返回json结果
+						console.log(information);
+						if(information == "success"){
+							//刷新当前页面
+							window.location.reload();
+						}else{
+							$.notify({
+								icon : 'glyphicon glyphicon-danger-sign',
+								title : '<strong>更新账号属性</strong>',
+								message : information
+							}, {
+								type : 'warning', // danger warning info success
+								mouse_over : 'pause',
+							});
+						}
+					},
+					error : function(information) {
+						$.notify({
+							icon : 'glyphicon glyphicon-danger-sign',
+							title : '<strong>出错了</strong>',
+							message : information
+						}, {
+							type : 'danger', // danger warning info success
+							mouse_over : 'pause',
+						});
+					}
+				});
+				
 			})
 		})

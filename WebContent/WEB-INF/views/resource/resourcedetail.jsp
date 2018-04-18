@@ -161,8 +161,9 @@
 								</tr>
 								<tr>
 									<td style="vertical-align: middle;">用户UUID生产器脚本</td>
-									<td style="vertical-align: middle;"><textarea class="form-control" rows="8" id="uuidgener_text"></textarea></td>
-									<td style="vertical-align: middle;">使用所提供的脚本来生成UUID。 <br>@param logger org.slf4j.Logger<br> @返回UUID
+									<td style="vertical-align: middle;">	
+									<textarea class="form-control" rows="8" id="uuidgener_text"></textarea></td>
+									<td style="vertical-align: middle;">使用所提供的脚本来生成UUID。 <br> @返回UUID
 									</td>
 								</tr>
 							</tbody>
@@ -193,7 +194,7 @@
 								<tr>
 									<td style="vertical-align: middle;">用户密码编码脚本&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 									<td style="vertical-align: middle;"><textarea class="form-control" rows="8" id="pwd_encoding_text"></textarea></td>
-									<td style="vertical-align: middle;">使用所提供的脚本来生成编码密码。<br>@param salt – 用于编码的salt的字符串值<br>@返回已编码的密码
+									<td style="vertical-align: middle;">使用所提供的脚本来生成编码密码。<br>@返回已编码的密码
 									</td>
 								</tr>
 							</tbody>

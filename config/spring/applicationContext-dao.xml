@@ -16,7 +16,7 @@
 	<!-- 配置数据源、SqlSessionFactory、mapper扫描器 -->
 
 	<!-- 加载配置文件 -->
-	<context:property-placeholder location="classpath:jdbc.properties" />
+	<context:property-placeholder location="classpath:jdbc.properties,classpath:config.properties" />
 
 	<!-- 配置数据库连接池 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -47,7 +47,24 @@
 	<!-- scheduler -->
 	<bean id="scheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<!-- <property name="startupDelay" value="180"/> 启动服务器后延迟启动定时任务 -->
+		 <property name="startupDelay" value="180"/> <!-- 启动服务器后延迟启动定时任务 -->
 	</bean>
+	
+	<!--javaMailSender-->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${config.host}"/>
+        <property name="port" value="${config.port}"/>	<!-- 465 ssl	25 -->
+        <property name="username" value="${config.username}"/>
+        <property name="password" value="${config.pwd}"/>
+        <property name="defaultEncoding" value="${config.defaultEncoding}" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">"${config.mail.smtp.auth}"</prop>
+                <prop key="mail.smtp.ssl.enable">"${config.mail.smtp.ssl.enable}"</prop>
+                <prop key="mail.smtp.starttls.enable">"${config.mail.smtp.starttls.enable}"</prop>
+                <prop key="mail.debug">"${config.mail.debug}"</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>
