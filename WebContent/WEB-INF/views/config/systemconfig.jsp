@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -71,27 +72,39 @@
 							<tbody>
 								<tr>
 									<td>主机</td>
-									<td><input id="host" type="text" class="form-control" readonly="readonly"/></td>
+									<td><input id="host" type="text" value="${host}" class="form-control" readonly="readonly"/></td>
 									<td></td>
 								</tr>
 								<tr>
 									<td>端口</td>
-									<td><input id="port" type="text" class="form-control" readonly="readonly"/></td>
+									<td><input id="port" type="text" value="${port}" class="form-control" readonly="readonly"/></td>
 									<td></td>
 								</tr>
 								<tr>
 									<td>安全通道</td>
 									<td><select class="form-control" id="ssl" disabled="disabled">
+											<c:if test="${ssl == false}">
+											<option value="false">false</option>
+											<option value="true">true</option>
+											</c:if>
+											<c:if test="${ssl == true}">
 											<option value="true">true</option>
 											<option value="false">false</option>
+											</c:if>
 										</select></td>
 									<td>使用SMTP的SSL/ TLS连接到服务器</td>
 								</tr>
 								<tr>
 									<td>启用STARTTLS</td>
 									<td><select class="form-control" id="starttls" disabled="disabled">
+											<c:if test="${startTls == false}">
 											<option value="false">false</option>
 											<option value="true">true</option>
+											</c:if>
+											<c:if test="${startTls == true}">
+											<option value="true">true</option>
+											<option value="false">false</option>
+											</c:if>
 										</select></td>
 									<td>设为“true”则为SMTP启用STARTTLS。若已启用SMTPS ，则请禁用它。</td>
 								</tr>
@@ -99,20 +112,26 @@
 									<td>服务器是否需要验证</td>
 									<td>
 										<select class="form-control" id="auth" disabled="disabled">
+											<c:if test="${auth == false}">
+											<option value="false">false</option>
+											<option value="true">true</option>
+											</c:if>
+											<c:if test="${auth == true}">
 											<option value="true">true</option>
 											<option value="false">false</option>
+											</c:if>
 										</select>
 									</td>
 									<td></td>
 								</tr>
 								<tr>
 									<td>用户名</td>
-									<td><input id="username" type="text" class="form-control" readonly="readonly"/></td>
+									<td><input id="username" type="text" value="${username}" class="form-control" readonly="readonly"/></td>
 									<td></td>
 								</tr>
 								<tr>
 									<td>密码</td>
-									<td><input id="pwd" type="password" class="form-control" readonly="readonly"/></td>
+									<td><input id="pwd" type="password"  value="${password}" class="form-control" readonly="readonly"/></td>
 									<td></td>
 								</tr>
 							</tbody>
@@ -134,16 +153,24 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>创建UIM用户 - 已完成	</td>
-									<td><button class="btn btn-primary" data-toggle="modal" data-target="#view_template">查&nbsp;&nbsp;看</button></td>
-								</tr>
-								<tr>
 									<td>授权账号 - 已完成</td>
-									<td><button class="btn btn-primary" data-toggle="modal" data-target="#view_template">查&nbsp;&nbsp;看</button></td>
+									<td><button class="btn btn-primary view_template" data-value="etm_finish">查&nbsp;&nbsp;看</button></td>
 								</tr>
 								<tr>
 									<td>授权账号 - 已取消</td>
-									<td><button class="btn btn-primary" data-toggle="modal" data-target="#view_template">查&nbsp;&nbsp;看</button></td>
+									<td><button class="btn btn-primary view_template" data-value="etm_cancel">查&nbsp;&nbsp;看</button></td>
+								</tr>
+								<tr>
+									<td>授权账号 - 已激活</td>
+									<td><button class="btn btn-primary view_template" data-value="etm_enable">查&nbsp;&nbsp;看</button></td>
+								</tr>
+								<tr>
+									<td>授权账号 - 已禁用</td>
+									<td><button class="btn btn-primary view_template" data-value="etm_disable">查&nbsp;&nbsp;看</button></td>
+								</tr>
+								<tr>
+									<td>账号 - 修改密码</td>
+									<td><button class="btn btn-primary view_template" data-value="change_password">查&nbsp;&nbsp;看</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -163,23 +190,19 @@
 					<div class="modal-body">
 						<label class="control-label">模板主体</label>
 						<textarea id="template_body" class="form-control" style="width:100%; height:300px;font-size:20px;">${userBizRoleList}</textarea>
+						<div id="template_body_preview"></div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-						<a type="button" class="btn btn-primary" data-dismiss="modal" id="view_template_btn">确认</a> 
+						<a type="button" class="btn btn-primary" id="view_template_preview_btn">预&nbsp;&nbsp;览</a> 
+						<a type="button" class="btn btn-primary" id="view_template_confirm_btn">确&nbsp;&nbsp;认</a> 
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="js/jquery-2.2.4.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.js"></script>
-	<!-- initial page -->
-	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
 		$(function(){
 			$("#edit_email_btn").click(function(){
@@ -206,7 +229,119 @@
 				
 				$(this).hide();
 				$("#edit_email_btn").show();
+				
+				var host = $("#host").val();
+				var port = $("#port").val();
+				var ssl = $("#ssl").val();
+				var starttls = $("#starttls").val();
+				var auth = $("#auth").val();
+				var username = $("#username").val();
+				var pwd = $("#pwd").val();
+				
+				var jsonStr = {"host" : host,"port" : port,"ssl" : ssl,"starttls" : starttls,"auth" : auth,"username" : username,"pwd" : pwd}
+				
+				$.ajax({
+					type : 'post',
+					url : 'toconfig/saveemail.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+					dataType : 'text',
+					success : function(result){
+						if(result.indexOf("success") >= 0){
+							$.notify({
+								icon : 'glyphicon glyphicon-success-sign',
+								title : '<strong>保存邮件配置结果</strong>',
+								message : "成功",
+								allow_dismiss : false
+								// url: 'https://github.com/mouse0270/bootstrap-notify',
+								// target: '_blank'
+							}, {
+								type : 'success', // danger warning info success
+								mouse_over : 'pause'
+							});
+						}else{
+							$.notify({
+								icon : 'glyphicon glyphicon-success-sign',
+								title : '<strong>保存邮件配置结果:未知错误</strong>',
+								message : result,
+								allow_dismiss : false
+								// url: 'https://github.com/mouse0270/bootstrap-notify',
+								// target: '_blank'
+							}, {
+								type : 'warning', // danger warning info success
+								mouse_over : 'pause'
+							});
+						}
+					}
+				});
 			})
+			
+			//查看邮件模板内容
+			$(".view_template").click(function(){
+				var template = $(this).attr('data-value');
+				
+				$("#view_template_confirm_btn").attr('data-value',template);
+				
+				var jsonStr = {"template" : template};
+				
+				$('#view_template').modal('show');
+				
+				$.ajax({
+					type : 'post',
+					url : 'toconfig/gettemplate.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+					dataType : 'text',
+					success : function(result){
+						$("#template_body").val(result);
+					}
+				});
+			})
+			
+			//模态框隐藏事件
+			$('#view_template').on('hide.bs.modal', function () {
+				$("#template_body").val('');
+				$("#template_body_preview").html('');
+			})
+			
+			//确认修改邮件模板
+			$("#view_template_confirm_btn").click(function(){
+				var template = $(this).attr('data-value');
+				var templateBody = $("#template_body").val();
+				
+				var jsonStr = {"template" : template,"templateBody" : templateBody};
+				
+				
+				$.ajax({
+					type : 'post',
+					url : 'toconfig/savetemplate.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+					dataType : 'text',
+					success : function(result){
+						$('#view_template').modal('hide');
+						if(result.indexOf("success") >= 0){
+							$.notify({
+								icon : 'glyphicon glyphicon-success-sign',
+								title : '<strong>保存邮件模板结果</strong>',
+								message : "成功",
+								allow_dismiss : false
+								// url: 'https://github.com/mouse0270/bootstrap-notify',
+								// target: '_blank'
+							}, {
+								type : 'success', // danger warning info success
+								mouse_over : 'pause'
+							});
+						}
+					}
+				});
+			})
+			 
+			//预览模板
+			$("#view_template_preview_btn").click(function(){
+				$("#template_body_preview").html($("#template_body").val());
+			})
+			
 		})
 	</script>
 </body>

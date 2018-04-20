@@ -26,4 +26,6 @@ public interface IEntitlementService {
 	public boolean updataAccountAttribute(String acctTgtUuid,Map<String,String> attributesMap,String resUuid) throws Exception;
 
 	List<Account> getUserAccounts(String userUuid) throws Exception;
+
+	void assignAccountOwner(String resId,Map<String, String> assignRule) throws Exception;
 }

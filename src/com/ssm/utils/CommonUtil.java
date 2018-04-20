@@ -123,7 +123,7 @@ public class CommonUtil {
 		return (int) Math.round(Math.random() * (count));
 	}
 
-	private static String string = "1234567890abcdefghijklmnopqrstuvwxyz";
+	private static String string = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	public static String getRandomString(int length) {
 		StringBuffer sb = new StringBuffer();

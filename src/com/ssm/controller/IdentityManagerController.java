@@ -1,6 +1,5 @@
 package com.ssm.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,24 +18,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.ssm.mapper.RelUserBizroleMapper;
 import com.ssm.pojo.Account;
 import com.ssm.pojo.AccountAttribute;
 import com.ssm.pojo.BusinessRole;
 import com.ssm.pojo.Itrole;
+import com.ssm.pojo.RelUserBizrole;
+import com.ssm.pojo.RelUserBizroleExample;
 import com.ssm.pojo.Resource;
+import com.ssm.pojo.ResourceExample;
 import com.ssm.pojo.User;
+import com.ssm.pojo.UserExample;
+import com.ssm.pojo.UserQueryExample;
+import com.ssm.pojo.UserQueryExample.Criteria;
 import com.ssm.pojo.to.EntitlementTo;
 import com.ssm.pojo.to.PrivilegeTo;
 import com.ssm.pojo.to.UserQueryTo;
 import com.ssm.service.IAccountAttributeService;
 import com.ssm.service.IAccountService;
+import com.ssm.service.IBusinessRoleService;
 import com.ssm.service.IEntitlementService;
 import com.ssm.service.IItroleService;
+import com.ssm.service.IJavaMailSenderService;
 import com.ssm.service.IPrivilegeService;
 import com.ssm.service.IResourceService;
 import com.ssm.service.IUserBizRoleService;
@@ -74,15 +81,97 @@ public class IdentityManagerController {
 	@Autowired
 	private IUserBizRoleService userBizRoleService;
 	
+	@Autowired
+	private IJavaMailSenderService mailSenderService;
+	
+	@Autowired
+	private IBusinessRoleService bizRoleService;
+	
+	@Autowired
+	private RelUserBizroleMapper relUserBizRoleMapper;
+	
 	@RequestMapping("/user")
-	public String toUser(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit,@ModelAttribute UserQueryTo userQueryTo) throws Exception{	//使用 @Value 从文件从读取 defaultValue，保持全局统一
+	public String toUser(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{	//使用 @Value 从文件从读取 defaultValue，保持全局统一
 		logger.debug("to user page");
-		System.out.println(userQueryTo);
 		PageBounds pageBounds = new PageBounds(page,limit);
-		List<User> userList = userService.getUserByExample(null , pageBounds);
+		UserExample example = new UserExample();
+		example.setOrderByClause("user_id");
+		List<User> userList = userService.getUserByExample(example  , pageBounds);
 		modelMap.put("userList", userList);
 		return "identity/user";
 	}
+	
+	@RequestMapping("/userquery")
+	public String userQuery(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit,@ModelAttribute UserQueryTo userQueryTo) throws Exception{
+//		if(userQueryTo.getUserId().length() == 0){
+//			userQueryTo.setUserId(null);
+//		}
+//		if(userQueryTo.getUserName().length() == 0){
+//			userQueryTo.setUserName(null);
+//		}
+//		if(userQueryTo.getUserBizRole().length() == 0){
+//			userQueryTo.setUserBizRole(null);
+//		}
+//		if(userQueryTo.getTrustResource().length() == 0){
+//			userQueryTo.setTrustResource(null);
+//		}
+//		if(userQueryTo.getUserStatus().length() == 0){
+//			userQueryTo.setUserStatus(null);
+//		}
+		//		List<User> userList = userService.queryUser(userQueryTo);
+		
+		UserQueryExample example = new UserQueryExample();
+		Criteria criteria = example.createCriteria();
+		if(userQueryTo.getUserId().length() > 0){
+			criteria.andUserIdEqualTo(userQueryTo.getUserId());
+		}
+		if(userQueryTo.getUserName().length() > 0){
+			criteria.andUserNameLike("%" + userQueryTo.getUserName() + "%");
+		}
+		if(userQueryTo.getUserStatus().length() > 0){
+			criteria.andUserStatusEqualTo(Integer.parseInt(userQueryTo.getUserStatus()));
+		}
+		if(userQueryTo.getUserBizRole().length() > 0){
+			
+				RelUserBizroleExample example2 = new RelUserBizroleExample();
+				example2.createCriteria().andRelUserBizroleBizroleUuidEqualTo(userQueryTo.getUserBizRole());
+				List<RelUserBizrole> list = relUserBizRoleMapper.selectByExample(example2);
+				
+				List<String> values = new ArrayList<>(list.size());
+				
+				for(RelUserBizrole r : list){
+					values.add(r.getRelUserBizroleUserUuid());
+				}
+				
+				criteria.andUserUuidIn(values);
+		}
+		if(userQueryTo.getTrustResource().length() > 0){
+			
+			if(userQueryTo.getTrustResource().equalsIgnoreCase("1")){
+				
+				ResourceExample example1 = new ResourceExample();
+				example1.createCriteria().andResTrustEqualTo(Integer.parseInt(userQueryTo.getTrustResource()));
+				List<Resource> resourceList = resourceService.getResourceByExample(example1);
+				
+				List<String> values = new ArrayList<>(resourceList.size());
+				for(Resource res : resourceList){
+					values.add(res.getResUuid());
+				}
+				
+				criteria.andUserResUuidIn(values);
+			}else{
+				
+				criteria.andUserResUuidIsNull();
+			}
+		}
+		
+		PageBounds pageBounds = new PageBounds(page, limit);
+		example.setOrderByClause("user_id");
+		List<User> userList = userService.queryUser(example,pageBounds);
+		modelMap.put("userList", userList);
+		return "identity/user";
+	}
+	
 	
 	@RequestMapping("/usercreate")
 	public String createUser(){
@@ -139,7 +228,9 @@ public class IdentityManagerController {
 	public String toAccount(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{
 		logger.debug("to account page");
 		PageBounds pageBounds = new PageBounds(page,limit);
-		List<User> userList = userService.getUserByExample(null , pageBounds);
+		UserExample example = new UserExample();
+		example.setOrderByClause("user_id");
+		List<User> userList = userService.getUserByExample(example  , pageBounds);
 		modelMap.put("userList", userList);
 		return "identity/account";
 	}
@@ -148,7 +239,9 @@ public class IdentityManagerController {
 	public String toPrivilege(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{
 		logger.debug("to account page");
 		PageBounds pageBounds = new PageBounds(page,limit);
-		List<User> userList = userService.getUserByExample(null , pageBounds);
+		UserExample example = new UserExample();
+		example.setOrderByClause("user_id");
+		List<User> userList = userService.getUserByExample(example  , pageBounds);
 		modelMap.put("userList", userList);
 		return "identity/privilege";
 	}
@@ -444,14 +537,18 @@ public class IdentityManagerController {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(jsonStr);
 			String resUuid = rootNode.get("resUuid").asText();
-			String acctUuid = rootNode.get("acctUuid").asText();
+			String acctTgtUuid = rootNode.get("acctUuid").asText();
 			String userUuid = rootNode.get("userUuid").asText();
-			String oldPwd = rootNode.get("oldPwd").asText();
+//			String oldPwd = rootNode.get("oldPwd").asText();
 			String newPwd = rootNode.get("newPwd").asText();
 			String newPwd2 = rootNode.get("newPwd2").asText();
-			if (oldPwd != null && newPwd != null && newPwd2 != null && newPwd.equals(newPwd2)
-					&& entitlementService.verifyPassword(acctUuid, oldPwd, resUuid)) {
-				if(entitlementService.resetPassword(acctUuid, newPwd, resUuid)){
+			if (newPwd != null && newPwd2 != null && newPwd.equals(newPwd2)) {
+				if(entitlementService.resetPassword(acctTgtUuid, newPwd, resUuid)){
+					//发送修改密码的邮件
+					User user = userService.getUserByPrimaryKey(userUuid);
+					Resource resource = resourceService.getResourceByPrimarKey(resUuid);
+					Account account = accountService.getAccountByAcctTgtUuid(acctTgtUuid);
+					mailSenderService.changePasswordEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId(), newPwd);
 					return "success";
 				}
 			}

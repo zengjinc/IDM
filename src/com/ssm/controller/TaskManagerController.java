@@ -48,7 +48,9 @@ public class TaskManagerController {
 	public String toTask(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "10") int limit) {
 
 		PageBounds pageBounds = new PageBounds(page, limit);
-		List<Schedulejob> pagedScdJobList = schedulejobMapper.selectByExample(null, pageBounds);
+		SchedulejobExample example = new SchedulejobExample();
+		example.setOrderByClause("scd_id");
+		List<Schedulejob> pagedScdJobList = schedulejobMapper.selectByExample(example , pageBounds);
 		modelMap.put("scdjboList", pagedScdJobList);
 		return "task/task";
 	}
@@ -126,12 +128,12 @@ public class TaskManagerController {
 
 		List<Resource> resourceList = null;
 
-		if (scdJobType.equals("com.ssm.shedule.UserSynchronisedScheduleJob")) {
+		if (scdJobType.equals("userSynchronisedScheduleJob")) {
 			// 信任
 			ResourceExample example = new ResourceExample();
 			example.createCriteria().andResTrustEqualTo(1);
 			resourceList = resourceMapper.selectByExample(example, new PageBounds());
-		} else if (scdJobType.equals("com.ssm.shedule.AssignAccountOwnerScheduleJob")) {
+		} else if (scdJobType.equals("assignAccountOwnerScheduleJob")) {
 			// 非信任
 			ResourceExample example = new ResourceExample();
 			example.createCriteria().andResTrustEqualTo(0);

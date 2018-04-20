@@ -16,7 +16,20 @@
 	<!-- 配置数据源、SqlSessionFactory、mapper扫描器 -->
 
 	<!-- 加载配置文件 -->
-	<context:property-placeholder location="classpath:jdbc.properties,classpath:config.properties" />
+<!-- 	<context:property-placeholder location="classpath:jdbc.properties,classpath:config.properties" /> -->
+	<!-- 将多个配置文件读取到容器中，交给Spring管理 -->  
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+           <list>  
+              <!-- 这里支持多种寻址方式：classpath和file -->  
+              <value>classpath:jdbc.properties</value>  
+              <value>classpath:config.properties</value>  
+              <!-- 推荐使用file的方式引入，这样可以将配置和代码分离 -->  
+<!--               <value>file:/opt/demo/config/demo-mq.properties</value>   -->
+<!--               <value>file:/opt/demo/config/demo-remote.properties</value>   -->
+            </list>  
+        </property>  
+    </bean>  
 
 	<!-- 配置数据库连接池 -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -47,24 +60,40 @@
 	<!-- scheduler -->
 	<bean id="scheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		 <property name="startupDelay" value="180"/> <!-- 启动服务器后延迟启动定时任务 -->
+		<!-- <property name="startupDelay" value="180"/>  启动服务器后延迟启动定时任务 -->
 	</bean>
 	
 	<!--javaMailSender-->
-    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${config.host}"/>
-        <property name="port" value="${config.port}"/>	<!-- 465 ssl	25 -->
-        <property name="username" value="${config.username}"/>
-        <property name="password" value="${config.pwd}"/>
-        <property name="defaultEncoding" value="${config.defaultEncoding}" />
-        <property name="javaMailProperties">
-            <props>
-                <prop key="mail.smtp.auth">"${config.mail.smtp.auth}"</prop>
-                <prop key="mail.smtp.ssl.enable">"${config.mail.smtp.ssl.enable}"</prop>
-                <prop key="mail.smtp.starttls.enable">"${config.mail.smtp.starttls.enable}"</prop>
-                <prop key="mail.debug">"${config.mail.debug}"</prop>
-            </props>
-        </property>
-    </bean>
+	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${host}" />
+		<property name="port" value="${port}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.ssl.enable">${mail.smtp.ssl.enable}</prop>
+				<prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+<!--     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
+<!--         <property name="host" value="smtp.163.com"/> -->
+<!--         <property name="port" value="465"/> -->
+<!--         <property name="username" value="zengjinc_zp@163.com"/> -->
+<!--         <property name="password" value="chenzj1995"/> -->
+<!--         <property name="defaultEncoding" value="UTF-8" /> -->
+<!--         <property name="javaMailProperties"> -->
+<!--             <props> -->
+<!--                 <prop key="mail.smtp.auth">true</prop> -->
+<!--                 <prop key="mail.smtp.ssl.enable">true</prop> -->
+<!--                 <prop key="mail.smtp.starttls.enable">false</prop> -->
+<!--                 <prop key="mail.debug">true</prop> -->
+<!--             </props> -->
+<!--         </property> -->
+<!--     </bean> -->
+   
 
 </beans>

@@ -37,6 +37,7 @@ public class ItroleService implements IItroleService{
 	public Map<String,List<Itrole>> getItroleByResourceUuid(String resUuid, String acctUuid) throws Exception {
 		ItroleExample example = new ItroleExample();
 		example.createCriteria().andItroleResUuidEqualTo(resUuid);
+		example.setOrderByClause("itrole_id");
 		List<Itrole> assignableItrole = itroleMapper.selectByExample(example);
 		
 		PrivilegeExample example1 = new PrivilegeExample();

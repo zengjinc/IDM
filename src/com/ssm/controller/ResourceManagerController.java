@@ -49,7 +49,9 @@ public class ResourceManagerController {
 		// List<Resource> resourceList = resourceMapper.selectByExample(null,new PageBounds()); //PageBounds参数为空的话，表示不分页，查询全部
 		// 分页查询
 		PageBounds pageBounds = new PageBounds(page, limit);
-		List<Resource> pagedresourceList = resourceMapper.selectByExample(null, pageBounds);
+		ResourceExample example = new ResourceExample();
+		example.setOrderByClause("res_id");
+		List<Resource> pagedresourceList = resourceMapper.selectByExample(example , pageBounds);
 		modelMap.put("resourceList", pagedresourceList);
 		return "resource/resource";
 	}

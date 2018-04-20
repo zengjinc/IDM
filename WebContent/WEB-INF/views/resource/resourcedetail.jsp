@@ -299,9 +299,9 @@
 									<th><select id="attr_mapping">
 											<option value="user_id">用户标识</option>
 											<option value="user_name">用户名称</option>
-											<option value="user_ou">组织单位</option>
+<!-- 											<option value="user_ou">组织单位</option> -->
 											<option value="user_status">用户状态</option>
-											<option value="user_type">用户类型</option>
+<!-- 											<option value="user_type">用户类型</option> -->
 <!-- 											<option value="user_bengin_time">开始时间</option> -->
 <!-- 											<option value="user_end_time">结束时间</option> -->
 											<option value="user_email">电子邮箱</option>
@@ -637,14 +637,7 @@
 		</div>
 	</div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="js/jquery-2.2.4.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.js"></script>
-	<!-- initial page -->
-	<script src="js/init.js?version=<%=Math.random()%>"></script>
-	<script src="js/bootstrap-notify.js?version=<%=Math.random()%>"></script>
+	<%@ include file="../commonscript.jsp" %>
 	<script src="js/resource.js?version=<%=Math.random()%>"></script>
 	<script type="text/javascript">
 		$(function() {

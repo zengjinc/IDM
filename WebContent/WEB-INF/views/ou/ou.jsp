@@ -200,13 +200,7 @@
 		</div>
 	</div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="js/jquery-2.2.4.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.js"></script>
-	<!-- initial page -->
-	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
 		$(function() {
 			$('.tree li:has(ul)').addClass('parent_li').find(' > span').attr(

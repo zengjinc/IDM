@@ -42,11 +42,11 @@
 				</div>
 				<!-- 用户、账号、权限公共部分 -->
 				<%-- 				<%@ include file="userTable.jsp"%> --%>
-				<form class="form-horizontal center-block" role="form" action="toidentity/user.action" method="post">
+				<form class="form-horizontal center-block" role="form" action="toidentity/userquery.action" method="post">
 					<div class="form-group">
 						<label for="userUuid" class="col-md-5 control-label">用户标识</label>
 						<div class="col-md-3">
-							<input type="text" class="form-control" id="userUuid" name="userUuid" placeholder="">
+							<input type="text" class="form-control" id="userUuid" name="userId" placeholder="">
 						</div>
 					</div>
 					<div class="form-group">
@@ -55,12 +55,12 @@
 							<input type="text" class="form-control" id="userName" name="userName" placeholder="">
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="userOu" class="col-md-5 control-label">组织单位</label>
-						<div class="col-md-3">
-							<input type="text" class="form-control" id="userOu" name="userOu" placeholder="">
-						</div>
-					</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<label for="userOu" class="col-md-5 control-label">组织单位</label> -->
+<!-- 						<div class="col-md-3"> -->
+<!-- 							<input type="text" class="form-control" id="userOu" name="userOu" placeholder=""> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="form-group">
 						<label for="userBizRole" class="col-md-5 control-label">岗位</label>
 						<div class="col-md-3">
@@ -73,27 +73,27 @@
 						<label for="userStatus" class="col-md-5 control-label">状态</label>
 						<div class="col-md-3">
 							<select class="form-control" id="userStatus" name="userStatus">
-								<option>-</option>
+								<option value="">-</option>
 								<option value="1">已激活</option>
 								<option value="0">已禁用</option>
 							</select>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="userType" class="col-md-5 control-label">用户类型</label>
-						<div class="col-md-3">
-							<select class="form-control" id="userType" name="userType">
-								<option>-</option>
-							</select>
-						</div>
-					</div>
+<!-- 					<div class="form-group"> -->
+<!-- 						<label for="userType" class="col-md-5 control-label">用户类型</label> -->
+<!-- 						<div class="col-md-3"> -->
+<!-- 							<select class="form-control" id="userType" name="userType"> -->
+<!-- 								<option>-</option> -->
+<!-- 							</select> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
 					<div class="form-group">
 						<label for="trust_res" class="col-md-5 control-label">信任资源</label>
 						<div class="col-md-3">
 							<select class="form-control" id="trustResource" name="trustResource">
 								<option value="">-</option>
-								<option value="true">是</option>
-								<option value="false">否</option>
+								<option value="1">是</option>
+								<option value="0">否</option>
 							</select>
 						</div>
 					</div>
@@ -161,18 +161,25 @@
 		</div>
 	</div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="js/jquery-2.2.4.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.js"></script>
-	<!-- initial page -->
-	<script src="js/init.js?version=<%=Math.random()%>"></script>
-	<!-- jqPaginator分页 -->
-	<script src="js/jqPaginator.js?version=<%=Math.random()%>"></script>
-	<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
 	$(function() {
+		
+		//页面加载完成时加载所有的岗位
+		 window.onload = function(){  
+			 $.ajax({
+					type : 'post',
+					url : 'toconfig/listallbizrole.action',
+					contentType : 'application/json;charset=utf-8',
+// 					data : JSON.stringify(jsonStr),
+					dataType : 'json',
+					success : function(result){
+						for (var i = 0; i < result.length; i++) {
+						$("#userBizRole").append("<option value='"+result[i].bizRoleUuid+"'>"+result[i].bizRoleName+"</option>");
+						}
+					}
+				});
+         }
 
 		$('#pagination0')
 				.jqPaginator(

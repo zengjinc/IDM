@@ -101,6 +101,47 @@
     from user
     where user_uuid = #{userUuid,jdbcType=VARCHAR}
   </select>
+  
+  <!-- 2 -->
+  <select id="queryUser2" resultMap="BaseResultMap" parameterType="com.ssm.pojo.UserQueryExample" >
+  	select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <!-- add by zengjinc -->
+  <select id="queryUser" resultMap="BaseResultMap" parameterType="com.ssm.pojo.to.UserQueryTo" >
+  	 select 
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+    	<if test="userId != null">
+    		and user_id = #{userId,jdbcType=VARCHAR}
+    	</if>
+    	<if test="userName != null">
+    		and user_name = #{userName,jdbcType=VARCHAR}
+    	</if>
+    	<if test="userStatus != null">
+    		and user_status = #{userStatus,jdbcType=INTEGER}
+    	</if>
+    	<if test="trustResource != null">
+    		and user_res_uuid in (select res_uuid from resource where res_trust = #{trustResource,jdbcType=INTEGER})
+    	</if>
+    	<if test="userBizRole != null">
+    		and user_uuid in (select rel_user_bizrole_user_uuid from rel_user_bizrole where rel_user_bizrole_bizrole_uuid = #{userBizRole,jdbcType=VARCHAR})
+    	</if>
+    </where>
+  </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user
     where user_uuid = #{userUuid,jdbcType=VARCHAR}

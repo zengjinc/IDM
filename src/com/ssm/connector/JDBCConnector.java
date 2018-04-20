@@ -38,7 +38,7 @@ import com.ssm.utils.CommonUtil;
 
 import bsh.Interpreter;
 
-public class JDBCConnector implements IConnector,IConnector.IPassword, IConnector.IRole, IConnector.IOrganizationUnit, IConnector.ILockAccount{
+public class JDBCConnector implements IConnector,IConnector.IPassword, IConnector.IRole, IConnector.IOrganizationUnit{
 	private static Logger logger = LoggerFactory.getLogger(JDBCConnector.class);
 	Resource resource;
 	
@@ -126,7 +126,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public List<Map<String, List<String>>> listAccounts() {
+	public void listAccounts() {
 		String acctTable = acctJson.get("user_table").asText();
 		String resourceUuid = this.getResource().getResUuid();
 		Map<String,String> targetNameMap = new HashMap<>();
@@ -280,8 +280,6 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return null;
 	}
 
 	/*
@@ -834,19 +832,6 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 		return null;
 	}
 
-	/**
-	 * IConnector.ILockAccount
-	 */
-	@Override
-	public boolean lockAccount(String identifier, Map<String, List<String>> attributes) {
-		return false;
-	}
-
-	@Override
-	public boolean unlockAccount(String identifier, Map<String, List<String>> attributes) {
-		return false;
-	}
-	
 	private String encodePassword(String passwordEncodingScript, char[] password) {
 
 		logger.info("Encode Password.");

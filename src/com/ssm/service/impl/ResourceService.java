@@ -1,6 +1,5 @@
 package com.ssm.service.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssm.mapper.ResourceMapper;
@@ -19,7 +17,7 @@ import com.ssm.pojo.Resource;
 import com.ssm.pojo.ResourceExample;
 import com.ssm.service.IResourceService;
 
-@Service
+@Service("resourceService")
 public class ResourceService implements IResourceService{
 
 	private static Logger logger = LoggerFactory.getLogger(ResourceService.class);
@@ -69,4 +67,19 @@ public class ResourceService implements IResourceService{
 		return resourceMapper.selectByPrimaryKey(resUuid);
 	}
 	
+	@Override
+	public Resource getResourceByResId(String resId) throws Exception{
+		ResourceExample example = new ResourceExample();
+		example.createCriteria().andResIdEqualTo(resId);
+		List<Resource> list = resourceMapper.selectByExampleWithBLOBs(example);
+		if(list.size() > 0){
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Resource> getResourceByExample(ResourceExample example) throws Exception{
+		return resourceMapper.selectByExample(example);
+	}
 }

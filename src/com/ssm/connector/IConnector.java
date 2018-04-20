@@ -16,7 +16,7 @@ public interface IConnector {
 	boolean disconnect();
 	
 	 Map<String, List<String>> findAccount( String identifier);
-	 List<Map<String, List<String>>> listAccounts();
+	void listAccounts();
 	 
 	String createAccount(Map<String, String> attributesMap);
 	int updateAccount(String identifier, Map<String, String> attributesMap);
@@ -57,13 +57,6 @@ public interface IConnector {
 		Map<String, List<String>> getRootOU(String[] attributesToRetrieve);
 		List<Map<String, List<String>>> listChildOUs(String ouIdentifier, String[] attributesToRetrieve);
 		Map<String, List<String>> findOU(String ouIdentifier, String[] attributesToRetrieve);
-	}
-	/**
-	 * 
-	 */
-	public interface ILockAccount {
-		boolean lockAccount(String identifier, Map<String, List<String>> attributes);
-		boolean unlockAccount(String identifier, Map<String, List<String>> attributes);
 	}
 	
 }

@@ -14,7 +14,7 @@
 	<script src="js/jquery.cookie.js"></script>
 	<script type="text/javascript">
 		$(function(){
-			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='topolicy/eventnotification.action'>事件通知策略</a></li>");
+// 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='topolicy/eventnotification.action'>事件通知策略</a></li>");
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='topolicy/roleconflict.action'>角色冲突策略</a></li>");
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='topolicy/entitlement.action'>授权策略</a></li>");
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='topolicy/bizroleassign.action'>岗位分配策略</a></li>");

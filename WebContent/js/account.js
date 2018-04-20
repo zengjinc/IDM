@@ -357,7 +357,7 @@ $(function() {
 				var acctUuid = $("#acct_uuid_hidden").val();
 				var userUuid = $("#user_uuid_hidden").val();
 				
-				var oldPwd = $("#old_pwd").val();
+//				var oldPwd = $("#old_pwd").val();
 				var newPwd = $("#new_pwd").val();
 				var newPwd2 = $("#new_pwd2").val();
 				
@@ -365,7 +365,7 @@ $(function() {
 					"resUuid" : resUuid,
 					"acctUuid" : acctUuid,
 					"userUuid" : userUuid,
-					"oldPwd" : oldPwd,
+//					"oldPwd" : oldPwd,
 					"newPwd" : newPwd,
 					"newPwd2" : newPwd2
 				};

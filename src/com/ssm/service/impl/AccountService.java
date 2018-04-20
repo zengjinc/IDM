@@ -51,6 +51,7 @@ public class AccountService implements IAccountService{
 	public List<Account> getAccountsByResUuid(String resUuid) throws Exception{
 		AccountExample example = new AccountExample();
 		example.createCriteria().andAcctResUuidEqualTo(resUuid);
+		example.setOrderByClause("acct_login_id");
 		List<Account> accountList = accountMapper.selectByExample(example);
 		//排除掉已分配的主账号
 		List<Entitlement> entitlementList = entitlementMapper.selectByExample(null);

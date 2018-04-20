@@ -69,20 +69,6 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">用户类型</span> <input id="user_type" name="user_type" value="${user['userType']}" type="text" class="form-control"
-								placeholder="" readonly="readonly">
-						</div>
-					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" value="${user['userEmail']}" type="text"
-								class="form-control" placeholder="" readonly="readonly">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
 							<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" value="${user['userEmployeeId']}" type="text"
 								class="form-control" placeholder="" readonly="readonly">
 						</div>
@@ -90,6 +76,20 @@
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
 							<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" value="${user['userPhonenumber']}" type="text"
+								class="form-control" placeholder="" readonly="readonly">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+<!-- 					<div class="col-md-4"> -->
+<!-- 						<div class="input-group"> -->
+<%-- 							<span class="input-group-addon">用户类型</span> <input id="user_type" name="user_type" value="${user['userType']}" type="text" class="form-control" --%>
+<!-- 								placeholder="" readonly="readonly"> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" value="${user['userEmail']}" type="text"
 								class="form-control" placeholder="" readonly="readonly">
 						</div>
 					</div>
@@ -227,16 +227,7 @@
 		</div>
 	</div>
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="js/jquery-2.2.4.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-notify.js?version=<%=Math.random()%>"></script>
-	<!-- jqPaginator分页 -->
-	<script src="js/jqPaginator.js?version=<%=Math.random()%>"></script>
-	<!-- initial page -->
-	<script src="js/init.js?version=<%=Math.random()%>"></script>
+	<%@ include file="../commonscript.jsp" %>
 	<script src="js/privilege.js?version=<%=Math.random()%>"></script>
 	<script type="text/javascript">
 		

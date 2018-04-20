@@ -19,9 +19,6 @@ public class ReconRoleScheduleJob extends BaseScheduleJob implements TaskService
 	private static Logger logger = LoggerFactory.getLogger(ReconRoleScheduleJob.class);
 	
 	@Autowired
-	private SchedulejobMapper scheduleMapper;
-	
-	@Autowired
 	private ResourceMapper resourceMapper;
 	
 	@Override

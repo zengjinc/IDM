@@ -9,6 +9,8 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.mapper.UserMapper;
 import com.ssm.pojo.User;
 import com.ssm.pojo.UserExample;
+import com.ssm.pojo.UserQueryExample;
+import com.ssm.pojo.to.UserQueryTo;
 import com.ssm.service.IUserService;
 
 @Service("userService")
@@ -93,6 +95,19 @@ public class UserService implements IUserService{
 		int countByExample = userMapper.countByExample(example);
 		return countByExample;
 	}
+	
+	@Override
+	public List<User> queryUser(UserQueryTo userQueryTo) throws Exception{
+		 List<User> queryUser = userMapper.queryUser(userQueryTo);
+		return queryUser;
+	}
+
+	@Override
+	public List<User> queryUser(UserQueryExample example,PageBounds pageBounds) throws Exception {
+		List<User> userList = userMapper.queryUser2(example,pageBounds);
+		return userList;
+	}
+	
 
 	
 }
