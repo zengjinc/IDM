@@ -1,8 +1,5 @@
 package com.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Test1 {
 	public String name;
 	public String age;
@@ -19,24 +16,8 @@ public class Test1 {
 		this.age = age;
 	}
 	public static void main(String[] args) throws Exception {
-//		Test1 bean = new Test1();
-//		bean.setName("xiaoming");
-//		bean.setAge("11");
-//		Field[] fields = bean.getClass().getDeclaredFields();
-//		
-//		for(Field field : fields){
-//			System.out.println("name :" + field.getName() + ",val :" + field.get(bean));
-//		}
+		String s = "b9fce523af834989a97acdd2c991787c-->3debf1be7b9940ceb62d149561afd267,107e80b2c938466ea3cb16e20ec47e86";
 		
-		List<String> list = new ArrayList<>();
-		
-		list.add("1");
-		list.add("5");
-		list.add("4");
-		list.add("2");
-		
-		for(String s : list){
-			System.out.println(s);
-		}
+		System.out.println(s.indexOf("-->"));
 	}
 }

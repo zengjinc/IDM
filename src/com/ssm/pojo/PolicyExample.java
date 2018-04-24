@@ -384,73 +384,73 @@ public class PolicyExample {
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidIsNull() {
-            addCriterion("pol_type_uuid is null");
+        public Criteria andPolTypeIsNull() {
+            addCriterion("pol_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidIsNotNull() {
-            addCriterion("pol_type_uuid is not null");
+        public Criteria andPolTypeIsNotNull() {
+            addCriterion("pol_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidEqualTo(String value) {
-            addCriterion("pol_type_uuid =", value, "polTypeUuid");
+        public Criteria andPolTypeEqualTo(String value) {
+            addCriterion("pol_type =", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidNotEqualTo(String value) {
-            addCriterion("pol_type_uuid <>", value, "polTypeUuid");
+        public Criteria andPolTypeNotEqualTo(String value) {
+            addCriterion("pol_type <>", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidGreaterThan(String value) {
-            addCriterion("pol_type_uuid >", value, "polTypeUuid");
+        public Criteria andPolTypeGreaterThan(String value) {
+            addCriterion("pol_type >", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidGreaterThanOrEqualTo(String value) {
-            addCriterion("pol_type_uuid >=", value, "polTypeUuid");
+        public Criteria andPolTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("pol_type >=", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidLessThan(String value) {
-            addCriterion("pol_type_uuid <", value, "polTypeUuid");
+        public Criteria andPolTypeLessThan(String value) {
+            addCriterion("pol_type <", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidLessThanOrEqualTo(String value) {
-            addCriterion("pol_type_uuid <=", value, "polTypeUuid");
+        public Criteria andPolTypeLessThanOrEqualTo(String value) {
+            addCriterion("pol_type <=", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidLike(String value) {
-            addCriterion("pol_type_uuid like", value, "polTypeUuid");
+        public Criteria andPolTypeLike(String value) {
+            addCriterion("pol_type like", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidNotLike(String value) {
-            addCriterion("pol_type_uuid not like", value, "polTypeUuid");
+        public Criteria andPolTypeNotLike(String value) {
+            addCriterion("pol_type not like", value, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidIn(List<String> values) {
-            addCriterion("pol_type_uuid in", values, "polTypeUuid");
+        public Criteria andPolTypeIn(List<String> values) {
+            addCriterion("pol_type in", values, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidNotIn(List<String> values) {
-            addCriterion("pol_type_uuid not in", values, "polTypeUuid");
+        public Criteria andPolTypeNotIn(List<String> values) {
+            addCriterion("pol_type not in", values, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidBetween(String value1, String value2) {
-            addCriterion("pol_type_uuid between", value1, value2, "polTypeUuid");
+        public Criteria andPolTypeBetween(String value1, String value2) {
+            addCriterion("pol_type between", value1, value2, "polType");
             return (Criteria) this;
         }
 
-        public Criteria andPolTypeUuidNotBetween(String value1, String value2) {
-            addCriterion("pol_type_uuid not between", value1, value2, "polTypeUuid");
+        public Criteria andPolTypeNotBetween(String value1, String value2) {
+            addCriterion("pol_type not between", value1, value2, "polType");
             return (Criteria) this;
         }
     }

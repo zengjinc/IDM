@@ -62,7 +62,7 @@
 				</ul>
 				<div id="myTabContent" class="tab-content" style="min-height:50vh;">
 					<div class="tab-pane fade in active" id="home">
-						<table class="table table-striped">
+						<table class="table table-striped" id="role_conflict_table">
 							<thead>
 								<tr>
 									<th>角色</th>
@@ -70,13 +70,14 @@
 									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody></tbody>
+							<tfoot>
 								<tr>
-									<td style="vertical-align:middle;"><textarea class="form-control" rows="3" id="role_textarea">xxxResource->xxxRole&#10;xxxResource->xxxRole</textarea></td>
+									<td style="vertical-align:middle;"><textarea class="form-control" rows="5" id="role_textarea" data-value=""></textarea></td>	<!-- xxxResource->xxxRole&#10;xxxResource->xxxRole -->
 									<td style="vertical-align:middle;"><input id="max_num" type="text" class="form-control" /></td>
 									<td style="vertical-align:middle;"><button class="btn btn-primary" id="add_roleconflict_pol">添&nbsp;&nbsp;加</button></td>
 								</tr>
-							</tbody>
+							</tfoot>
 						</table>
 					</div>
 				</div>
@@ -99,10 +100,7 @@
 						<!-- 显示所有非信任资源的下拉框 ： 通过下拉框改变事件获取选中值 $('.selectpicker').on('changed.bs.select',function(e){	});-->
 						<div class="center-block">
 							<label for="resource_sel">资源 : </label>
-							<select id="resource_sel" class="selectpicker"  data-live-search="true"  title="资源">
-								<option value="11">1</option>
-								<option value="22">2</option>
-							</select>
+							<select id="resource_sel" class="selectpicker"  data-live-search="true"  title="资源"></select>
 						</div>
 						<!-- tab2 -->
 						<ul id="myTab2" class="nav nav-tabs">
@@ -221,10 +219,290 @@
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
+			
+			var policyUuid = GetQueryString("policyuuid");
+			
+			if(policyUuid != null){
+				var jsonStr = {"etmPolUuid" : policyUuid};
+				 $.ajax({
+						type : 'post',
+						url : 'topolicy/getpolicybyuuid.action',
+						contentType : 'application/json;charset=utf-8',
+	 					data : JSON.stringify(jsonStr),
+						dataType : 'json',
+						success : function(result){
+							
+							$("#roleconflict_pol_id").val(result.polId);
+							$("#roleconflict_pol_name").val(result.polName);
+							$("#roleconflict_pol_desc").val(result.polDesc);
+							
+							var roleconflict = JSON.parse(result.polJsonStr);
+							
+// 							console.log(roleconflict);
+							
+							for (var i = 0; i < roleconflict.length; i++) {
+								console.log(roleconflict[i].itroles);
+								console.log(roleconflict[i].maxNum);
+								
+								var itRoles = getItRole(roleconflict[i].itroles);
+								console.log(itRoles);
+								
+								$("#role_conflict_table").append("<tr><td data-value='"+roleconflict[i].itroles+"'>"+itRoles+"</td><td>"+roleconflict[i].maxNum+"</td><td><button class='btn btn-primary remove_role_conflict'>删&nbsp;&nbsp;除</button></td></tr>");
+								
+							}
+							
+						}
+					});
+			}
+			
 			$("#role_textarea").focus(function(){
 				$('#roleconflict_modal').modal('show');
 			})
+			
+			//模态框显示事件,获取所有非信任资源
+			$('#roleconflict_modal').on('show.bs.modal', function() {
+				$.ajax({
+					type : 'post',
+					url : 'toidentity/getnontrustresource.action',
+					contentType : 'application/json;charset=utf-8',// 指定为json类型
+					dataType : 'json', // 服务器响应类型
+					// data : JSON.stringify(jdbc),
+					success : function(resourceList) {// 返回json结果
+						for (var i = 0; i < resourceList.length; i++) {
+							$("#resource_sel").append("<option value='"+resourceList[i].resUuid+"'>"+resourceList[i].resId+"</option>");
+							
+						}
+						// 刷新下拉框，重新渲染 
+				        $('#resource_sel').selectpicker('refresh');  
+				        $('#resource_sel').selectpicker('render');  
+					},
+					error : function(information) {
+						$.notify({
+							icon : 'glyphicon glyphicon-danger-sign',
+							title : '<strong>出错了</strong>',
+							message : information
+						}, {
+							type : 'danger', // danger warning info success
+							mouse_over : 'pause',
+						});
+					}
+				});
+			})
+			
+			//模态框隐藏事件
+			$('#roleconflict_modal').on('hide.bs.modal', function() {
+				$("#resource_sel").empty();
+				$("#role_tab_table tr:not(:first)").empty();
+			})
+			
+			//获取选中的资源的角色
+			$('#resource_sel').on('changed.bs.select',function(e){
+				$("#role_tab_table tr:not(:first)").empty();
+				var value = $(this).val();
+				$.ajax({
+					type : 'post',
+					url : 'topolicy/getitrolebyresuuid2.action',
+					contentType : 'application/json;charset=utf-8',// 指定为json类型
+					dataType : 'json', // 服务器响应类型
+					data : JSON.stringify(value),
+					success : function(resourceList) {// 返回json结果
+						for (var i = 0; i < resourceList.length; i++) {
+							
+							$("#role_tab_table").append("<tr><td><input type='checkbox' class='check'></td><td data-value='"+resourceList[i].itroleUuid+"'>"+resourceList[i].itroleId+"</td><td>"+resourceList[i].itroleName+"</td></tr>");
+							
+						}
+					},
+					error : function(information) {
+						$.notify({
+							icon : 'glyphicon glyphicon-danger-sign',
+							title : '<strong>出错了</strong>',
+							message : information
+						}, {
+							type : 'danger', // danger warning info success
+							mouse_over : 'pause',
+						});
+					}
+				});
+				
+			});
 		})
+		
+		//模态框确认按钮
+		$("#roleconflict_modal_confirm").click(function(){
+// 			var resUuid = $("#resource_sel").val();
+			$("#role_textarea").val('');
+			$("#role_textarea").attr('data-value','');
+
+			var resId = $("#resource_sel").find("option:selected").text();
+			
+			$(".check").each(function() {
+				if ($(this).is(':checked')) {
+					var tr = $(this).parent().parent();
+					var itroleId = tr.children("td:eq(1)").text();
+					var itroleUuid = tr.children("td:eq(1)").attr('data-value');
+					
+					var value = $("#role_textarea").val();
+					if(value.length > 0){
+						$("#role_textarea").val(value + itroleId + "(" + resId + ");\n");
+					}else{
+						$("#role_textarea").val(itroleId + "(" + resId + ");\n");
+					}
+					
+					var data = $("#role_textarea").attr('data-value');
+					if(data.length > 0){
+						$("#role_textarea").attr('data-value',data + "," + itroleUuid);
+					}else{
+						$("#role_textarea").attr('data-value',itroleUuid);
+					}
+					
+					$(this).prop("checked", false);
+				}
+			})
+			$(".check_all").prop("checked", false);
+		})
+		
+		//全选
+		$(".check_all").change(function(){
+			if ($(this).is(':checked')) {
+				$(".check").prop("checked", true);
+			} else {
+				$(".check").prop("checked", false);
+			}
+		});
+		
+		//添加策略项
+		$("#add_roleconflict_pol").click(function(){
+			var value = $("#role_textarea").val();
+			var dataValue = $("#role_textarea").attr('data-value');
+			var maxNum = $("#max_num").val();
+			
+			$("#role_conflict_table").append("<tr class='my_tr'><td data-value='"+dataValue+"'>"+value+"</td><td>"+maxNum+"</td><td><button class='btn btn-primary remove_role_conflict'>删&nbsp;&nbsp;除</button></td></tr>");
+			
+		})
+		
+		$(".container").on('click','.remove_role_conflict',function(){
+			$(this).parent().parent().remove();
+		})
+		
+		//保存角色冲突策略
+		$("#save_role_conflict_btn").click(function(){
+			var policyId = $("#roleconflict_pol_id").val();
+			var policyName = $("#roleconflict_pol_name").val();
+			var policyDesc = $("#roleconflict_pol_desc").val();
+			
+			var polArr = new Array();
+				
+			$(".my_tr").each(function(){
+				var itroles = $(this).children("td:eq(0)").attr('data-value');
+				var maxNum = $(this).children("td:eq(1)").text();
+				
+				var polJson = {"itroles" : itroles, "maxNum" : maxNum};
+				
+				polArr.push(polJson);
+			})
+			
+			var policyUuid = GetQueryString("policyuuid");
+			var jsonStr = {"policyUuid" : policyUuid, "policyId" : policyId, "policyName" : policyName, "policyDesc" : policyDesc, "polArr" : polArr};
+			
+			$.ajax({
+				type : 'post',
+				url : 'topolicy/saveroleconflictpolicy.action',
+				contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+				dataType : 'text',
+				success : function(information){
+					if(information.indexOf("success") >= 0){
+						$.notify({
+							icon : 'glyphicon glyphicon-success-sign',
+							title : '<strong>保存角色冲突策略结果</strong>',
+							message : "成功",
+							allow_dismiss : false
+							// url: 'https://github.com/mouse0270/bootstrap-notify',
+							// target: '_blank'
+						}, {
+							type : 'success', // danger warning info success
+							mouse_over : 'pause'
+						});
+						setTimeout(function(){window.location.href='topolicy/roleconflict.action'}, 2000);
+					}else{
+						$.notify({
+							icon : 'glyphicon glyphicon-success-sign',
+							title : '<strong>保存角色冲突策略结果：出错！</strong>',
+							message : information,
+							allow_dismiss : false
+						}, {
+							type : 'warning', // danger warning info success
+							mouse_over : 'pause'
+						});
+					}
+				}
+			});
+			
+		})
+		function getItRole(roleString){
+			
+			var roleArr;
+			
+			if(roleString.indexOf(",") >= 0){
+				
+				roleArr = roleString.split(',');
+			}else{
+				
+				roleArr = roleString;
+			}
+			
+			var data;
+			
+			$.ajax({
+				type : 'post',
+				url : 'topolicy/getRole.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(roleArr),
+				dataType : 'json',
+				async : false,
+				success : function(result){
+	//					console.log("result : " + result);
+					for (var i = 0; i < result.length; i++) {
+						if(result[i] != null){
+							if(data != undefined){
+								data +=result[i].itroleId;
+								
+								var resource = getResource(result[i].itroleResUuid);
+								
+								data += resource + ";";
+							}else{
+								
+								data = result[i].itroleId;
+								
+								var resource = getResource(result[i].itroleResUuid);
+								
+								data += resource + ";";
+							}
+						}
+					}
+				}
+			});
+			
+			return data;
+		}
+		
+		function getResource(resUuid){
+			var data = "";
+			
+			var jsonStr = {"resUuid" : resUuid};
+			$.ajax({
+				type : 'post',
+				url : 'topolicy/getResource.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(jsonStr),
+				dataType : 'json',
+				async : false,
+				success : function(result){
+					data = "(" + result.resId + ")";
+				}
+			});
+			return data;
+		}
 	</script>
 </body>
 </html>

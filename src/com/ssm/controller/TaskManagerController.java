@@ -133,7 +133,7 @@ public class TaskManagerController {
 			ResourceExample example = new ResourceExample();
 			example.createCriteria().andResTrustEqualTo(1);
 			resourceList = resourceMapper.selectByExample(example, new PageBounds());
-		} else if (scdJobType.equals("assignAccountOwnerScheduleJob")) {
+		} else if (scdJobType.equals("assignAccountOwnerScheduleJob") || scdJobType.equals("reconRoleScheduleJob")) {
 			// 非信任
 			ResourceExample example = new ResourceExample();
 			example.createCriteria().andResTrustEqualTo(0);

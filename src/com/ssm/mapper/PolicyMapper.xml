@@ -6,7 +6,10 @@
     <result column="pol_id" property="polId" jdbcType="VARCHAR" />
     <result column="pol_name" property="polName" jdbcType="VARCHAR" />
     <result column="pol_desc" property="polDesc" jdbcType="VARCHAR" />
-    <result column="pol_type_uuid" property="polTypeUuid" jdbcType="VARCHAR" />
+    <result column="pol_type" property="polType" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ssm.pojo.Policy" extends="BaseResultMap" >
+    <result column="pol_json_str" property="polJsonStr" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,8 +70,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    pol_uuid, pol_id, pol_name, pol_desc, pol_type_uuid
+    pol_uuid, pol_id, pol_name, pol_desc, pol_type
   </sql>
+  <sql id="Blob_Column_List" >
+    pol_json_str
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.ssm.pojo.PolicyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from policy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.PolicyExample" >
     select
     <if test="distinct" >
@@ -83,9 +105,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from policy
     where pol_uuid = #{polUuid,jdbcType=VARCHAR}
   </select>
@@ -101,9 +125,11 @@
   </delete>
   <insert id="insert" parameterType="com.ssm.pojo.Policy" >
     insert into policy (pol_uuid, pol_id, pol_name, 
-      pol_desc, pol_type_uuid)
+      pol_desc, pol_type, pol_json_str
+      )
     values (#{polUuid,jdbcType=VARCHAR}, #{polId,jdbcType=VARCHAR}, #{polName,jdbcType=VARCHAR}, 
-      #{polDesc,jdbcType=VARCHAR}, #{polTypeUuid,jdbcType=VARCHAR})
+      #{polDesc,jdbcType=VARCHAR}, #{polType,jdbcType=VARCHAR}, #{polJsonStr,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ssm.pojo.Policy" >
     insert into policy
@@ -120,8 +146,11 @@
       <if test="polDesc != null" >
         pol_desc,
       </if>
-      <if test="polTypeUuid != null" >
-        pol_type_uuid,
+      <if test="polType != null" >
+        pol_type,
+      </if>
+      <if test="polJsonStr != null" >
+        pol_json_str,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -137,8 +166,11 @@
       <if test="polDesc != null" >
         #{polDesc,jdbcType=VARCHAR},
       </if>
-      <if test="polTypeUuid != null" >
-        #{polTypeUuid,jdbcType=VARCHAR},
+      <if test="polType != null" >
+        #{polType,jdbcType=VARCHAR},
+      </if>
+      <if test="polJsonStr != null" >
+        #{polJsonStr,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -163,10 +195,25 @@
       <if test="record.polDesc != null" >
         pol_desc = #{record.polDesc,jdbcType=VARCHAR},
       </if>
-      <if test="record.polTypeUuid != null" >
-        pol_type_uuid = #{record.polTypeUuid,jdbcType=VARCHAR},
+      <if test="record.polType != null" >
+        pol_type = #{record.polType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.polJsonStr != null" >
+        pol_json_str = #{record.polJsonStr,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update policy
+    set pol_uuid = #{record.polUuid,jdbcType=VARCHAR},
+      pol_id = #{record.polId,jdbcType=VARCHAR},
+      pol_name = #{record.polName,jdbcType=VARCHAR},
+      pol_desc = #{record.polDesc,jdbcType=VARCHAR},
+      pol_type = #{record.polType,jdbcType=VARCHAR},
+      pol_json_str = #{record.polJsonStr,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -177,7 +224,7 @@
       pol_id = #{record.polId,jdbcType=VARCHAR},
       pol_name = #{record.polName,jdbcType=VARCHAR},
       pol_desc = #{record.polDesc,jdbcType=VARCHAR},
-      pol_type_uuid = #{record.polTypeUuid,jdbcType=VARCHAR}
+      pol_type = #{record.polType,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -194,10 +241,22 @@
       <if test="polDesc != null" >
         pol_desc = #{polDesc,jdbcType=VARCHAR},
       </if>
-      <if test="polTypeUuid != null" >
-        pol_type_uuid = #{polTypeUuid,jdbcType=VARCHAR},
+      <if test="polType != null" >
+        pol_type = #{polType,jdbcType=VARCHAR},
+      </if>
+      <if test="polJsonStr != null" >
+        pol_json_str = #{polJsonStr,jdbcType=LONGVARCHAR},
       </if>
     </set>
+    where pol_uuid = #{polUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ssm.pojo.Policy" >
+    update policy
+    set pol_id = #{polId,jdbcType=VARCHAR},
+      pol_name = #{polName,jdbcType=VARCHAR},
+      pol_desc = #{polDesc,jdbcType=VARCHAR},
+      pol_type = #{polType,jdbcType=VARCHAR},
+      pol_json_str = #{polJsonStr,jdbcType=LONGVARCHAR}
     where pol_uuid = #{polUuid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Policy" >
@@ -205,7 +264,7 @@
     set pol_id = #{polId,jdbcType=VARCHAR},
       pol_name = #{polName,jdbcType=VARCHAR},
       pol_desc = #{polDesc,jdbcType=VARCHAR},
-      pol_type_uuid = #{polTypeUuid,jdbcType=VARCHAR}
+      pol_type = #{polType,jdbcType=VARCHAR}
     where pol_uuid = #{polUuid,jdbcType=VARCHAR}
   </update>
 </mapper>

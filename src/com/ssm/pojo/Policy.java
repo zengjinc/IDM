@@ -9,7 +9,9 @@ public class Policy {
 
     private String polDesc;
 
-    private String polTypeUuid;
+    private String polType;
+
+    private String polJsonStr;
 
     public String getPolUuid() {
         return polUuid;
@@ -43,11 +45,19 @@ public class Policy {
         this.polDesc = polDesc == null ? null : polDesc.trim();
     }
 
-    public String getPolTypeUuid() {
-        return polTypeUuid;
+    public String getPolType() {
+        return polType;
     }
 
-    public void setPolTypeUuid(String polTypeUuid) {
-        this.polTypeUuid = polTypeUuid == null ? null : polTypeUuid.trim();
+    public void setPolType(String polType) {
+        this.polType = polType == null ? null : polType.trim();
+    }
+
+    public String getPolJsonStr() {
+        return polJsonStr;
+    }
+
+    public void setPolJsonStr(String polJsonStr) {
+        this.polJsonStr = polJsonStr == null ? null : polJsonStr.trim();
     }
 }

@@ -35,10 +35,10 @@ public class ItroleService implements IItroleService{
 
 	@Override
 	public Map<String,List<Itrole>> getItroleByResourceUuid(String resUuid, String acctUuid) throws Exception {
-		ItroleExample example = new ItroleExample();
-		example.createCriteria().andItroleResUuidEqualTo(resUuid);
-		example.setOrderByClause("itrole_id");
-		List<Itrole> assignableItrole = itroleMapper.selectByExample(example);
+//		ItroleExample example = new ItroleExample();
+//		example.createCriteria().andItroleResUuidEqualTo(resUuid);
+//		example.setOrderByClause("itrole_id");
+		List<Itrole> assignableItrole = getItroleByResUuid(resUuid);
 		
 		PrivilegeExample example1 = new PrivilegeExample();
 		example1.createCriteria().andPvgAcctUuidEqualTo(acctUuid);
@@ -63,5 +63,22 @@ public class ItroleService implements IItroleService{
 		result.put("assignable", assignableItrole);
 		
 		return result;
+	}
+
+	@Override
+	public List<Itrole> getItroleByResUuid(String resUuid) throws Exception{
+		
+		ItroleExample example = new ItroleExample();
+		example.createCriteria().andItroleResUuidEqualTo(resUuid);
+		example.setOrderByClause("itrole_id");
+		
+		List<Itrole> assignableItrole = itroleMapper.selectByExample(example);
+		
+		return assignableItrole;
+	}
+	
+	@Override
+	public Itrole getItroleByItroleUuid(String itroleUuid) throws Exception{
+		return itroleMapper.selectByPrimaryKey(itroleUuid);
 	}
 }

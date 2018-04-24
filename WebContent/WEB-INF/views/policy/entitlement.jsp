@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -38,19 +39,19 @@
 			<!-- 主体右 -->
 			<div class="col-md-10 subject">
 				<div class="col-md-12">
-					<button class="btn btn-primary">创&nbsp;&nbsp;建</button>
+					<a class="btn btn-primary" href="topolicy/entitlementdetail.action">创&nbsp;&nbsp;建</a>
 				</div>
-				<form class="form-horizontal center-block" role="form">
+				<form class="form-horizontal center-block" role="form" method="post" action="topolicy/entitlement.action">
 					<div class="form-group">
-						<label for="userUuid" class="col-md-5 control-label">授权策略标识</label>
+						<label for="etm_pol_id" class="col-md-5 control-label">授权策略标识</label>
 						<div class="col-md-3">
-							<input type="text" class="form-control" id="userUuid" placeholder="">
+							<input type="text" class="form-control" id="etm_pol_id" name="polId">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="userName" class="col-md-5 control-label">授权策略名称</label>
+						<label for="etm_pol_name" class="col-md-5 control-label">授权策略名称</label>
 						<div class="col-md-3">
-							<input type="text" class="form-control" id="userName" placeholder="">
+							<input type="text" class="form-control" id="etm_pol_name" name="polName">
 						</div>
 					</div>
 
@@ -72,35 +73,48 @@
 						</tr>
 					</thead>
 					<tbody>
+					<c:forEach items="${etmPolicyList}" var="etmPolicy">
 						<tr>
-							<td>test</td>
-							<td>test</td>
-							<td>test</td>
-							<td><a href="topolicy/entitlementdetail.action">查看</a></td>
+							<td>${etmPolicy['polId']}</td>
+							<td>${etmPolicy['polName']}</td>
+							<td>${etmPolicy['polDesc']}</td>
+							<td><a href="topolicy/entitlementdetail.action?etmpoluuid=${etmPolicy['polUuid']}">查看</a>&nbsp;&nbsp;
+								<a href="topolicy/deletmpolicy.action?etmlpouuid=${etmPolicy['polUuid']}">删除</a>
+							</td>
 						</tr>
-						<tr>
-							<td>test</td>
-							<td>test</td>
-							<td>test</td>
-							<td><a href="topolicy/entitlementdetail.action">查看</a></td>
-						</tr>
+					</c:forEach>
 					</tbody>
 				</table>
-				<div class="center-block">
-					<ul class="pagination">
-						<li><a href="#">&laquo;</a></li>
-						<li><a href="#">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#">&raquo;</a></li>
-					</ul>
-				</div>
+				<!-- 控制分页的元素 用 class进行分页的话可以有上下两个分页导航，要求要在表格上面也有一个一样的ul -->
+				<center>
+					<ul class="pagination" id="pagination0"></ul>
+				</center>
 			</div>
 		</div>
 	</div>
 
 	<%@ include file="../commonscript.jsp" %>
+	<script type="text/javascript">
+		$(function(){
+			$('#pagination0')
+			.jqPaginator(
+					{
+						totalPages : parseInt('${etmPolicyListPaginator.totalPages}'),	//${resourceListPaginator.totalPages}
+						visiblePages : 5,
+						currentPage : parseInt('${etmPolicyListPaginator.page}'),	//${resourceListPaginator.page}
+						first : '<li class="prev"><a href="javascript:;">首页</a></li>',
+						prev : '<li class="prev"><a href="javascript:;">上一页</a></li>',
+						next : '<li class="next"><a href="javascript:;">下一页</a></li>',
+						last : '<li class="prev"><a href="javascript:;">末页</a></li>',
+						page : '<li class="page"><a href="javascript:;">{{page}}</a></li>',
+						onPageChange : function(num, type) {
+							if (type == "change") {
+								location.href = "toidentity/entitlement.action?page="
+										+ num;
+							}
+						}
+					});
+		})
+	</script>
 </body>
 </html>

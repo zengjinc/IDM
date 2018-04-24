@@ -77,12 +77,12 @@
 									<td style="vertical-align:middle;">
 									<label for="biz_role">岗位</label><br>
 									<select multiple="multiple" id="biz_role" class="selectpicker"  data-live-search="true"  title="">
-										<option value="11">1</option>
+<!-- 										<option value="11">1</option> -->
 									</select>
 									
 <!-- 									<input id="date_end" name="date2" type="text" class="form-control" placeholder="组织单位"/> -->
 									</td>
-									<td style="vertical-align:middle;"><textarea class="form-control" rows="5" id="entitlement_textarea">xxxResource->xxxRole</textarea></td>
+									<td style="vertical-align:middle;"><textarea class="form-control" rows="5" id="entitlement_textarea"></textarea></td>
 									<td style="vertical-align:middle;"><button class="btn btn-primary" id="add_pol_btn">添&nbsp;&nbsp;加</button></td>
 								</tr>
 							</tfoot>
@@ -108,10 +108,7 @@
 						<!-- 显示所有非信任资源的下拉框 ： 通过下拉框改变事件获取选中值 $('.selectpicker').on('changed.bs.select',function(e){	});-->
 						<div class="center-block">
 							<label for="resource_sel">资源 : </label>
-							<select multiple="multiple" id="resource_sel" class="selectpicker"  data-live-search="true"  title="资源">
-								<option value="11">1</option>
-								<option value="22">2</option>
-							</select>
+							<select multiple="multiple" id="resource_sel" class="selectpicker"  data-live-search="true"  title="资源"></select>
 						</div>
 						<!-- tab2 -->
 						<ul id="myTab2" class="nav nav-tabs">
@@ -131,12 +128,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>1</td>
-											<td>1</td>
-											<td><button class="btn btn-primary select_role">选择角色</button></td>
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -155,89 +146,6 @@
 								</table>
 							</div>
 						</div>
-						<!-- tab3 -->
-						<ul id="myTab3" class="nav nav-tabs" style="display:none;">
-							<li class="active" id="tab_basic"><a href="#basic_attribute" data-toggle="tab">属性</a></li>
-						</ul>
-						<div id="myTabContent3" class="tab-content" style="display:none;">
-							<div class="tab-pane fade in active" id="basic_attribute">
-								<!-- 基本属性 -->
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th>基本属性</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>
-												<form class="form-horizontal" role="form">
-													<div class="form-group">
-														<label for="user_id" class="col-md-2 control-label">用户标识</label>
-														<div class="col-md-5">
-<!-- 															<input type="text" class="form-control" id="user_id" name="user_id" placeholder=""> -->
-															<label class="control-label" id="user_id_label"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<label for="resource_id" class="col-md-2 control-label">资源标识</label>
-														<div class="col-md-5">
-<!-- 															<input type="text" class="form-control" id="resource_id" name="resource_id" placeholder=""> -->
-															<label class="control-label" id="resource_id_label"></label>
-														</div>
-													</div>
-													<div class="form-group">
-														<label for="account_id" class="col-md-2 control-label">账号标识</label>
-														<div class="col-md-5">
-															<input type="text" class="form-control" id="account_id" name="account_id" placeholder="">
-														</div>
-													</div>
-<!-- 													<div class="form-group"> -->
-<!-- 														<label for="account_type" class="col-md-2 control-label">账户类型</label> -->
-<!-- 														<div class="col-md-5"> -->
-<!-- 															<select class="form-control" id="account_type" name="account_type"> -->
-<!-- 																<option value="1">主账户</option> -->
-<!-- 																<option value="0">次账户</option> -->
-<!-- 															</select> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-													<div class="form-group">
-														<label for="account_pwd" class="col-md-2 control-label">密码</label>
-														<div class="col-md-5">
-															<input type="password" class="form-control" id="account_pwd" name="account_pwd">
-														</div>
-													</div>
-													<div class="form-group">
-														<label for="account_pwd2" class="col-md-2 control-label">确认密码</label>
-														<div class="col-md-5">
-															<input type="password" class="form-control" id="account_pwd2" name="account_pwd2">
-														</div>
-													</div>
-												</form>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<!-- 账号属性 -->
-								<table class="table table-striped">
-									<thead>
-										<tr>
-											<th>账号属性</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>
-												<form class="form-horizontal" role="form" id="acct_attr_form">
-													
-												</form>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								
-							</div>
-						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -252,32 +160,479 @@
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
+			var etmPolUuid = GetQueryString("etmpoluuid");
+			
+			if(etmPolUuid != null){
+				var jsonStr = {"etmPolUuid" : etmPolUuid};
+				 $.ajax({
+						type : 'post',
+						url : 'topolicy/getpolicybyuuid.action',
+						contentType : 'application/json;charset=utf-8',
+	 					data : JSON.stringify(jsonStr),
+						dataType : 'text',
+						success : function(result){
+							var data = JSON.parse(result);
+							
+							$("#etm_pol_id").val(data.polId);
+							$("#etm_pol_name").val(data.polName);
+							$("#etm_pol_desc").val(data.polDesc);
+							
+							var entitlement = JSON.parse(data.polJsonStr);
+							
+// 							console.log(entitlement);
+							
+							for (var i = 0; i < entitlement.length; i++) {
+								
+								//重新写两个函数用来做 ajax 请求
+								var bizrole = getBizRole(entitlement[i].bizRole);//返回 bizRole 组合
+								var resAndRole = getResourceAndRole(entitlement[i].entitlement);	//返回 xxx-->xxx 组合
+								
+	
+								var resAndRoleStr = "";
+								for (var k = 0; k < resAndRole.length; k++) {
+									resAndRoleStr += resAndRole[k];
+								}
+								
+								$("#entitlement_table").append("<tr><td data-value='"+entitlement[i].bizRole+"'>"+bizrole+"</td><td data-value='"+entitlement[i].entitlement+"'>"+resAndRoleStr+"</td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</button></td></tr>");
+								
+							}
+							
+						}
+					});
+			}
+			
+			//保存当前授权策略
+			$("#save_entitlement_btn").click(function(){
+				var etmPolId = $("#etm_pol_id").val();
+				var etmPolName = $("#etm_pol_name").val();
+				var etmPolDesc = $("#etm_pol_desc").val();
+				
+				var etmArr = new Array();
+				$("#entitlement_table").find("tbody").children().each(function(){
+					var bizRole = $(this).children("td:eq(0)").attr('data-value');
+					var entitlement = $(this).children("td:eq(1)").attr('data-value');
+					
+					var etmJson = {"bizRole" : bizRole, "entitlement" : entitlement};
+					
+					etmArr.push(etmJson);
+				})
+				
+// 				console.log(etmArr);
+				
+				var jsonStr = {"etmPolUuid" : etmPolUuid,"etmPolId" : etmPolId, "etmPolName" : etmPolName, "etmPolDesc" : etmPolDesc, "etmArr" : etmArr};
+				
+				 $.ajax({
+						type : 'post',
+						url : 'topolicy/saveetmpolicy.action',
+						contentType : 'application/json;charset=utf-8',
+	 					data : JSON.stringify(jsonStr),
+						dataType : 'text',
+						success : function(information){
+							if(information.indexOf("success") >= 0){
+								$.notify({
+									icon : 'glyphicon glyphicon-success-sign',
+									title : '<strong>保存授权策略结果</strong>',
+									message : "成功",
+									allow_dismiss : false
+									// url: 'https://github.com/mouse0270/bootstrap-notify',
+									// target: '_blank'
+								}, {
+									type : 'success', // danger warning info success
+									mouse_over : 'pause'
+								});
+								setTimeout(function(){window.location.href='topolicy/entitlement.action'}, 2000);
+							}else{
+								$.notify({
+									icon : 'glyphicon glyphicon-success-sign',
+									title : '<strong>保存授权策略结果：出错！</strong>',
+									message : information,
+									allow_dismiss : false
+								}, {
+									type : 'warning', // danger warning info success
+									mouse_over : 'pause'
+								});
+							}
+						}
+					});
+				
+			})
+			
+			//页面加载完成时加载所有的岗位
+			 window.onload = function(){  
+				 $.ajax({
+						type : 'post',
+						url : 'toconfig/listallbizrole.action',
+						contentType : 'application/json;charset=utf-8',
+//	 					data : JSON.stringify(jsonStr),
+						dataType : 'json',
+						success : function(result){
+							for (var i = 0; i < result.length; i++) {
+							$("#biz_role").append("<option value='"+result[i].bizRoleUuid+"'>"+result[i].bizRoleName+"</option>");
+							}
+							// 刷新下拉框，重新渲染 
+					        $('#biz_role').selectpicker('refresh');  
+					        $('#biz_role').selectpicker('render');  
+						}
+					});
+	         }
+			
 			//显示模态框
 			$("#entitlement_textarea").focus(function(){
 				$('#entitlement_modal').modal('show');
 			})
 			
+			//模态框显示事件,获取所有非信任资源
+			$('#entitlement_modal').on('show.bs.modal', function() {
+				$.ajax({
+					type : 'post',
+					url : 'toidentity/getnontrustresource.action',
+					contentType : 'application/json;charset=utf-8',// 指定为json类型
+					dataType : 'json', // 服务器响应类型
+					// data : JSON.stringify(jdbc),
+					success : function(resourceList) {// 返回json结果
+						for (var i = 0; i < resourceList.length; i++) {
+							$("#resource_sel").append("<option value='"+resourceList[i].resUuid+"'>"+resourceList[i].resId+"</option>");
+							
+						}
+						// 刷新下拉框，重新渲染 
+				        $('#resource_sel').selectpicker('refresh');  
+				        $('#resource_sel').selectpicker('render');  
+					},
+					error : function(information) {
+						$.notify({
+							icon : 'glyphicon glyphicon-danger-sign',
+							title : '<strong>出错了</strong>',
+							message : information
+						}, {
+							type : 'danger', // danger warning info success
+							mouse_over : 'pause',
+						});
+					}
+				});
+			})
+			//模态框隐藏事件
+			$('#entitlement_modal').on('hide.bs.modal', function() {
+				$("#resource_sel").empty();
+				$("#resource_tab_table tr:not(:first)").empty();
+				$("#role_tab_table tr:not(:first)").empty();
+			})
+			
 			//添加授权策略
 			$("#add_pol_btn").click(function(){
-				var bizRole = $("#biz_role").val();
-				var etm = $("#entitlement_textarea").text();
+				var bizRoleUuid = $("#biz_role").val();
+				var etm = $("#entitlement_textarea").val();
+				var etmValue = $("#entitlement_textarea").attr('data-value');
+				console.log(etm);
+				var bizRoleName;
+				$("#biz_role").find("option:selected").each(function(){
+					if(bizRoleName == null || bizRoleName == ""){
+						bizRoleName = $(this).text();
+					}else{
+						bizRoleName += "," + $(this).text();
+					}				
+				})
 				
-				$("#entitlement_table").append("<tr><td><label>"+bizRole+"</label></td><td><label>"+etm+"</label></td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</td></tr>");
+				$("#entitlement_table").append("<tr><td data-value='"+bizRoleUuid+"'>"+bizRoleName+"</td><td data-value='"+etmValue+"'>"+etm+"</td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</td></tr>");
 				
 			})
 			
 			//选择角色
+			var tr;
 			$(".container").on('click','.select_role',function(){
-				// 通过名称选取标签页
+				$("#role_tab_table tr:not(:first)").empty();				
+				
+				tr = $(this).parent().parent();
+				var resUuid = tr.children("td:eq(0)").attr('data-value');
+				var roles = tr.children("td:eq(2)").text();
+				var roleArr = new Array();
+				if(roles != ""){
+					roleArr = roles.split(",");
+// 					console.log(roleArr);
+				}
+				
+				var jsonStr = {	"resUuid" : resUuid,"roleArr" : roleArr }
+				
+				$.ajax({
+					type : 'post',
+					url : 'topolicy/getitrolebyresuuid.action',
+					contentType : 'application/json;charset=utf-8',// 指定为json类型
+					dataType : 'json', // 服务器响应类型
+					data : JSON.stringify(jsonStr),
+					success : function(itroleList) {// 返回json结果
+						
+						for (var i = 0; i < itroleList.length; i++) {
+							$("#role_tab_table").append("<tr><td data-value='"+itroleList[i].itroleUuid+"'>"+itroleList[i].itroleId+"</td><td>"+itroleList[i].itroleName+"</td><td><button class='btn btn-primary assign_role'>分&nbsp;&nbsp;配</button></td></tr>");
+						}
+						
+					},
+					error : function(information) {
+						$.notify({
+							icon : 'glyphicon glyphicon-danger-sign',
+							title : '<strong>出错了</strong>',
+							message : information
+						}, {
+							type : 'danger', // danger warning info success
+							mouse_over : 'pause',
+						});
+					}
+				});
+				
+				
 				$('#myTab2 a[href="#role_tab"]').tab('show');
+			})
+			
+			//分配角色
+			$(".container").on('click','.assign_role',function(){
+				$(this).prop('disabled', true);
+				
+				var roleId = $(this).parent().parent().children("td:eq(0)").text();
+				var roleUuid = $(this).parent().parent().children("td:eq(0)").attr('data-value');
+				
+				var roles = tr.children("td:eq(2)").text();
+				var rolesValue = tr.children("td:eq(2)").attr('data-value');
+				
+				if(roles != ""){
+					tr.children("td:eq(2)").text(roles + "," + roleId);
+					tr.children("td:eq(2)").attr('data-value',rolesValue + "," + roleUuid);
+				}else{
+					tr.children("td:eq(2)").text(roleId);
+					tr.children("td:eq(2)").attr('data-value',roleUuid);
+				}
 			})
 			
 			//获取选中的资源
 			$('#resource_sel').on('changed.bs.select',function(e){
+				$("#resource_tab_table tr:not(:first)").empty();
 				var value = $(this).val();
-				console.log(value);
+				$.ajax({
+					type : 'post',
+					url : 'topolicy/getresourcebyresuuid.action',
+					contentType : 'application/json;charset=utf-8',// 指定为json类型
+					dataType : 'json', // 服务器响应类型
+					data : JSON.stringify(value),
+					success : function(resourceList) {// 返回json结果
+						for (var i = 0; i < resourceList.length; i++) {
+							$("#resource_tab_table").append("<tr class='my_tr'><td data-value='"+resourceList[i].resUuid+"'>"+resourceList[i].resId+"</td><td>"+resourceList[i].resName+"</td><td></td><td><button class='btn btn-primary select_role'>选择角色</button></td></tr>");
+						}
+					},
+					error : function(information) {
+						$.notify({
+							icon : 'glyphicon glyphicon-danger-sign',
+							title : '<strong>出错了</strong>',
+							message : information
+						}, {
+							type : 'danger', // danger warning info success
+							mouse_over : 'pause',
+						});
+					}
+				});
+				
+				$('#myTab2 a[href="#resource_tab"]').tab('show');
 			});
+			
+			//模态框确认按钮
+			$("#entitlement_modal_confirm").click(function(){
+				
+				$("#entitlement_textarea").empty();
+				
+				$(".my_tr").each(function(){
+					
+					if($(this).children().length > 0){
+						var resource = $(this).children("td:eq(0)").text();
+						var resourceUuid = $(this).children("td:eq(0)").attr('data-value');
+						
+						var roles = $(this).children("td:eq(2)").text();
+						var rolesValue = $(this).children("td:eq(2)").attr('data-value');
+						
+						
+						if(roles != null && roles != ""){
+							
+							var value = $("#entitlement_textarea").val();
+							if(value != null && value != "" && value != undefined){
+								
+								$("#entitlement_textarea").val(value + resource + "-->" + roles + ";\n");
+							}else{
+								
+								$("#entitlement_textarea").val(resource + "-->" + roles + ";\n");
+							}
+							
+							var dataValue = $("#entitlement_textarea").attr('data-value');
+							
+							if(dataValue != null && dataValue != "" && dataValue != undefined){
+								
+								$("#entitlement_textarea").attr('data-value',dataValue + resourceUuid + "-->" + rolesValue + ";");
+								
+							}else{
+								
+								$("#entitlement_textarea").attr('data-value',resourceUuid + "-->" + rolesValue + ";");
+							}
+						}else{
+							
+							var value = $("#entitlement_textarea").val();
+							
+							if(value != null && value != "" && value != undefined){
+								
+								$("#entitlement_textarea").val(value + resource + ";\n");
+							}else{
+								
+								$("#entitlement_textarea").val(resource + ";\n");
+							}
+							
+							
+							var dataValue = $("#entitlement_textarea").attr('data-value');
+							
+							if(dataValue != null && dataValue != "" && dataValue != undefined){
+								
+								$("#entitlement_textarea").attr('data-value',resourceUuid + ";");
+							}else{
+								
+								$("#entitlement_textarea").attr('data-value',resourceUuid + ";");
+							}
+							
+						}
+					}
+					
+					
+				})
+			})
+			
+			//删除授权策略
+			$(".container").on('click','.remove_etm',function(){
+				$(this).parent().parent().remove();
+			})
 		})
+		
+		function getBizRole(bizRoleString){
+			var bizRoleArr;
+			if(bizRoleString.indexOf(",") >= 0){
+				bizRoleArr = bizRoleString.split(',');
+			}else{
+				bizRoleArr = bizRoleString;
+			}
+			
+			var data;
+			
+			$.ajax({
+				type : 'post',
+				url : 'topolicy/getBizrole.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(bizRoleArr),
+				dataType : 'json',
+				async : false,
+				success : function(result){
+					for (var i = 0; i < result.length; i++) {
+						if(result[i] != null){
+							if(data != undefined){
+								data += "," + result[i].bizRoleId;
+							}else{
+								
+								data = result[i].bizRoleId;
+							}
+						}
+					}
+				}
+			});
+			 
+			return data;
+		}
+		
+		function getResourceAndRole(resourceAndRolString){
+			//// 53f9980fd98747ce889e00cfa40388ce;b9fce523af834989a97acdd2c991787c-->3debf1be7b9940ceb62d149561afd267,107e80b2c938466ea3cb16e20ec47e86;
+// 			console.log("getResourceAndRole : " + resourceAndRolString);	
+			
+			var resAndRoleArr = resourceAndRolString.split(';');
+			
+			var data = new Array();
+			
+			var resource;
+			var roleArr;
+			var resId;
+			var roleId;
+			
+			for (var i = 0; i < resAndRoleArr.length && resAndRoleArr[i].length > 0; i++) {
+				
+				if(resAndRoleArr[i].indexOf("-->") >= 0){
+					resource = resAndRoleArr[i].split('-->')[0];
+					
+					resId = getResource(resource);	//返回resource
+					
+					
+	 				roleArr = resAndRoleArr[i].split('-->')[1];
+	 				roleId = getRole(roleArr);	//返回 role 组合
+	 				
+					data.push(resId + "-->" + roleId + ";");
+	 				
+				}else{
+					resId = getResource(resAndRoleArr[i]);	//返回resource
+					
+					data.push(resId + ";");
+				}
+				
+				
+			}
+			
+			return data;
+			
+		}
+		
+		function getRole(roleString){
+			
+			var roleArr;
+			
+			if(roleString.indexOf(",") >= 0){
+				
+				roleArr = roleString.split(',');
+			}else{
+				
+				roleArr = roleString;
+			}
+			
+			var data;
+			
+			$.ajax({
+				type : 'post',
+				url : 'topolicy/getRole.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(roleArr),
+				dataType : 'json',
+				async : false,
+				success : function(result){
+// 					console.log("result : " + result);
+					for (var i = 0; i < result.length; i++) {
+						if(result[i] != null){
+							if(data != undefined){
+								data += "," + result[i].itroleId;
+							}else{
+								
+								data = result[i].itroleId;
+							}
+						}
+					}
+				}
+			});
+			
+			return data;
+		}
+		
+		function getResource(resource){
+			var resId;
+			 $.ajax({
+					type : 'post',
+					url : 'toresource/getresource.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(resource),
+					dataType : 'json',
+					async : false,
+					success : function(result){
+// 						var data = JSON.parse(result);
+// 						resId = data.resId;
+						resId = result.resId;
+					}
+				});
+			return resId;
+		}
+		
+		
 	</script>
 </body>
 </html>

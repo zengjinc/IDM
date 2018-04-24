@@ -1,5 +1,6 @@
 package com.ssm.mapper;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.pojo.Policy;
 import com.ssm.pojo.PolicyExample;
 import java.util.List;
@@ -16,15 +17,23 @@ public interface PolicyMapper {
 
     int insertSelective(Policy record);
 
+    List<Policy> selectByExampleWithBLOBs(PolicyExample example);
+
     List<Policy> selectByExample(PolicyExample example);
+    
+    List<Policy> selectByExample(PolicyExample example,PageBounds pageBounds);
 
     Policy selectByPrimaryKey(String polUuid);
 
     int updateByExampleSelective(@Param("record") Policy record, @Param("example") PolicyExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") Policy record, @Param("example") PolicyExample example);
+
     int updateByExample(@Param("record") Policy record, @Param("example") PolicyExample example);
 
     int updateByPrimaryKeySelective(Policy record);
+
+    int updateByPrimaryKeyWithBLOBs(Policy record);
 
     int updateByPrimaryKey(Policy record);
 }

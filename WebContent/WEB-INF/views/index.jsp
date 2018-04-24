@@ -96,10 +96,6 @@
 		</div>
 	</div>
 
-
-
-
-
 	<%@ include file="commonscript.jsp" %>
 </body>
 </html>
