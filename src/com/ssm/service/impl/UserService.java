@@ -108,6 +108,18 @@ public class UserService implements IUserService{
 		return userList;
 	}
 	
+	@Override
+	public User doLogin(String userName,String pwd) throws Exception {
+		UserExample example = new UserExample();
+		example.createCriteria().andUserNameEqualTo(userName).andUserPwdEqualTo(pwd);
+		List<User> userList = userMapper.selectByExample(example);
+		
+		if(userList.size() > 0){
+			return userList.get(0);
+		}
+		return null;
+	}
+	
 
 	
 }

@@ -39,4 +39,7 @@ public interface IUserService {
 	List<User> queryUser(UserQueryTo userQueryTo) throws Exception;
 
 	List<User> queryUser(UserQueryExample example,PageBounds pageBounds) throws Exception;
+
+	User doLogin(String userName, String pwd) throws Exception;
+
 }

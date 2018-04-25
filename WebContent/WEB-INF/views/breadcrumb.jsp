@@ -11,7 +11,7 @@
 		<div class="col-md-12">
 			<ol class="breadcrumb">
 				<li>当前位置：</li>
-				<li><a href="#">身份管理系统</a></li>
+				<li><a href="toidentity.action">身份管理系统</a></li>
 			</ol>
 		</div>
 	</div>

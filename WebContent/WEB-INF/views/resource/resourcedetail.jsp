@@ -42,12 +42,12 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">资源标识</span> <input id="resource_id" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">资源标识</span> <input id="resource_id" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')" oninput="setCustomValidity('')">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">资源名称</span> <input id="resource_name" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">资源名称</span> <input id="resource_name" type="text" class="form-control" placeholder="" required="required">
 						</div>
 					</div>
 				</div>
@@ -79,8 +79,8 @@
 					<div class="col-md-4">
 						<div class="input-group">
 							<span class="input-group-addon">信任资源</span> <select class="form-control" id="resource_trust">
-								<option value="true">是</option>
 								<option value="false">否</option>
+								<option value="true">是</option>
 							</select>
 						</div>
 					</div>
@@ -90,8 +90,8 @@
 					<li class="active" id="tab_config"><a href="#config" data-toggle="tab">配置</a></li>
 					<li id="tab_acct"><a href="#account" data-toggle="tab">账号架构</a></li>
 					<li id="tab_role"><a href="#role" data-toggle="tab">基本角色架构</a></li>
-					<li id="ou_nav"><a href="#orgunit" data-toggle="tab">组织单位架构</a></li>
-					<li id="ou_nav"><a href="#accounts" data-toggle="tab">账号</a></li>
+<!-- 					<li id="ou_nav"><a href="#orgunit" data-toggle="tab">组织单位架构</a></li> -->
+					<li id="account_nav"><a href="#recon_account" data-toggle="tab">账号</a></li>
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="config">
@@ -513,7 +513,7 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="tab-pane fade" id="accounts">
+					<div class="tab-pane fade" id="recon_account">
 						<!-- 账号：通过定时任务回收回来的账号 -->
 						<p>通过定时任务回收回来的账号</p>
 					</div>
@@ -521,7 +521,8 @@
 
 				<div class="row">
 					<div class="center-block">
-						<a class="btn btn-primary" id="btn_resource_save">保&nbsp;&nbsp;存</a> <a class="btn btn-primary" href="toresource/resource.action">取&nbsp;&nbsp;消</a>
+						<a class="btn btn-primary" id="btn_resource_save">保&nbsp;&nbsp;存</a> 
+						<a class="btn btn-primary" href="toresource/resource.action">取&nbsp;&nbsp;消</a>
 					</div>
 				</div>
 

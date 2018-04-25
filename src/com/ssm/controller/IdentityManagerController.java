@@ -90,6 +90,7 @@ public class IdentityManagerController {
 	@Autowired
 	private RelUserBizroleMapper relUserBizRoleMapper;
 	
+	
 	@RequestMapping("/user")
 	public String toUser(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "5") int limit) throws Exception{	//使用 @Value 从文件从读取 defaultValue，保持全局统一
 		logger.debug("to user page");

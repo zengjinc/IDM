@@ -53,7 +53,7 @@
 								<option value="reconOUJob">组织单位回收任务</option>
 								<option value="userSynchronisedScheduleJob">用户同步任务</option>
 								<option value="assignAccountOwnerScheduleJob">账号拥有者分配任务</option>
-								<option value="">用户重新评估任务</option>
+<!-- 								<option value="">用户重新评估任务</option> -->
 							</select>
 						</div>
 					</div>

@@ -402,6 +402,7 @@ $(function() {
 
 	// 保存资源的所有信息
 	$("#btn_resource_save").click(function() {
+		
 		var resourceJson = {};
 		var otherTab = {};
 		
@@ -695,8 +696,10 @@ $(function() {
 		var flag = $("#resource_trust").val();
 		if (flag == "false") {
 			$("#ou_nav").hide();
+			$("#tab_role").show();
 		} else {
-			$("#ou_nav").show();
+			$("#ou_nav").hide();
+			$("#tab_role").hide();
 		}
 	})
 

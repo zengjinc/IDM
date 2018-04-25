@@ -15,7 +15,7 @@
 		$(function(){
 // 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/platformrole.action'>平台角色</a></li>");
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/bizrole.action'>岗位</a></li>");
-			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/userattrdef.action'>用户属性定义</a></li>");
+// 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/userattrdef.action'>用户属性定义</a></li>");
 // 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/attrtype.action'>属性类型</a></li>");
 			$(".nav.nav-pills.nav-stacked").prepend("<li><a href='toconfig/systemconfig.action'>系统配置</a></li>");
 		})
