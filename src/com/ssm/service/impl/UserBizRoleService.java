@@ -10,8 +10,11 @@ import com.ssm.mapper.RelUserBizroleMapper;
 import com.ssm.pojo.BusinessRole;
 import com.ssm.pojo.RelUserBizrole;
 import com.ssm.pojo.RelUserBizroleExample;
+import com.ssm.pojo.User;
 import com.ssm.service.IBusinessRoleService;
+import com.ssm.service.IPolicyService;
 import com.ssm.service.IUserBizRoleService;
+import com.ssm.service.IUserService;
 @Service
 public class UserBizRoleService implements IUserBizRoleService {
 	
@@ -20,6 +23,12 @@ public class UserBizRoleService implements IUserBizRoleService {
 	
 	@Autowired
 	private IBusinessRoleService bizRoleService;
+	
+	@Autowired
+	private IUserService userService;
+	
+	@Autowired
+	private IPolicyService policyService;
 	
 	/*
 	 * 分配岗位给用户，先删除全部岗位，再重新分配全部
@@ -37,6 +46,15 @@ public class UserBizRoleService implements IUserBizRoleService {
 				relUserBizrole.setRelUserBizroleBizroleUuid(bizRoleUuid);
 				userBizRoleMapper.insert(relUserBizrole);
 			}
+			
+			User user = userService.getUserByPrimaryKey(userUuid);
+			try {
+				policyService.entitlementPolicy(user);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();

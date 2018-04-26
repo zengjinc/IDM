@@ -5,6 +5,8 @@ import java.util.Date;
 public class Entitlement extends EntitlementKey {
     private Integer etmStatus;
 
+    private String etmPolUuid;
+
     private String etmCreatorUuid;
 
     private Date etmCreateTime;
@@ -19,6 +21,14 @@ public class Entitlement extends EntitlementKey {
 
     public void setEtmStatus(Integer etmStatus) {
         this.etmStatus = etmStatus;
+    }
+
+    public String getEtmPolUuid() {
+        return etmPolUuid;
+    }
+
+    public void setEtmPolUuid(String etmPolUuid) {
+        this.etmPolUuid = etmPolUuid == null ? null : etmPolUuid.trim();
     }
 
     public String getEtmCreatorUuid() {

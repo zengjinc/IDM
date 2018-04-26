@@ -11,6 +11,7 @@ import com.ssm.pojo.User;
 import com.ssm.pojo.UserExample;
 import com.ssm.pojo.UserQueryExample;
 import com.ssm.pojo.to.UserQueryTo;
+import com.ssm.service.IPolicyService;
 import com.ssm.service.IUserService;
 
 @Service("userService")
@@ -18,6 +19,9 @@ public class UserService implements IUserService{
 	
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private IPolicyService policyService;
 	
 	@Override
 	public void deleteUser(String userUuid) throws Exception{
@@ -44,7 +48,9 @@ public class UserService implements IUserService{
 	
 	@Override
 	public int addUser(User record) throws Exception{
+		//插入用户
 		int insert = userMapper.insert(record);
+
 		return insert;
 	}
 	

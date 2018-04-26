@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,7 @@ import com.ssm.service.IAccountService;
 import com.ssm.service.IConnectorService;
 import com.ssm.service.IEntitlementService;
 import com.ssm.service.IJavaMailSenderService;
+import com.ssm.service.IPrivilegeService;
 import com.ssm.service.IResourceService;
 import com.ssm.service.IUserService;
 import com.ssm.utils.CommonUtil;
@@ -55,11 +55,19 @@ public class EntitlementService implements IEntitlementService {
 	@Autowired
 	private IUserService userService;
 	
+	@Autowired
+	private IPrivilegeService privilegeService;
+	
 	/*
 	 * 授权，到目标资源更改新密码（默认密码），新增entitlement表记录，并发送给用户
 	 */
 	@Override
 	public int entitlement(String userUuid, String acctTgtUuid,String resUuid) throws Exception{
+		return entitlementByPolicy(userUuid, acctTgtUuid, resUuid, null);
+	}
+	
+	@Override
+	public int entitlementByPolicy(String userUuid, String acctTgtUuid,String resUuid,String policyUuid) throws Exception{
 		int insertSelective = 0;
 		String randomPwd = CommonUtil.getRandomString(12);
 		if(resetPassword(acctTgtUuid, randomPwd, resUuid)){
@@ -67,6 +75,9 @@ public class EntitlementService implements IEntitlementService {
 			record.setEtmUserUuid(userUuid);
 			record.setEtmAcctUuid(acctTgtUuid);
 			record.setEtmStatus(1);
+			if(policyUuid != null){
+				record.setEtmPolUuid(policyUuid);
+			}
 			insertSelective  = entitlementMapper.insertSelective(record);
 		}
 		
@@ -179,20 +190,47 @@ public class EntitlementService implements IEntitlementService {
 	public int deleteEntitlement(String userUuid, String acctTgtUuid, String resUuid) throws Exception{
 		int deleteNum = 0;
 		if(resetPassword(acctTgtUuid, CommonUtil.getRandomString(12), resUuid)){
+			
 			EntitlementKey key = new EntitlementKey();
 			key.setEtmAcctUuid(acctTgtUuid);
 			key.setEtmUserUuid(userUuid);
 			deleteNum = entitlementMapper.deleteByPrimaryKey(key);
+			
 		}
 		
 		if(deleteNum > 0){
 			User user = userService.getUserByPrimaryKey(userUuid);
 			Resource resource = resourceService.getResourceByPrimarKey(resUuid);
 			Account account = acctService.getAccountByAcctTgtUuid(acctTgtUuid);
+			//删除账号分配的角色
+			privilegeService.revokeAccountPrivilege(account);
+			
+			//发送邮件
 			mailSenderService.entitlementCancelEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
 		}
 		
 		return deleteNum;
+	}
+	
+	/*
+	 * 删除用户通过策略获取的权限
+	 */
+	@Override
+	public void revokePolicyEntitlement(User user) throws Exception{
+		EntitlementExample example = new EntitlementExample();
+		example.createCriteria().andEtmUserUuidEqualTo(user.getUserUuid()).andEtmPolUuidIsNotNull();
+		
+		List<Entitlement> entitlementList = entitlementMapper.selectByExample(example);
+		
+		for(Entitlement e : entitlementList){
+			String acctTgtUuid = e.getEtmAcctUuid();
+			
+			Account account = acctService.getAccountByAcctTgtUuid(acctTgtUuid);
+			
+//			System.out.println("删除通过授权获得的权限");
+			deleteEntitlement(user.getUserUuid(), acctTgtUuid, account.getAcctResUuid());
+		}
+		
 	}
 	
 	@Override

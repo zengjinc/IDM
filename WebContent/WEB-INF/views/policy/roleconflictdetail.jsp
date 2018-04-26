@@ -247,7 +247,7 @@
 								var itRoles = getItRole(roleconflict[i].itroles);
 								console.log(itRoles);
 								
-								$("#role_conflict_table").append("<tr><td data-value='"+roleconflict[i].itroles+"'>"+itRoles+"</td><td>"+roleconflict[i].maxNum+"</td><td><button class='btn btn-primary remove_role_conflict'>删&nbsp;&nbsp;除</button></td></tr>");
+								$("#role_conflict_table").append("<tr class='my_tr'><td data-value='"+roleconflict[i].itroles+"'>"+itRoles+"</td><td>"+roleconflict[i].maxNum+"</td><td><button class='btn btn-primary remove_role_conflict'>删&nbsp;&nbsp;除</button></td></tr>");
 								
 							}
 							
@@ -282,6 +282,7 @@
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -318,6 +319,7 @@
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -376,7 +378,18 @@
 			var dataValue = $("#role_textarea").attr('data-value');
 			var maxNum = $("#max_num").val();
 			
-			$("#role_conflict_table").append("<tr class='my_tr'><td data-value='"+dataValue+"'>"+value+"</td><td>"+maxNum+"</td><td><button class='btn btn-primary remove_role_conflict'>删&nbsp;&nbsp;除</button></td></tr>");
+			var flag = false;
+			$(".my_tr").each(function(){
+				var oldDataValue = $(this).children("td:eq(0)").attr('data-value');
+				if(dataValue == oldDataValue){
+					flag = true;
+					$(this).children("td:eq(1)").text(maxNum);
+				}
+			})
+			
+			if(!flag){
+				$("#role_conflict_table").append("<tr class='my_tr'><td data-value='"+dataValue+"'>"+value+"</td><td>"+maxNum+"</td><td><button class='btn btn-primary remove_role_conflict'>删&nbsp;&nbsp;除</button></td></tr>");
+			}
 			
 		})
 		
@@ -420,6 +433,7 @@
 							// url: 'https://github.com/mouse0270/bootstrap-notify',
 							// target: '_blank'
 						}, {
+							z_index : 1051,
 							type : 'success', // danger warning info success
 							mouse_over : 'pause'
 						});
@@ -431,6 +445,7 @@
 							message : information,
 							allow_dismiss : false
 						}, {
+							z_index : 1051,
 							type : 'warning', // danger warning info success
 							mouse_over : 'pause'
 						});

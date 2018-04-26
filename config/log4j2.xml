@@ -27,8 +27,7 @@
   
   <loggers>  
   		<logger name="org.springframework" level="OFF"></logger>
-<!--   		<logger name="pcs.filters" level="OFF"></logger> -->
-<!-- 		<logger name="pcs.aop.GetCacheAop" level="OFF"></logger> -->
+		<logger name="org.quartz.core" level="OFF"></logger>
 		<logger name="org.apache.ibatis.io.ResolverUtil" level="OFF"></logger>
 		
         <root level="debug">

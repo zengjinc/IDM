@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -41,48 +41,41 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" value="${user['userId']}" data-value="${user['userUuid']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" data-value=""  type="text" class="form-control" placeholder="">
 						</div>
 					</div>
 					<div class="col-md-4 col-md-offset-2">
 						<div class="input-group">
-							<span class="input-group-addon">用户名称</span> <input id="user_name" name="user_name" value="${user['userName']}" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">组织单位</span> <input id="user_ou" name="user_ou" value="" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">用户状态</span> <input id="user_status" name="user_status" value="${user['userStatus']}" type="text" class="form-control" placeholder="" readonly="readonly">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" value="${user['userEmployeeId']}" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" value="${user['userPhonenumber']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">用户名称</span> <input id="user_name" name="user_name" type="text" class="form-control" placeholder="">
 						</div>
 					</div>
 				</div>
 				<div class="row">
 <!-- 					<div class="col-md-4"> -->
 <!-- 						<div class="input-group"> -->
-<%-- 							<span class="input-group-addon">用户类型</span> <input id="user_type" name="user_type" value="${user['userType']}" type="text" class="form-control" placeholder=""> --%>
+<!-- 							<span class="input-group-addon">组织单位</span> <input id="user_ou" name="user_ou" value="" type="text" class="form-control" placeholder=""> -->
 <!-- 						</div> -->
 <!-- 					</div> -->
 					<div class="col-md-4">
 						<div class="input-group">
-							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" value="${user['userEmail']}" type="text" class="form-control" placeholder="">
+							<span class="input-group-addon">用户状态</span> <input id="user_status" name="user_status" type="text" class="form-control" placeholder="" readonly="readonly">
+						</div>
+					</div>
+					<div class="col-md-4  col-md-offset-2">
+						<div class="input-group">
+							<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" type="text" class="form-control" placeholder="">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" type="text" class="form-control" placeholder="">
+						</div>
+					</div>
+					<div class="col-md-4  col-md-offset-2">
+						<div class="input-group">
+							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" type="text" class="form-control" placeholder="">
 						</div>
 					</div>
 				</div>
@@ -97,7 +90,7 @@
 <!-- 					</div> -->
 					<div class="tab-pane fade in active" id="ios">
 <!-- 						<p>岗位</p> -->
-						<textarea id="user_bizrole" style="width:100%; height:250px;font-size:20px;">${userBizRoleList}</textarea>
+						<textarea id="user_bizrole" style="width:100%; height:250px;font-size:20px;"></textarea>
 <%-- 							<c:forEach items="${userBizRoleList}" var="bizRole"> --%>
 <%-- 								${bizRole['bizRoleId']}(${bizRole['bizRoleName']}) --%>
 <%-- 							</c:forEach> --%>

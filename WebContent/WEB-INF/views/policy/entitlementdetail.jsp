@@ -193,7 +193,7 @@
 									resAndRoleStr += resAndRole[k];
 								}
 								
-								$("#entitlement_table").append("<tr><td data-value='"+entitlement[i].bizRole+"'>"+bizrole+"</td><td data-value='"+entitlement[i].entitlement+"'>"+resAndRoleStr+"</td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</button></td></tr>");
+								$("#entitlement_table").append("<tr class='my_tr1'><td data-value='"+entitlement[i].bizRole+"'>"+bizrole+"</td><td data-value='"+entitlement[i].entitlement+"'>"+resAndRoleStr+"</td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</button></td></tr>");
 								
 							}
 							
@@ -237,6 +237,7 @@
 									// url: 'https://github.com/mouse0270/bootstrap-notify',
 									// target: '_blank'
 								}, {
+									z_index : 1051,
 									type : 'success', // danger warning info success
 									mouse_over : 'pause'
 								});
@@ -248,6 +249,7 @@
 									message : information,
 									allow_dismiss : false
 								}, {
+									z_index : 1051,
 									type : 'warning', // danger warning info success
 									mouse_over : 'pause'
 								});
@@ -304,6 +306,7 @@
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -332,7 +335,20 @@
 					}				
 				})
 				
-				$("#entitlement_table").append("<tr><td data-value='"+bizRoleUuid+"'>"+bizRoleName+"</td><td data-value='"+etmValue+"'>"+etm+"</td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</td></tr>");
+				var flag = false;
+				$(".my_tr1").each(function(){
+					var oldDataValue = $(this).children("td:eq(0)").attr('data-value');
+					
+					if(bizRoleUuid == oldDataValue){
+						flag = true;
+						$(this).children("td:eq(1)").text(etm);
+						$(this).children("td:eq(1)").attr('data-value',etmValue);
+					}
+				})
+				
+				if(!flag){
+					$("#entitlement_table").append("<tr class='my_tr1'><td data-value='"+bizRoleUuid+"'>"+bizRoleName+"</td><td data-value='"+etmValue+"'>"+etm+"</td><td><button class='btn btn-primary remove_etm'>删&nbsp;&nbsp;除</td></tr>");
+				}
 				
 			})
 			
@@ -371,6 +387,7 @@
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -421,6 +438,7 @@
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -433,7 +451,7 @@
 			//模态框确认按钮
 			$("#entitlement_modal_confirm").click(function(){
 				
-				$("#entitlement_textarea").empty();
+				$("#entitlement_textarea").val('');
 				
 				$(".my_tr").each(function(){
 					

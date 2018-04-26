@@ -305,6 +305,76 @@ public class EntitlementExample {
             return (Criteria) this;
         }
 
+        public Criteria andEtmPolUuidIsNull() {
+            addCriterion("etm_pol_uuid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidIsNotNull() {
+            addCriterion("etm_pol_uuid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidEqualTo(String value) {
+            addCriterion("etm_pol_uuid =", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidNotEqualTo(String value) {
+            addCriterion("etm_pol_uuid <>", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidGreaterThan(String value) {
+            addCriterion("etm_pol_uuid >", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidGreaterThanOrEqualTo(String value) {
+            addCriterion("etm_pol_uuid >=", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidLessThan(String value) {
+            addCriterion("etm_pol_uuid <", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidLessThanOrEqualTo(String value) {
+            addCriterion("etm_pol_uuid <=", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidLike(String value) {
+            addCriterion("etm_pol_uuid like", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidNotLike(String value) {
+            addCriterion("etm_pol_uuid not like", value, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidIn(List<String> values) {
+            addCriterion("etm_pol_uuid in", values, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidNotIn(List<String> values) {
+            addCriterion("etm_pol_uuid not in", values, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidBetween(String value1, String value2) {
+            addCriterion("etm_pol_uuid between", value1, value2, "etmPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEtmPolUuidNotBetween(String value1, String value2) {
+            addCriterion("etm_pol_uuid not between", value1, value2, "etmPolUuid");
+            return (Criteria) this;
+        }
+
         public Criteria andEtmCreatorUuidIsNull() {
             addCriterion("etm_creator_uuid is null");
             return (Criteria) this;

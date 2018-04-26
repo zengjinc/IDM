@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ssm.mapper.EntitlementMapper">
-	<resultMap id="BaseResultMap" type="com.ssm.pojo.Entitlement">
-		<id column="etm_user_uuid" property="etmUserUuid" jdbcType="VARCHAR" />
-		<id column="etm_acct_uuid" property="etmAcctUuid" jdbcType="VARCHAR" />
-		<result column="etm_status" property="etmStatus" jdbcType="INTEGER" />
-		<result column="etm_creator_uuid" property="etmCreatorUuid"
-			jdbcType="VARCHAR" />
-		<result column="etm_create_time" property="etmCreateTime"
-			jdbcType="TIMESTAMP" />
-		<result column="etm_modifier_uuid" property="etmModifierUuid"
-			jdbcType="VARCHAR" />
-		<result column="etm_modified_time" property="etmModifiedTime"
-			jdbcType="TIMESTAMP" />
-	</resultMap>
-	<resultMap id="EntitlementMap" type="com.ssm.pojo.to.EntitlementTo">
+<mapper namespace="com.ssm.mapper.EntitlementMapper" >
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.Entitlement" >
+    <id column="etm_user_uuid" property="etmUserUuid" jdbcType="VARCHAR" />
+    <id column="etm_acct_uuid" property="etmAcctUuid" jdbcType="VARCHAR" />
+    <result column="etm_status" property="etmStatus" jdbcType="INTEGER" />
+    <result column="etm_pol_uuid" property="etmPolUuid" jdbcType="VARCHAR" />
+    <result column="etm_creator_uuid" property="etmCreatorUuid" jdbcType="VARCHAR" />
+    <result column="etm_create_time" property="etmCreateTime" jdbcType="TIMESTAMP" />
+    <result column="etm_modifier_uuid" property="etmModifierUuid" jdbcType="VARCHAR" />
+    <result column="etm_modified_time" property="etmModifiedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="EntitlementMap" type="com.ssm.pojo.to.EntitlementTo">
 		<id column="acct_res_uuid" property="resUuid" jdbcType="VARCHAR" />
 		<id column="res_id" property="resId" jdbcType="VARCHAR" />
 		<result column="res_name" property="resName" jdbcType="VARCHAR" />
@@ -24,98 +21,90 @@
 		<result column="acct_status" property="acctStatus" jdbcType="INTEGER" />
 	</resultMap>
 	<!-- acct_res_uuid,res_id,res_name,acct_tgt_uuid,acct_login_id,acct_status -->
-	<sql id="Example_Where_Clause">
-		<where>
-			<foreach collection="oredCriteria" item="criteria" separator="or">
-				<if test="criteria.valid">
-					<trim prefix="(" suffix=")" prefixOverrides="and">
-						<foreach collection="criteria.criteria" item="criterion">
-							<choose>
-								<when test="criterion.noValue">
-									and ${criterion.condition}
-								</when>
-								<when test="criterion.singleValue">
-									and ${criterion.condition} #{criterion.value}
-								</when>
-								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
-									#{criterion.secondValue}
-								</when>
-								<when test="criterion.listValue">
-									and ${criterion.condition}
-									<foreach collection="criterion.value" item="listItem"
-										open="(" close=")" separator=",">
-										#{listItem}
-									</foreach>
-								</when>
-							</choose>
-						</foreach>
-					</trim>
-				</if>
-			</foreach>
-		</where>
-	</sql>
-	<sql id="Update_By_Example_Where_Clause">
-		<where>
-			<foreach collection="example.oredCriteria" item="criteria"
-				separator="or">
-				<if test="criteria.valid">
-					<trim prefix="(" suffix=")" prefixOverrides="and">
-						<foreach collection="criteria.criteria" item="criterion">
-							<choose>
-								<when test="criterion.noValue">
-									and ${criterion.condition}
-								</when>
-								<when test="criterion.singleValue">
-									and ${criterion.condition} #{criterion.value}
-								</when>
-								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
-									#{criterion.secondValue}
-								</when>
-								<when test="criterion.listValue">
-									and ${criterion.condition}
-									<foreach collection="criterion.value" item="listItem"
-										open="(" close=")" separator=",">
-										#{listItem}
-									</foreach>
-								</when>
-							</choose>
-						</foreach>
-					</trim>
-				</if>
-			</foreach>
-		</where>
-	</sql>
-	<sql id="Base_Column_List">
-		etm_user_uuid, etm_acct_uuid, etm_status, etm_creator_uuid, etm_create_time,
-		etm_modifier_uuid,
-		etm_modified_time
-	</sql>
-	<select id="selectByExample" resultMap="BaseResultMap"
-		parameterType="com.ssm.pojo.EntitlementExample">
-		select
-		<if test="distinct">
-			distinct
-		</if>
-		<include refid="Base_Column_List" />
-		from entitlement
-		<if test="_parameter != null">
-			<include refid="Example_Where_Clause" />
-		</if>
-		<if test="orderByClause != null">
-			order by ${orderByClause}
-		</if>
-	</select>
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="com.ssm.pojo.EntitlementKey">
-		select
-		<include refid="Base_Column_List" />
-		from entitlement
-		where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
-		and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
-	</select>
-	<!-- add by zengjinc -->
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    etm_user_uuid, etm_acct_uuid, etm_status, etm_pol_uuid, etm_creator_uuid, etm_create_time, 
+    etm_modifier_uuid, etm_modified_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.EntitlementExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from entitlement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.ssm.pojo.EntitlementKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from entitlement
+    where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
+  </select>
+  <!-- add by zengjinc -->
 	<select id="getEntitlementByUserUuid" resultMap="EntitlementMap"
 		parameterType="java.lang.String">
 		select acct_res_uuid,res_id,res_name,acct_tgt_uuid,acct_login_id,acct_primary,acct_status
@@ -124,155 +113,166 @@
 		etm_user_uuid=#{userUuid,jdbcType=VARCHAR})
 		and account.acct_res_uuid = resource.res_uuid order by res_id;
 	</select>
-	<delete id="deleteByPrimaryKey" parameterType="com.ssm.pojo.EntitlementKey">
-		delete from entitlement
-		where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
-		and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
-	</delete>
-	<delete id="deleteByExample" parameterType="com.ssm.pojo.EntitlementExample">
-		delete from entitlement
-		<if test="_parameter != null">
-			<include refid="Example_Where_Clause" />
-		</if>
-	</delete>
-	<insert id="insert" parameterType="com.ssm.pojo.Entitlement">
-		insert into entitlement (etm_user_uuid, etm_acct_uuid, etm_status,
-		etm_creator_uuid, etm_create_time, etm_modifier_uuid,
-		etm_modified_time)
-		values (#{etmUserUuid,jdbcType=VARCHAR}, #{etmAcctUuid,jdbcType=VARCHAR},
-		#{etmStatus,jdbcType=INTEGER},
-		#{etmCreatorUuid,jdbcType=VARCHAR}, #{etmCreateTime,jdbcType=TIMESTAMP},
-		#{etmModifierUuid,jdbcType=VARCHAR},
-		#{etmModifiedTime,jdbcType=TIMESTAMP})
-	</insert>
-	<insert id="insertSelective" parameterType="com.ssm.pojo.Entitlement">
-		insert into entitlement
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="etmUserUuid != null">
-				etm_user_uuid,
-			</if>
-			<if test="etmAcctUuid != null">
-				etm_acct_uuid,
-			</if>
-			<if test="etmStatus != null">
-				etm_status,
-			</if>
-			<if test="etmCreatorUuid != null">
-				etm_creator_uuid,
-			</if>
-			<if test="etmCreateTime != null">
-				etm_create_time,
-			</if>
-			<if test="etmModifierUuid != null">
-				etm_modifier_uuid,
-			</if>
-			<if test="etmModifiedTime != null">
-				etm_modified_time,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="etmUserUuid != null">
-				#{etmUserUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="etmAcctUuid != null">
-				#{etmAcctUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="etmStatus != null">
-				#{etmStatus,jdbcType=INTEGER},
-			</if>
-			<if test="etmCreatorUuid != null">
-				#{etmCreatorUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="etmCreateTime != null">
-				#{etmCreateTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="etmModifierUuid != null">
-				#{etmModifierUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="etmModifiedTime != null">
-				#{etmModifiedTime,jdbcType=TIMESTAMP},
-			</if>
-		</trim>
-	</insert>
-	<select id="countByExample" parameterType="com.ssm.pojo.EntitlementExample"
-		resultType="java.lang.Integer">
-		select count(*) from entitlement
-		<if test="_parameter != null">
-			<include refid="Example_Where_Clause" />
-		</if>
-	</select>
-	<update id="updateByExampleSelective" parameterType="map">
-		update entitlement
-		<set>
-			<if test="record.etmUserUuid != null">
-				etm_user_uuid = #{record.etmUserUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="record.etmAcctUuid != null">
-				etm_acct_uuid = #{record.etmAcctUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="record.etmStatus != null">
-				etm_status = #{record.etmStatus,jdbcType=INTEGER},
-			</if>
-			<if test="record.etmCreatorUuid != null">
-				etm_creator_uuid = #{record.etmCreatorUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="record.etmCreateTime != null">
-				etm_create_time = #{record.etmCreateTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="record.etmModifierUuid != null">
-				etm_modifier_uuid = #{record.etmModifierUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="record.etmModifiedTime != null">
-				etm_modified_time = #{record.etmModifiedTime,jdbcType=TIMESTAMP},
-			</if>
-		</set>
-		<if test="_parameter != null">
-			<include refid="Update_By_Example_Where_Clause" />
-		</if>
-	</update>
-	<update id="updateByExample" parameterType="map">
-		update entitlement
-		set etm_user_uuid = #{record.etmUserUuid,jdbcType=VARCHAR},
-		etm_acct_uuid = #{record.etmAcctUuid,jdbcType=VARCHAR},
-		etm_status = #{record.etmStatus,jdbcType=INTEGER},
-		etm_creator_uuid = #{record.etmCreatorUuid,jdbcType=VARCHAR},
-		etm_create_time = #{record.etmCreateTime,jdbcType=TIMESTAMP},
-		etm_modifier_uuid = #{record.etmModifierUuid,jdbcType=VARCHAR},
-		etm_modified_time = #{record.etmModifiedTime,jdbcType=TIMESTAMP}
-		<if test="_parameter != null">
-			<include refid="Update_By_Example_Where_Clause" />
-		</if>
-	</update>
-	<update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Entitlement">
-		update entitlement
-		<set>
-			<if test="etmStatus != null">
-				etm_status = #{etmStatus,jdbcType=INTEGER},
-			</if>
-			<if test="etmCreatorUuid != null">
-				etm_creator_uuid = #{etmCreatorUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="etmCreateTime != null">
-				etm_create_time = #{etmCreateTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="etmModifierUuid != null">
-				etm_modifier_uuid = #{etmModifierUuid,jdbcType=VARCHAR},
-			</if>
-			<if test="etmModifiedTime != null">
-				etm_modified_time = #{etmModifiedTime,jdbcType=TIMESTAMP},
-			</if>
-		</set>
-		where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
-		and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Entitlement">
-		update entitlement
-		set etm_status = #{etmStatus,jdbcType=INTEGER},
-		etm_creator_uuid = #{etmCreatorUuid,jdbcType=VARCHAR},
-		etm_create_time = #{etmCreateTime,jdbcType=TIMESTAMP},
-		etm_modifier_uuid = #{etmModifierUuid,jdbcType=VARCHAR},
-		etm_modified_time = #{etmModifiedTime,jdbcType=TIMESTAMP}
-		where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
-		and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
-	</update>
+  <delete id="deleteByPrimaryKey" parameterType="com.ssm.pojo.EntitlementKey" >
+    delete from entitlement
+    where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ssm.pojo.EntitlementExample" >
+    delete from entitlement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ssm.pojo.Entitlement" >
+    insert into entitlement (etm_user_uuid, etm_acct_uuid, etm_status, 
+      etm_pol_uuid, etm_creator_uuid, etm_create_time, 
+      etm_modifier_uuid, etm_modified_time)
+    values (#{etmUserUuid,jdbcType=VARCHAR}, #{etmAcctUuid,jdbcType=VARCHAR}, #{etmStatus,jdbcType=INTEGER}, 
+      #{etmPolUuid,jdbcType=VARCHAR}, #{etmCreatorUuid,jdbcType=VARCHAR}, #{etmCreateTime,jdbcType=TIMESTAMP}, 
+      #{etmModifierUuid,jdbcType=VARCHAR}, #{etmModifiedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.Entitlement" >
+    insert into entitlement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="etmUserUuid != null" >
+        etm_user_uuid,
+      </if>
+      <if test="etmAcctUuid != null" >
+        etm_acct_uuid,
+      </if>
+      <if test="etmStatus != null" >
+        etm_status,
+      </if>
+      <if test="etmPolUuid != null" >
+        etm_pol_uuid,
+      </if>
+      <if test="etmCreatorUuid != null" >
+        etm_creator_uuid,
+      </if>
+      <if test="etmCreateTime != null" >
+        etm_create_time,
+      </if>
+      <if test="etmModifierUuid != null" >
+        etm_modifier_uuid,
+      </if>
+      <if test="etmModifiedTime != null" >
+        etm_modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="etmUserUuid != null" >
+        #{etmUserUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmAcctUuid != null" >
+        #{etmAcctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmStatus != null" >
+        #{etmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="etmPolUuid != null" >
+        #{etmPolUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmCreatorUuid != null" >
+        #{etmCreatorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmCreateTime != null" >
+        #{etmCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="etmModifierUuid != null" >
+        #{etmModifierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmModifiedTime != null" >
+        #{etmModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ssm.pojo.EntitlementExample" resultType="java.lang.Integer" >
+    select count(*) from entitlement
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update entitlement
+    <set >
+      <if test="record.etmUserUuid != null" >
+        etm_user_uuid = #{record.etmUserUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.etmAcctUuid != null" >
+        etm_acct_uuid = #{record.etmAcctUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.etmStatus != null" >
+        etm_status = #{record.etmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.etmPolUuid != null" >
+        etm_pol_uuid = #{record.etmPolUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.etmCreatorUuid != null" >
+        etm_creator_uuid = #{record.etmCreatorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.etmCreateTime != null" >
+        etm_create_time = #{record.etmCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.etmModifierUuid != null" >
+        etm_modifier_uuid = #{record.etmModifierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.etmModifiedTime != null" >
+        etm_modified_time = #{record.etmModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update entitlement
+    set etm_user_uuid = #{record.etmUserUuid,jdbcType=VARCHAR},
+      etm_acct_uuid = #{record.etmAcctUuid,jdbcType=VARCHAR},
+      etm_status = #{record.etmStatus,jdbcType=INTEGER},
+      etm_pol_uuid = #{record.etmPolUuid,jdbcType=VARCHAR},
+      etm_creator_uuid = #{record.etmCreatorUuid,jdbcType=VARCHAR},
+      etm_create_time = #{record.etmCreateTime,jdbcType=TIMESTAMP},
+      etm_modifier_uuid = #{record.etmModifierUuid,jdbcType=VARCHAR},
+      etm_modified_time = #{record.etmModifiedTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Entitlement" >
+    update entitlement
+    <set >
+      <if test="etmStatus != null" >
+        etm_status = #{etmStatus,jdbcType=INTEGER},
+      </if>
+      <if test="etmPolUuid != null" >
+        etm_pol_uuid = #{etmPolUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmCreatorUuid != null" >
+        etm_creator_uuid = #{etmCreatorUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmCreateTime != null" >
+        etm_create_time = #{etmCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="etmModifierUuid != null" >
+        etm_modifier_uuid = #{etmModifierUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="etmModifiedTime != null" >
+        etm_modified_time = #{etmModifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Entitlement" >
+    update entitlement
+    set etm_status = #{etmStatus,jdbcType=INTEGER},
+      etm_pol_uuid = #{etmPolUuid,jdbcType=VARCHAR},
+      etm_creator_uuid = #{etmCreatorUuid,jdbcType=VARCHAR},
+      etm_create_time = #{etmCreateTime,jdbcType=TIMESTAMP},
+      etm_modifier_uuid = #{etmModifierUuid,jdbcType=VARCHAR},
+      etm_modified_time = #{etmModifiedTime,jdbcType=TIMESTAMP}
+    where etm_user_uuid = #{etmUserUuid,jdbcType=VARCHAR}
+      and etm_acct_uuid = #{etmAcctUuid,jdbcType=VARCHAR}
+  </update>
 </mapper>

@@ -23,9 +23,12 @@ import com.ssm.pojo.AccountAttribute;
 import com.ssm.pojo.AccountExample;
 import com.ssm.pojo.Entitlement;
 import com.ssm.pojo.Resource;
+import com.ssm.pojo.User;
 import com.ssm.service.IAccountService;
 import com.ssm.service.IConnectorService;
+import com.ssm.service.IJavaMailSenderService;
 import com.ssm.service.IResourceService;
+import com.ssm.service.IUserService;
 import com.ssm.utils.CommonUtil;
 @Service
 public class AccountService implements IAccountService{
@@ -46,6 +49,12 @@ public class AccountService implements IAccountService{
 	
 	@Autowired
 	private IResourceService resourceService;
+	
+	@Autowired
+	private IUserService userService;
+	
+	@Autowired
+	private IJavaMailSenderService mailSenderService;
 	
 	@Override
 	public List<Account> getAccountsByResUuid(String resUuid) throws Exception{
@@ -96,6 +105,11 @@ public class AccountService implements IAccountService{
 	 */
 	@Override
 	public boolean createAccount(Map<String,String> basicAttributesMap, Map<String,String> attributesMap) throws Exception {
+		return createAccountByPolicy(basicAttributesMap, attributesMap, null);
+	}
+	
+	@Override
+	public boolean createAccountByPolicy(Map<String,String> basicAttributesMap, Map<String,String> attributesMap,String policyUuid) throws Exception {
 
 		String userId = basicAttributesMap.get("userId");
 		String userUuid = basicAttributesMap.get("userUuid");
@@ -168,6 +182,9 @@ public class AccountService implements IAccountService{
 				entitlement.setEtmUserUuid(userUuid);
 				entitlement.setEtmAcctUuid(accountTgtUuid);
 				entitlement.setEtmStatus(1);
+				if(policyUuid != null){
+					entitlement.setEtmPolUuid(policyUuid);
+				}
 				if(entitlementMapper.insert(entitlement) > 0){
 					flag = true;
 				}else{
@@ -176,6 +193,9 @@ public class AccountService implements IAccountService{
 				}
 				
 				if(flag){
+					User user = userService.getUserByPrimaryKey(userUuid);
+					Resource resource1 = resourceService.getResourceByPrimarKey(resUuid);
+					mailSenderService.entitlementFinishEmail(user.getUserEmail(), user.getUserName(), resource1.getResName(), acctId, acctPwd);
 					return true;
 				}
 			}else{
@@ -191,5 +211,17 @@ public class AccountService implements IAccountService{
 	@Override
 	public int deleteAccount(String userUuid) throws Exception{
 		return accountMapper.deleteByPrimaryKey(userUuid);
+	}
+	
+	@Override
+	public Account getAccountByLoginId(String loginId) throws Exception{
+		AccountExample example = new AccountExample();
+		example.createCriteria().andAcctLoginIdEqualTo(loginId);
+		List<Account> accountList = accountMapper.selectByExample(example);
+		if(accountList.size() > 0){
+			return accountList.get(0);
+		}
+		
+		return null;
 	}
 }

@@ -1,4 +1,33 @@
 $(function(){
+	 	var Uuid = GetQueryString('useruuid');
+//	 	console.log(Uuid);
+	 	
+	 	if(Uuid != null){
+	 		
+	 		var jsonStr = {"userUuid" : Uuid};
+	 		$.ajax({
+				type : 'post',
+				url : 'toidentity/getUserInfo.action',
+				contentType : 'application/json;charset=utf-8',
+				data : JSON.stringify(jsonStr),
+				dataType : 'json',
+				async : false,
+				success : function(resultMap){
+					
+					$("#user_id").attr('data-value',resultMap.user.userUuid);
+					$("#user_id").val(resultMap.user.userId);
+					$("#user_name").val(resultMap.user.userName);
+					$("#user_status").val(resultMap.user.userStatus);
+					$("#user_email").val(resultMap.user.userEmail);
+					$("#user_employeeid").val(resultMap.user.userEmployeeId);
+					$("#user_phonenumber").val(resultMap.user.userPhonenumber);
+					
+					$("#user_bizrole").val(resultMap.userBizRoleList);
+					
+				}
+			});
+	 	}
+	
 		var status = $("#user_status").val();
 		if(status == '1'){
 			$("#user_status").val("已激活");
@@ -12,7 +41,8 @@ $(function(){
 		})
 		
 		var initUserUuid = $("#user_id").attr('data-value');
-		if(initUserUuid.length == 0){
+//		console.log(initUserUuid);
+		if(initUserUuid == ""){
 			$("#user_bizrole").hide();
 		}
 		
@@ -86,6 +116,7 @@ $(function(){
 							// url: 'https://github.com/mouse0270/bootstrap-notify',
 							// target: '_blank'
 						}, {
+							z_index : 1051,
 							type : 'success', // danger warning info success
 							mouse_over : 'pause'
 						});
@@ -96,6 +127,7 @@ $(function(){
 							message : information,
 							allow_dismiss : false
 						}, {
+							z_index : 1051,
 							type : 'warning', // danger warning info success
 							mouse_over : 'pause'
 						});
@@ -108,7 +140,7 @@ $(function(){
 		$("#save_user_btn").click(function(){
 			var userUuid = $("#user_id").attr('data-value');	var userId = $("#user_id").val();
 			var userName = $("#user_name").val();				var userStatus = $("#user_status").val();
-			var userType = $("#user_type").attr('value');		var userEmail = $("#user_email").val();
+			var userEmail = $("#user_email").val();				//var userType = $("#user_type").attr('value');		
 			var userEmployeeId = $("#user_employeeid").val();	var userPhoneNumber = $("#user_phonenumber").val();
 			
 			if(userStatus == "已激活"){
@@ -119,7 +151,7 @@ $(function(){
 			
 			var jsonStr = {
 					"userUuid" :  userUuid, "userId" :  userId,	"userName" :  userName,
-					"userStatus" :  userStatus,	"userType" :  userType,	"userEmail" :  userEmail,
+					"userStatus" :  userStatus,	"userEmail" :  userEmail,
 					"userEmployeeId" :  userEmployeeId,	"userPhoneNumber" : userPhoneNumber 
 			}
 			
@@ -139,6 +171,7 @@ $(function(){
 							// url: 'https://github.com/mouse0270/bootstrap-notify',
 							// target: '_blank'
 						}, {
+							z_index : 1051,
 							type : 'success', // danger warning info success
 							mouse_over : 'pause'
 						});
@@ -150,6 +183,7 @@ $(function(){
 							message : result,
 							allow_dismiss : false
 						}, {
+							z_index : 1051,
 							type : 'warning', // danger warning info success
 							mouse_over : 'pause'
 						});

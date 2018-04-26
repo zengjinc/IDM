@@ -5,6 +5,7 @@
     <id column="pvg_uuid" property="pvgUuid" jdbcType="VARCHAR" />
     <result column="pvg_acct_uuid" property="pvgAcctUuid" jdbcType="VARCHAR" />
     <result column="pvg_itrole_uuid" property="pvgItroleUuid" jdbcType="VARCHAR" />
+    <result column="pvg_pol_uuid" property="pvgPolUuid" jdbcType="VARCHAR" />
     <result column="pvg_creator_uuid" property="pvgCreatorUuid" jdbcType="VARCHAR" />
     <result column="pvg_create_time" property="pvgCreateTime" jdbcType="TIMESTAMP" />
     <result column="pvg_modifier" property="pvgModifier" jdbcType="VARCHAR" />
@@ -69,8 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    pvg_uuid, pvg_acct_uuid, pvg_itrole_uuid, pvg_creator_uuid, pvg_create_time, pvg_modifier, 
-    pvg_modified_time
+    pvg_uuid, pvg_acct_uuid, pvg_itrole_uuid, pvg_pol_uuid, pvg_creator_uuid, pvg_create_time, 
+    pvg_modifier, pvg_modified_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ssm.pojo.PrivilegeExample" >
     select
@@ -104,11 +105,11 @@
   </delete>
   <insert id="insert" parameterType="com.ssm.pojo.Privilege" >
     insert into privilege (pvg_uuid, pvg_acct_uuid, pvg_itrole_uuid, 
-      pvg_creator_uuid, pvg_create_time, pvg_modifier, 
-      pvg_modified_time)
+      pvg_pol_uuid, pvg_creator_uuid, pvg_create_time, 
+      pvg_modifier, pvg_modified_time)
     values (#{pvgUuid,jdbcType=VARCHAR}, #{pvgAcctUuid,jdbcType=VARCHAR}, #{pvgItroleUuid,jdbcType=VARCHAR}, 
-      #{pvgCreatorUuid,jdbcType=VARCHAR}, #{pvgCreateTime,jdbcType=TIMESTAMP}, #{pvgModifier,jdbcType=VARCHAR}, 
-      #{pvgModifiedTime,jdbcType=TIMESTAMP})
+      #{pvgPolUuid,jdbcType=VARCHAR}, #{pvgCreatorUuid,jdbcType=VARCHAR}, #{pvgCreateTime,jdbcType=TIMESTAMP}, 
+      #{pvgModifier,jdbcType=VARCHAR}, #{pvgModifiedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.ssm.pojo.Privilege" >
     insert into privilege
@@ -121,6 +122,9 @@
       </if>
       <if test="pvgItroleUuid != null" >
         pvg_itrole_uuid,
+      </if>
+      <if test="pvgPolUuid != null" >
+        pvg_pol_uuid,
       </if>
       <if test="pvgCreatorUuid != null" >
         pvg_creator_uuid,
@@ -144,6 +148,9 @@
       </if>
       <if test="pvgItroleUuid != null" >
         #{pvgItroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgPolUuid != null" >
+        #{pvgPolUuid,jdbcType=VARCHAR},
       </if>
       <if test="pvgCreatorUuid != null" >
         #{pvgCreatorUuid,jdbcType=VARCHAR},
@@ -177,6 +184,9 @@
       <if test="record.pvgItroleUuid != null" >
         pvg_itrole_uuid = #{record.pvgItroleUuid,jdbcType=VARCHAR},
       </if>
+      <if test="record.pvgPolUuid != null" >
+        pvg_pol_uuid = #{record.pvgPolUuid,jdbcType=VARCHAR},
+      </if>
       <if test="record.pvgCreatorUuid != null" >
         pvg_creator_uuid = #{record.pvgCreatorUuid,jdbcType=VARCHAR},
       </if>
@@ -199,6 +209,7 @@
     set pvg_uuid = #{record.pvgUuid,jdbcType=VARCHAR},
       pvg_acct_uuid = #{record.pvgAcctUuid,jdbcType=VARCHAR},
       pvg_itrole_uuid = #{record.pvgItroleUuid,jdbcType=VARCHAR},
+      pvg_pol_uuid = #{record.pvgPolUuid,jdbcType=VARCHAR},
       pvg_creator_uuid = #{record.pvgCreatorUuid,jdbcType=VARCHAR},
       pvg_create_time = #{record.pvgCreateTime,jdbcType=TIMESTAMP},
       pvg_modifier = #{record.pvgModifier,jdbcType=VARCHAR},
@@ -215,6 +226,9 @@
       </if>
       <if test="pvgItroleUuid != null" >
         pvg_itrole_uuid = #{pvgItroleUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="pvgPolUuid != null" >
+        pvg_pol_uuid = #{pvgPolUuid,jdbcType=VARCHAR},
       </if>
       <if test="pvgCreatorUuid != null" >
         pvg_creator_uuid = #{pvgCreatorUuid,jdbcType=VARCHAR},
@@ -235,6 +249,7 @@
     update privilege
     set pvg_acct_uuid = #{pvgAcctUuid,jdbcType=VARCHAR},
       pvg_itrole_uuid = #{pvgItroleUuid,jdbcType=VARCHAR},
+      pvg_pol_uuid = #{pvgPolUuid,jdbcType=VARCHAR},
       pvg_creator_uuid = #{pvgCreatorUuid,jdbcType=VARCHAR},
       pvg_create_time = #{pvgCreateTime,jdbcType=TIMESTAMP},
       pvg_modifier = #{pvgModifier,jdbcType=VARCHAR},

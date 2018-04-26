@@ -138,6 +138,7 @@ $(function(){
 					title : '<strong>出错了</strong>',
 					message : information.result
 				}, {
+					z_index : 1051,
 					type : 'danger', // danger warning info success
 					mouse_over : 'pause',
 				});
@@ -167,6 +168,7 @@ $(function(){
 				title : '<strong>出错了</strong>',
 				message : information.result
 			}, {
+				z_index : 1051,
 				type : 'danger', // danger warning info success
 				mouse_over : 'pause',
 			});
@@ -245,6 +247,7 @@ $(function(){
 						// url: 'https://github.com/mouse0270/bootstrap-notify',
 						// target: '_blank'
 					}, {
+						z_index : 1051,
 						type : 'success', // danger warning info success
 						mouse_over : 'pause'
 					});
@@ -258,6 +261,7 @@ $(function(){
 						// url: 'https://github.com/mouse0270/bootstrap-notify',
 						// target: '_blank'
 					}, {
+						z_index : 1051,
 						type : 'warning', // danger warning info success
 						mouse_over : 'pause'
 					});
@@ -272,6 +276,7 @@ $(function(){
 					// url: 'https://github.com/mouse0270/bootstrap-notify',
 					// target: '_blank'
 				}, {
+					z_index : 1051,
 					type : 'danger', // danger warning info success
 					mouse_over : 'pause'
 				});
@@ -301,10 +306,30 @@ $(function(){
 			dataType : 'text', // 服务器响应类型
 			data : JSON.stringify(scduuid), // JSON.stringify(jdbc),
 			success : function() {// 返回json结果
-				console.log("请求发送成功");
+//				console.log("请求发送成功");
+				$.notify({
+					icon : 'glyphicon glyphicon-danger-sign',
+					title : '<strong>定时任务</strong>',
+					message : "定时任务执行请求已提交"
+				}, {
+					z_index : 1051,
+					type : 'success', // danger warning info success
+					mouse_over : 'pause',
+				});
+				
+				setTimeout(function(){window.location.href='totask/task.action'}, 2000);
 			},
 			error : function() {
-				console.log("请求发送失败");
+//				console.log("请求发送失败");
+				$.notify({
+					icon : 'glyphicon glyphicon-danger-sign',
+					title : '<strong>定时任务</strong>',
+					message : "定时任务执行出错了，请查看系统运行日志。"
+				}, {
+					z_index : 1051,
+					type : 'success', // danger warning info success
+					mouse_over : 'pause',
+				});
 			}
 		});
 	})

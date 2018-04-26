@@ -315,6 +315,76 @@ public class PrivilegeExample {
             return (Criteria) this;
         }
 
+        public Criteria andPvgPolUuidIsNull() {
+            addCriterion("pvg_pol_uuid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidIsNotNull() {
+            addCriterion("pvg_pol_uuid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidEqualTo(String value) {
+            addCriterion("pvg_pol_uuid =", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidNotEqualTo(String value) {
+            addCriterion("pvg_pol_uuid <>", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidGreaterThan(String value) {
+            addCriterion("pvg_pol_uuid >", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidGreaterThanOrEqualTo(String value) {
+            addCriterion("pvg_pol_uuid >=", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidLessThan(String value) {
+            addCriterion("pvg_pol_uuid <", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidLessThanOrEqualTo(String value) {
+            addCriterion("pvg_pol_uuid <=", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidLike(String value) {
+            addCriterion("pvg_pol_uuid like", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidNotLike(String value) {
+            addCriterion("pvg_pol_uuid not like", value, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidIn(List<String> values) {
+            addCriterion("pvg_pol_uuid in", values, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidNotIn(List<String> values) {
+            addCriterion("pvg_pol_uuid not in", values, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidBetween(String value1, String value2) {
+            addCriterion("pvg_pol_uuid between", value1, value2, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPvgPolUuidNotBetween(String value1, String value2) {
+            addCriterion("pvg_pol_uuid not between", value1, value2, "pvgPolUuid");
+            return (Criteria) this;
+        }
+
         public Criteria andPvgCreatorUuidIsNull() {
             addCriterion("pvg_creator_uuid is null");
             return (Criteria) this;

@@ -19,6 +19,7 @@ $(function(){
 					title : '<strong>出错了</strong>',
 					message : information
 				}, {
+					z_index : 1051,
 					type : 'danger', // danger warning info success
 					mouse_over : 'pause',
 				});
@@ -88,19 +89,31 @@ $(function(){
 			dataType : 'text', // 服务器响应类型
 			data : JSON.stringify(jsonStr), // JSON.stringify(jdbc),
 			success : function(information) {
-				//提示成功并添加到已分配表格中
-				$.notify({
-					icon : 'glyphicon glyphicon-danger-sign',
-					title : '<strong>授权结果</strong>',
-					message : information
-				}, {
-					z_index : 1051,
-					type : 'success', // danger warning info success
-					mouse_over : 'pause',
-				});
+				
 				if(information == "success"){
 					$("#itrole_hidden_table").append(tr);
 					$("#assigned_itrole_table").append("<tr><td data-value='"+itroleUuid+"'>"+itroleId+"</td><td><button class='btn btn-primary unassign_privilege'>取&nbsp;&nbsp;消</button></td></tr>");
+					//提示成功并添加到已分配表格中
+					$.notify({
+						icon : 'glyphicon glyphicon-danger-sign',
+						title : '<strong>授权结果</strong>',
+						message : information
+					}, {
+						z_index : 1051,
+						type : 'success', // danger warning info success
+						mouse_over : 'pause',
+					});
+				}else{
+					//提示成功并添加到已分配表格中
+					$.notify({
+						icon : 'glyphicon glyphicon-danger-sign',
+						title : '<strong>授权结果：角色冲突。</strong>',
+						message : information
+					}, {
+						z_index : 1051,
+						type : 'warning', // danger warning info success
+						mouse_over : 'pause',
+					});
 				}
 			},
 			error : function(information) {

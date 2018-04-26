@@ -329,6 +329,7 @@ $(function() {
 					title : '<strong>出错了</strong>',
 					message : information.result
 				}, {
+					z_index : 1051,
 					type : 'danger', // danger warning info success
 					mouse_over : 'pause',
 				});
@@ -372,6 +373,7 @@ $(function() {
 					// url: 'https://github.com/mouse0270/bootstrap-notify',
 					// target: '_blank'
 					}, {
+						z_index : 1051,
 						type : 'success', // danger warning info success
 						mouse_over : 'pause'
 					});
@@ -381,6 +383,7 @@ $(function() {
 						title : '<strong>测试结果</strong>',
 						message : result
 					}, {
+						z_index : 1051,
 						type : 'warning', // danger warning info success
 						mouse_over : 'pause',
 					});
@@ -393,6 +396,7 @@ $(function() {
 					title : '<strong>出错了</strong>',
 					message : information.result
 				}, {
+					z_index : 1051,
 					type : 'danger', // danger warning info success
 					mouse_over : 'pause',
 				});
@@ -656,6 +660,7 @@ $(function() {
 						// url: 'https://github.com/mouse0270/bootstrap-notify',
 						// target: '_blank'
 					}, {
+						z_index : 1051,
 						type : 'success', // danger warning info success
 						mouse_over : 'pause'
 					});
@@ -669,6 +674,7 @@ $(function() {
 						// url: 'https://github.com/mouse0270/bootstrap-notify',
 						// target: '_blank'
 					}, {
+						z_index : 1051,
 						type : 'warning', // danger warning info success
 						mouse_over : 'pause'
 					});
@@ -683,6 +689,7 @@ $(function() {
 					// url: 'https://github.com/mouse0270/bootstrap-notify',
 					// target: '_blank'
 				}, {
+					z_index : 1051,
 					type : 'danger', // danger warning info success
 					mouse_over : 'pause'
 				});

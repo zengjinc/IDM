@@ -18,6 +18,8 @@ public interface PolicyMapper {
     int insertSelective(Policy record);
 
     List<Policy> selectByExampleWithBLOBs(PolicyExample example);
+    
+    List<Policy> selectByExampleWithBLOBs(PolicyExample example,PageBounds pageBounds);
 
     List<Policy> selectByExample(PolicyExample example);
     

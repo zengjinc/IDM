@@ -29,6 +29,7 @@ $(function() {
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -91,6 +92,7 @@ $(function() {
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});
@@ -131,6 +133,7 @@ $(function() {
 							title : '<strong>出错了</strong>',
 							message : information
 						}, {
+							z_index : 1051,
 							type : 'danger', // danger warning info success
 							mouse_over : 'pause',
 						});

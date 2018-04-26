@@ -9,6 +9,8 @@ public class Privilege {
 
     private String pvgItroleUuid;
 
+    private String pvgPolUuid;
+
     private String pvgCreatorUuid;
 
     private Date pvgCreateTime;
@@ -39,6 +41,14 @@ public class Privilege {
 
     public void setPvgItroleUuid(String pvgItroleUuid) {
         this.pvgItroleUuid = pvgItroleUuid == null ? null : pvgItroleUuid.trim();
+    }
+
+    public String getPvgPolUuid() {
+        return pvgPolUuid;
+    }
+
+    public void setPvgPolUuid(String pvgPolUuid) {
+        this.pvgPolUuid = pvgPolUuid == null ? null : pvgPolUuid.trim();
     }
 
     public String getPvgCreatorUuid() {

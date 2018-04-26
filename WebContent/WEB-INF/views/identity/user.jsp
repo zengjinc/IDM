@@ -39,6 +39,7 @@
 			<div class="col-md-10 subject">
 				<div class="col-md-12">
 					<a class="btn btn-primary" href="toidentity/usercreate.action">创&nbsp;&nbsp;建</a>
+<!-- 					<a class="btn btn-primary" href="toidentity/userdetail.action">创&nbsp;&nbsp;建</a> -->
 				</div>
 				<!-- 用户、账号、权限公共部分 -->
 				<%-- 				<%@ include file="userTable.jsp"%> --%>

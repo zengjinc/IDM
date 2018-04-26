@@ -189,7 +189,7 @@ public class IdentityManagerController {
 			String userId = rootNode.get("userId").asText();
 			String userName = rootNode.get("userName").asText();
 			String userStatus = rootNode.get("userStatus").asText();
-			String userType = rootNode.get("userType").asText();
+//			String userType = rootNode.get("userType").asText();
 			String userEmail = rootNode.get("userEmail").asText();
 			String userEmployeeId = rootNode.get("userEmployeeId").asText();
 			String userPhoneNumber = rootNode.get("userPhoneNumber").asText();
@@ -198,7 +198,7 @@ public class IdentityManagerController {
 			if(userId != ""){user.setUserId(userId);}
 			if(userName != ""){user.setUserName(userName);}
 			if(userStatus != ""){user.setUserStatus(Integer.parseInt(userStatus));}
-			if(userType != ""){user.setUserType(userType);}
+//			if(userType != ""){user.setUserType(userType);}
 			if(userEmail != ""){user.setUserEmail(userEmail);}
 			if(userEmployeeId != ""){user.setUserEmployeeId(userEmployeeId);}
 			if(userPhoneNumber != ""){user.setUserPhonenumber(userPhoneNumber);}
@@ -249,7 +249,25 @@ public class IdentityManagerController {
 	
 	@RequestMapping("/userdetail")
 	public String toUserDetail(ModelMap modelMap, @RequestParam(required = true,value="useruuid") String userUuid) throws Exception{
-		System.out.println(userUuid);
+//		System.out.println(userUuid);
+//		User user = userService.getUserByPrimaryKey(userUuid);
+//		List<BusinessRole> userBizRoleList = userBizRoleService.getUserBizRole(userUuid);
+//		
+//		StringBuffer sb = new StringBuffer();
+//		for(BusinessRole bizRole : userBizRoleList){
+//			sb.append(bizRole.getBizRoleId() + "(" + bizRole.getBizRoleName() + ");\n");
+//		}
+//		modelMap.put("user", user);
+//		modelMap.put("userBizRoleList", sb.toString());
+		return "identity/userdetail";
+	}
+	
+	@RequestMapping("/getUserInfo")
+	@ResponseBody
+	public Map<String,Object> getUserInfo(@RequestBody String jsonStr) throws Exception{
+		
+		String userUuid = new ObjectMapper().readTree(jsonStr).get("userUuid").asText();
+		
 		User user = userService.getUserByPrimaryKey(userUuid);
 		List<BusinessRole> userBizRoleList = userBizRoleService.getUserBizRole(userUuid);
 		
@@ -257,10 +275,15 @@ public class IdentityManagerController {
 		for(BusinessRole bizRole : userBizRoleList){
 			sb.append(bizRole.getBizRoleId() + "(" + bizRole.getBizRoleName() + ");\n");
 		}
-		modelMap.put("user", user);
-		modelMap.put("userBizRoleList", sb.toString());
-		return "identity/userdetail";
+		
+		Map<String,Object> resultMap = new HashMap<>();
+		
+		resultMap.put("user", user);
+		resultMap.put("userBizRoleList", sb.toString());
+		
+		return resultMap;
 	}
+	
 	
 	@RequestMapping("/accountdetail")
 	public String toAccountDetail(ModelMap modelMap, @RequestParam(required = true,value="useraccountuuid") String userUuid,@RequestParam(required = true, defaultValue = "1") int page, 

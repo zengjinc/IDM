@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.pojo.Account;
+import com.ssm.pojo.User;
 import com.ssm.pojo.to.EntitlementTo;
 
 public interface IEntitlementService {
@@ -28,4 +29,8 @@ public interface IEntitlementService {
 	List<Account> getUserAccounts(String userUuid) throws Exception;
 
 	void assignAccountOwner(String resId,Map<String, String> assignRule) throws Exception;
+
+	int entitlementByPolicy(String userUuid, String acctTgtUuid, String resUuid, String policyUuid) throws Exception;
+
+	void revokePolicyEntitlement(User user) throws Exception;
 }

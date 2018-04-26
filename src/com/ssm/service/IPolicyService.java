@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.pojo.Policy;
 import com.ssm.pojo.PolicyExample;
+import com.ssm.pojo.User;
 
 public interface IPolicyService {
 
@@ -21,6 +22,9 @@ public interface IPolicyService {
 	int deletePolicy(String policyUuid) throws Exception;
 
 	List<Policy> getRoleConflictPolicy(PageBounds pageBounds) throws Exception;
-	
+
+	void entitlementPolicy(User user) throws Exception;
+
+	boolean roleConflictPolicy(String acctUuid, String itroleUuid) throws Exception;
 
 }

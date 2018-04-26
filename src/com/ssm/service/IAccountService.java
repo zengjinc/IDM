@@ -19,4 +19,8 @@ public interface IAccountService {
 
 	int deleteAccount(String userUuid) throws Exception;
 
+	Account getAccountByLoginId(String loginId) throws Exception;
+
+	boolean createAccountByPolicy(Map<String, String> basicAttributesMap, Map<String, String> attributesMap, String policyUuid) throws Exception;
+
 }
