@@ -127,7 +127,6 @@
 	
 	<script type="text/javascript">
 		
-	
 		$(function(){
 			document.onkeydown = function(e){ 
 				var ev = document.all ? window.event : e; 
@@ -148,6 +147,17 @@
 				$("#remember").prop("checked", true);
 			}
 			
+			//密码框改变事件
+			$("#password").on('input propertychange',function(){
+				var password = $("#password").val();
+				if(password != cookiePwd){
+					$("#remember").prop("checked", false);
+					// 删除 cookie
+					$.cookie("rmbMe", "false", { expires: -1 }); 
+			        $.cookie("userName", '', { expires: -1 });
+			        $.cookie("pwd", '', { expires: -1 });
+				}
+			});
 			
 			$("#submit").click(function(){
 				var userName = $("#username").val();
@@ -157,8 +167,8 @@
 				console.log("remMe : " + remMe);
 				
 				if(!remMe){
-					
-					$.cookie("rmbMe", "false", { expires: -1 }); // 删除 cookie
+					// 删除 cookie
+					$.cookie("rmbMe", "false", { expires: -1 }); 
 			        $.cookie("userName", '', { expires: -1 });
 			        $.cookie("pwd", '', { expires: -1 });
 					
@@ -185,8 +195,8 @@
 					var cookieUserName = $.cookie('userName');
 					var cookiePwd = $.cookie('pwd');
 					
-					console.log("cookieUserName : " + cookieUserName);
-					console.log("cookiePwd : " + cookiePwd);
+// 					console.log("cookieUserName : " + cookieUserName);
+// 					console.log("cookiePwd : " + cookiePwd);
 					
 					if(cookieUserName == undefined || cookieUserName == ""){
 						//cookie 中没有对应的值

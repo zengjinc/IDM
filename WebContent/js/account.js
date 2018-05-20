@@ -214,23 +214,32 @@ $(function() {
 					}
 				})
 				jsonStr['acctMsg'] = acctMsg;
-				//发送到后台
-				$.ajax({
-					async:false,
-					type : 'post',
-					url : 'toidentity/deleteentitlement.action',
-					contentType : 'application/json;charset=utf-8',// 指定为json类型
-					dataType : 'text', // 服务器响应类型
-					data : JSON.stringify(jsonStr),
-					success : function(resourceList) {// 返回json结果
-						
-					},
-					error : function(information) {
-						
+				
+				if(acctMsg.length <= 0){
+					$.notify("请先选择用户，再进行删除操作。");
+				}else{
+					
+					var msg = "确认删除该账号吗？\n用户将失去该账号的使用权。";
+					if(confirm()){
+						//发送到后台
+						$.ajax({
+							async:false,
+							type : 'post',
+							url : 'toidentity/deleteentitlement.action',
+							contentType : 'application/json;charset=utf-8',// 指定为json类型
+							dataType : 'text', // 服务器响应类型
+							data : JSON.stringify(jsonStr),
+							success : function(resourceList) {// 返回json结果
+								
+							},
+							error : function(information) {
+								
+							}
+						});
+						//刷新当前页面
+						window.location.reload();
 					}
-				});
-				//刷新当前页面
-				window.location.reload();
+				}
 			})
 			
 			//批量禁用授权（更改授权状态）
@@ -251,23 +260,29 @@ $(function() {
 					}
 				})
 				jsonStr['acctMsg'] = acctMsg;
-				//发送到后台
-				$.ajax({
-					async:false,
-					type : 'post',
-					url : 'toidentity/disableentitlement.action',
-					contentType : 'application/json;charset=utf-8',// 指定为json类型
-					dataType : 'text', // 服务器响应类型
-					data : JSON.stringify(jsonStr),
-					success : function(resourceList) {// 返回json结果
-						
-					},
-					error : function(information) {
-						
-					}
-				});
-				//刷新当前页面
-				window.location.reload();
+				
+				if(acctMsg.length <= 0){
+					$.notify("请先选择用户，再进行禁用操作。");
+				}else{
+					//发送到后台
+					$.ajax({
+						async:false,
+						type : 'post',
+						url : 'toidentity/disableentitlement.action',
+						contentType : 'application/json;charset=utf-8',// 指定为json类型
+						dataType : 'text', // 服务器响应类型
+						data : JSON.stringify(jsonStr),
+						success : function(resourceList) {// 返回json结果
+							
+						},
+						error : function(information) {
+							
+						}
+					});
+					//刷新当前页面
+					window.location.reload();
+				}
+				
 			})
 			
 			//批量激活授权（更改授权状态）
@@ -288,23 +303,28 @@ $(function() {
 					}
 				})
 				jsonStr['acctMsg'] = acctMsg;
-				//发送到后台
-				$.ajax({
-					async:false,
-					type : 'post',
-					url : 'toidentity/enableentitlement.action',
-					contentType : 'application/json;charset=utf-8',// 指定为json类型
-					dataType : 'text', // 服务器响应类型
-					data : JSON.stringify(jsonStr),
-					success : function(resourceList) {// 返回json结果
-						
-					},
-					error : function(information) {
-						
-					}
-				});
-				//刷新当前页面
-				window.location.reload();
+				
+				if(acctMsg.length <= 0){
+					$.notify("请先选择用户，再进行激活操作。");
+				}else{
+					//发送到后台
+					$.ajax({
+						async:false,
+						type : 'post',
+						url : 'toidentity/enableentitlement.action',
+						contentType : 'application/json;charset=utf-8',// 指定为json类型
+						dataType : 'text', // 服务器响应类型
+						data : JSON.stringify(jsonStr),
+						success : function(resourceList) {// 返回json结果
+							
+						},
+						error : function(information) {
+							
+						}
+					});
+					//刷新当前页面
+					window.location.reload();
+				}
 			})
 			
 			//查看账号属性

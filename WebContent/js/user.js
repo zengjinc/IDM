@@ -138,59 +138,61 @@ $(function(){
 		
 		//保存用户
 		$("#save_user_btn").click(function(){
-			var userUuid = $("#user_id").attr('data-value');	var userId = $("#user_id").val();
-			var userName = $("#user_name").val();				var userStatus = $("#user_status").val();
-			var userEmail = $("#user_email").val();				//var userType = $("#user_type").attr('value');		
-			var userEmployeeId = $("#user_employeeid").val();	var userPhoneNumber = $("#user_phonenumber").val();
+			var validate = $('#form1').data('bootstrapValidator').validate();
 			
-			if(userStatus == "已激活"){
-				userStatus = 1;
-			}else{
-				userStatus = 0;
-			}
-			
-			var jsonStr = {
-					"userUuid" :  userUuid, "userId" :  userId,	"userName" :  userName,
-					"userStatus" :  userStatus,	"userEmail" :  userEmail,
-					"userEmployeeId" :  userEmployeeId,	"userPhoneNumber" : userPhoneNumber 
-			}
-			
-			$.ajax({
-				type : 'post',
-				url : 'toidentity/saveuser.action',
-				contentType : 'application/json;charset=utf-8',
-				data : JSON.stringify(jsonStr),
-				dataType : 'text',
-				success : function(result){
-					if(result.indexOf("success") >= 0){
-						$.notify({
-							icon : 'glyphicon glyphicon-success-sign',
-							title : '<strong>保存用户结果</strong>',
-							message : "成功",
-							allow_dismiss : false
-							// url: 'https://github.com/mouse0270/bootstrap-notify',
-							// target: '_blank'
-						}, {
-							z_index : 1051,
-							type : 'success', // danger warning info success
-							mouse_over : 'pause'
-						});
-						setTimeout(function(){window.location.href='toidentity/user.action'}, 2000);
-					}else{
-						$.notify({
-							icon : 'glyphicon glyphicon-success-sign',
-							title : '<strong>保存用户结果结果</strong>',
-							message : result,
-							allow_dismiss : false
-						}, {
-							z_index : 1051,
-							type : 'warning', // danger warning info success
-							mouse_over : 'pause'
-						});
-					}
+			if(validate.isValid()){ 
+				var userUuid = $("#user_id").attr('data-value');	var userId = $("#user_id").val();
+				var userName = $("#user_name").val();				var userStatus = $("#user_status").val();
+				var userEmail = $("#user_email").val();				//var userType = $("#user_type").attr('value');		
+				var userEmployeeId = $("#user_employeeid").val();	var userPhoneNumber = $("#user_phonenumber").val();
+				
+				if(userStatus == "已激活"){
+					userStatus = 1;
+				}else{
+					userStatus = 0;
 				}
-			});
-			
-			
+				
+				var jsonStr = {
+						"userUuid" :  userUuid, "userId" :  userId,	"userName" :  userName,
+						"userStatus" :  userStatus,	"userEmail" :  userEmail,
+						"userEmployeeId" :  userEmployeeId,	"userPhoneNumber" : userPhoneNumber 
+				}
+				
+				$.ajax({
+					type : 'post',
+					url : 'toidentity/saveuser.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+					dataType : 'text',
+					success : function(result){
+						if(result.indexOf("success") >= 0){
+							$.notify({
+								icon : 'glyphicon glyphicon-success-sign',
+								title : '<strong>保存用户结果</strong>',
+								message : "成功",
+								allow_dismiss : false
+								// url: 'https://github.com/mouse0270/bootstrap-notify',
+								// target: '_blank'
+							}, {
+								z_index : 1051,
+								type : 'success', // danger warning info success
+								mouse_over : 'pause'
+							});
+							setTimeout(function(){window.location.href='toidentity/user.action'}, 2000);
+						}else{
+							$.notify({
+								icon : 'glyphicon glyphicon-success-sign',
+								title : '<strong>保存用户结果结果</strong>',
+								message : result,
+								allow_dismiss : false
+							}, {
+								z_index : 1051,
+								type : 'warning', // danger warning info success
+								mouse_over : 'pause'
+							});
+						}
+					}
+				});
+            } 
 		})
 	})

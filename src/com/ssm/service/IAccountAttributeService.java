@@ -10,4 +10,6 @@ public interface IAccountAttributeService {
 	List<AccountAttribute> getAcctAttrByAcctUuid(String acctUuid) throws Exception;
 
 	boolean updataAccountAttribute(String resUuid,String acctUuid,Map<String,String> attributesMap) throws Exception;
+
+	boolean deleteByAccountUuid(String acctUuid) throws Exception;
 }

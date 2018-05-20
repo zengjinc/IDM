@@ -43,7 +43,7 @@ public class UserSynchronisedScheduleJob extends BaseScheduleJob implements Task
 	private ResourceMapper resourceMapper;
 	
 	@Override
-	public void exec() {
+	public void exec() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		String resourceId = null;
 		String resourceUuid = null;

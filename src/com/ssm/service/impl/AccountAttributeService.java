@@ -78,4 +78,18 @@ public class AccountAttributeService implements IAccountAttributeService {
 		}
 		return false;
 	}
+
+	@Override
+	public boolean deleteByAccountUuid(String acctUuid) throws Exception {
+		
+		AccountAttributeExample example = new AccountAttributeExample();
+		
+		example.createCriteria().andAcctAttrAcctUuidEqualTo(acctUuid);
+		
+		if(acctAttrMapper.deleteByExample(example) > 0){
+			return true;
+		}
+		
+		return false;
+	}
 }

@@ -55,7 +55,7 @@
 								<option value="">-</option>
 								<option value="reconAccountScheduleJob">账号回收任务</option>
 								<option value="reconRoleScheduleJob">角色回收任务</option>
-								<option value="reconOUJob">组织单位回收任务</option>
+<!-- 								<option value="reconOUJob">组织单位回收任务</option> -->
 								<option value="userSynchronisedScheduleJob">用户同步任务</option>
 								<option value="assignAccountOwnerScheduleJob">账号拥有者分配任务</option>
 <!-- 								<option value="">用户重新评估任务</option> -->
@@ -97,14 +97,14 @@
 								<td>${scdjob['scdDesc']}</td>
 								<td><a
 									href="totask/taskdetail.action?scduuid=${scdjob['scdUuid']}">查看</a>
-									<a
-									href="totask/delettask.action?scduuid=${scdjob['scdUuid']}">删除</a>
 									<c:if test="${scdjob['scdStatus'] == '1'}">
 									<a href="totask/disabletask.action?scduuid=${scdjob['scdUuid']}">禁用</a>
 									</c:if>
 									<c:if test="${scdjob['scdStatus'] == '0'}">
 									<a href="totask/enabletask.action?scduuid=${scdjob['scdUuid']}">激活</a>
 									</c:if>
+									<a
+									href="totask/delettask.action?scduuid=${scdjob['scdUuid']}" onclick="return confirmRemove();">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -121,6 +121,15 @@
 
 	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
+	
+		function confirmRemove(){
+			var msg = "是否删除计划任务，操作不可逆。";
+			
+			if(confirm(msg)){
+				return true;
+			}
+			return false;
+		}
 		$(function() {
 
 			$('#pagination0')

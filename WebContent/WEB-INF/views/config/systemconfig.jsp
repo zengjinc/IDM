@@ -194,6 +194,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<a type="button" class="btn btn-primary" id="view_template_recovery_btn">恢复默认</a> 
 						<a type="button" class="btn btn-primary" id="view_template_preview_btn">预&nbsp;&nbsp;览</a> 
 						<a type="button" class="btn btn-primary" id="view_template_confirm_btn">确&nbsp;&nbsp;认</a> 
 					</div>
@@ -342,6 +343,30 @@
 				$("#template_body_preview").html($("#template_body").val());
 			})
 			
+			//恢复默认模板
+			$("#view_template_recovery_btn").click(function(){
+				var template = $("#view_template_confirm_btn").attr('data-value');
+				if(template == "etm_finish"){
+					var templateBody = '<html lang="utf-8">\n<body>\n<h3>你好，\$\{userName\}, 你已获得<font color="red"> \$\{resourceId\}</font> 的授权，信息如下!</h3><br>\n<h4><font color="red">账号：</font>\$\{loginId\}</h4>\n<h4><font color="red">密码：</font>\$\{password\}</h4><br>\n<h4>请在登录系统之后修改密码，谢谢！</h4>\n<h4>系统自动邮件，请勿回复。</h4>\n</body>\n</html>';
+					$("#template_body").val(templateBody);
+				}
+				if(template == "etm_cancel"){
+					var templateBody = '<html lang="utf-8">\n<body>\n<h3>你好，\$\{userName\}，你在 <font color="red">\$\{resourceId\}</font> 的授权已被收回，信息如下!</h3><br>\n<h4><font color="red">账号：</font>\$\{loginId\}</h4><br>\n<h4>如有需要，请与管理员联系，谢谢！</h4>\n<h4>系统自动邮件，请勿回复。</h4>\n</body>\n</html>';
+					$("#template_body").val(templateBody);
+				}
+				if(template == "etm_enable"){
+					var templateBody = '<html lang="utf-8">\n<body>\n<h3>你好，\$\{userName\}，你在 <font color="red">\$\{resourceId\}</font> 的授权已激活，信息如下!</h3><br>\n<h4><font color="red">账号：</font>\$\{loginId\}</h4><br>\n<h4>如有问题，请与管理员联系，谢谢！</h4>\n<h4>系统自动邮件，请勿回复。</h4>\n</body>\n</html>';
+					$("#template_body").val(templateBody);
+				}
+				if(template == "etm_disable"){
+					var templateBody = '<html lang="utf-8">\n<body>\n<h3>你好，\$\{userName\}, 你在 <font color="red">\$\{resourceId\}</font> 的授权已被禁用，信息如下!</h3><br>\n<h4><font color="red">账号：</font>\$\{loginId\}</h4><br>\n<h4>如有需要，请与管理员联系，谢谢！</h4>\n<h4>系统自动邮件，请勿回复。</h4>\n</body>\n</html>';
+					$("#template_body").val(templateBody);
+				}
+				if(template == "change_password"){
+					var templateBody = '<html lang="utf-8">\n<body>\n<h3>你好，\$\{userName\}，你在 <font color="red">\$\{resourceId\}</font> 的账号密码已修改，信息如下!</h3><br>\n<h4><font color="red">账号：</font> \$\{loginId\}</h4>\n<h4><font color="red">密码：</font> \$\{password\}</h4><br>\n<h4>请在登录系统之后修改密码，谢谢！</h4>\n<h4>系统自动邮件，请勿回复。</h4>\n	</body>\n</html>';
+					$("#template_body").val(templateBody);
+				}
+			})
 		})
 	</script>
 </body>

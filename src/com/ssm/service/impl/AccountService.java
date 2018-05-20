@@ -12,6 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.ssm.connector.IConnector;
@@ -56,6 +57,9 @@ public class AccountService implements IAccountService{
 	@Autowired
 	private IJavaMailSenderService mailSenderService;
 	
+	@Autowired
+	private ThreadPoolTaskExecutor taskExecutor;
+	
 	@Override
 	public List<Account> getAccountsByResUuid(String resUuid) throws Exception{
 		AccountExample example = new AccountExample();
@@ -75,6 +79,18 @@ public class AccountService implements IAccountService{
 				it.remove();
 			}
 		}
+		return accountList;
+	}
+	
+	@Override
+	public List<Account> getAccountByResUuid2(String resUuid) throws Exception{
+		AccountExample example = new AccountExample();
+		
+		example.createCriteria().andAcctResUuidEqualTo(resUuid);
+		
+//		example.setOrderByClause("acct_login_id");
+		List<Account> accountList = accountMapper.selectByExample(example);
+		
 		return accountList;
 	}
 	
@@ -195,7 +211,18 @@ public class AccountService implements IAccountService{
 				if(flag){
 					User user = userService.getUserByPrimaryKey(userUuid);
 					Resource resource1 = resourceService.getResourceByPrimarKey(resUuid);
-					mailSenderService.entitlementFinishEmail(user.getUserEmail(), user.getUserName(), resource1.getResName(), acctId, acctPwd);
+					
+					taskExecutor.execute(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								mailSenderService.entitlementFinishEmail(user.getUserEmail(), user.getUserName(), resource1.getResName(), acctId, acctPwd);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					
 					return true;
 				}
 			}else{
@@ -223,5 +250,15 @@ public class AccountService implements IAccountService{
 		}
 		
 		return null;
+	}
+
+	@Override
+	public boolean deleteByPrimaryKey(String acctUuid) throws Exception {
+		
+		if(accountMapper.deleteByPrimaryKey(acctUuid) > 0){
+			return true;
+		}
+		
+		return false;
 	}
 }

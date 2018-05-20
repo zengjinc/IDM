@@ -11,4 +11,6 @@ public interface IItroleService {
 	List<Itrole> getItroleByResUuid(String resUuid) throws Exception;
 
 	Itrole getItroleByItroleUuid(String itroleUuid) throws Exception;
+
+	boolean deleteByPrimaryKey(String itroleUuid) throws Exception;
 }

@@ -85,6 +85,10 @@ $(function(){
 			dataType : 'json', // 服务器响应类型
 			data : JSON.stringify(scduuid), // JSON.stringify(jdbc),
 			success : function(schedulejob) {// 返回json结果
+				
+				//execution button
+				$("#button_div").append("<button class='btn btn-primary' id='run_button'>立即运行</button>");
+				
 				var scdId = schedulejob.scdId;
 				var scdJobType = schedulejob.scdJobType;
 				var scdCron = schedulejob.scdCron;
@@ -104,9 +108,11 @@ $(function(){
 				if(scdStatus == "1"){
 					$("#scd_job_status").val("已激活");
 					$("#scd_job_status").attr("data-value","1");
+					$("#run_button").show();
 				}else{
 					$("#scd_job_status").val("已禁用");
 					$("#scd_job_status").attr("data-value","0");
+					$("#run_button").hide();
 				}
 				$("#scd_job_last_run_time").val(lastRunTime);
 				$("#scd_job_next_run_time").val(nextRunTime);
@@ -128,8 +134,7 @@ $(function(){
 					
 				}
 				
-				//execution button
-				$("#button_div").append("<button class='btn btn-primary' id='run_button'>立即运行</button>");
+				
 
 			},
 			error : function(information) {
@@ -182,107 +187,110 @@ $(function(){
 	})
 	
 	$("#save_scd_btn").click(function(){
-		var scd_job_json = {};
+		var validate = $('#form1').data('bootstrapValidator').validate();
 		
-		scd_job_json['scduuid'] = scduuid;
-		
-		var scd_job_id = $("#scd_job_id").val();
-		var scd_job_type = $("#scd_job_type").val();
-		var scd_job_cron = $("#scd_job_cron").val();
-//		var scd_job_status = $("#scd_job_status").val();
-		var scd_job_status = $("#scd_job_status").attr("data-value");
-		var scd_job_last_run_time = $("#scd_job_last_run_time").val();
-		var scd_job_next_run_time = $("#scd_job_next_run_time").val();
-		var scd_job_desc = $("#scd_job_desc").val();
-		
-		var scdJobBaseJson = {
-				"scd_job_id" : scd_job_id,
-				"scd_job_type" : scd_job_type,
-				"scd_job_cron" : scd_job_cron,
-				"scd_job_status" : scd_job_status,
-				"scd_job_last_run_time" : scd_job_last_run_time,
-				"scd_job_next_run_time" : scd_job_next_run_time,
-				"scd_job_desc" : scd_job_desc
-			}
-		
-		scd_job_json['scdJobBaseJson'] = scdJobBaseJson;
+		if(validate.isValid()){ 
+			var scd_job_json = {};
+			
+			scd_job_json['scduuid'] = scduuid;
+			
+			var scd_job_id = $("#scd_job_id").val();
+			var scd_job_type = $("#scd_job_type").val();
+			var scd_job_cron = $("#scd_job_cron").val();
+//			var scd_job_status = $("#scd_job_status").val();
+			var scd_job_status = $("#scd_job_status").attr("data-value");
+			var scd_job_last_run_time = $("#scd_job_last_run_time").val();
+			var scd_job_next_run_time = $("#scd_job_next_run_time").val();
+			var scd_job_desc = $("#scd_job_desc").val();
+			
+			var scdJobBaseJson = {
+					"scd_job_id" : scd_job_id,
+					"scd_job_type" : scd_job_type,
+					"scd_job_cron" : scd_job_cron,
+					"scd_job_status" : scd_job_status,
+					"scd_job_last_run_time" : scd_job_last_run_time,
+					"scd_job_next_run_time" : scd_job_next_run_time,
+					"scd_job_desc" : scd_job_desc
+				}
+			
+			scd_job_json['scdJobBaseJson'] = scdJobBaseJson;
 
-		
-		var tabJson = {};
-		
-		var resource_uuid_sel = $("#resource_uuid_sel").val();
-		var attrJson = {
-				"resource_uuid_sel":resource_uuid_sel
-		}
-		tabJson['attrJson'] = attrJson;
-		
-		//taskchain_tr
-		var taskchainJson = new Array();
-		$(".taskchain_tr").each(function(){
-			var scdJobId = $(this).children().eq(0).text();
-			var acct_tr_json = {
-				"scdJobId" : scdJobId	
+			
+			var tabJson = {};
+			
+			var resource_uuid_sel = $("#resource_uuid_sel").val();
+			var attrJson = {
+					"resource_uuid_sel":resource_uuid_sel
 			}
-			taskchainJson.push(acct_tr_json);
-		})
-		
-		tabJson['taskchainJson'] = taskchainJson;
-		
-		scd_job_json['tabJson'] = tabJson;
-		
-		// 发送到后台
-		$.ajax({
-			type : 'post',
-			url : 'totask/savescdjob.action',
-			contentType : 'application/json;charset=utf-8',// 指定为json类型
-			dataType : 'json', // 服务器响应类型
-			data : JSON.stringify(scd_job_json), // JSON.stringify(jdbc),
-			success : function(information) {// 返回json结果
-				if(information.result.indexOf("success") >= 0){
-					$.notify({
-						icon : 'glyphicon glyphicon-success-sign',
-						title : '<strong>保存定时任务结果</strong>',
-						message : "成功",
-						allow_dismiss : false
-						// url: 'https://github.com/mouse0270/bootstrap-notify',
-						// target: '_blank'
-					}, {
-						z_index : 1051,
-						type : 'success', // danger warning info success
-						mouse_over : 'pause'
-					});
-					setTimeout(function(){window.location.href='totask/task.action'}, 2000);
-				}else{
+			tabJson['attrJson'] = attrJson;
+			
+			//taskchain_tr
+			var taskchainJson = new Array();
+			$(".taskchain_tr").each(function(){
+				var scdJobId = $(this).children().eq(0).text();
+				var acct_tr_json = {
+					"scdJobId" : scdJobId	
+				}
+				taskchainJson.push(acct_tr_json);
+			})
+			
+			tabJson['taskchainJson'] = taskchainJson;
+			
+			scd_job_json['tabJson'] = tabJson;
+			
+			// 发送到后台
+			$.ajax({
+				type : 'post',
+				url : 'totask/savescdjob.action',
+				contentType : 'application/json;charset=utf-8',// 指定为json类型
+				dataType : 'json', // 服务器响应类型
+				data : JSON.stringify(scd_job_json), // JSON.stringify(jdbc),
+				success : function(information) {// 返回json结果
+					if(information.result.indexOf("success") >= 0){
+						$.notify({
+							icon : 'glyphicon glyphicon-success-sign',
+							title : '<strong>保存定时任务结果</strong>',
+							message : "成功",
+							allow_dismiss : false
+							// url: 'https://github.com/mouse0270/bootstrap-notify',
+							// target: '_blank'
+						}, {
+							z_index : 1051,
+							type : 'success', // danger warning info success
+							mouse_over : 'pause'
+						});
+						setTimeout(function(){window.location.href='totask/task.action'}, 2000);
+					}else{
+						$.notify({
+							icon : 'glyphicon glyphicon-success-sign',
+							title : '<strong>创建定时任务结果</strong>',
+							message : "失败",
+							allow_dismiss : false
+							// url: 'https://github.com/mouse0270/bootstrap-notify',
+							// target: '_blank'
+						}, {
+							z_index : 1051,
+							type : 'warning', // danger warning info success
+							mouse_over : 'pause'
+						});
+					}
+				},
+				error : function() {
 					$.notify({
 						icon : 'glyphicon glyphicon-success-sign',
 						title : '<strong>创建定时任务结果</strong>',
-						message : "失败",
+						message : "失败，发生未知异常",
 						allow_dismiss : false
 						// url: 'https://github.com/mouse0270/bootstrap-notify',
 						// target: '_blank'
 					}, {
 						z_index : 1051,
-						type : 'warning', // danger warning info success
+						type : 'danger', // danger warning info success
 						mouse_over : 'pause'
 					});
 				}
-			},
-			error : function() {
-				$.notify({
-					icon : 'glyphicon glyphicon-success-sign',
-					title : '<strong>创建定时任务结果</strong>',
-					message : "失败，发生未知异常",
-					allow_dismiss : false
-					// url: 'https://github.com/mouse0270/bootstrap-notify',
-					// target: '_blank'
-				}, {
-					z_index : 1051,
-					type : 'danger', // danger warning info success
-					mouse_over : 'pause'
-				});
-			}
-		});
-		
+			});
+		}
 	})
 	
 	$("#add_scd_chain_btn").click(function(){

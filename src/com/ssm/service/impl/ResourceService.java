@@ -13,9 +13,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssm.mapper.ResourceMapper;
 import com.ssm.mapper.ResourceTypeMapper;
+import com.ssm.pojo.Account;
+import com.ssm.pojo.Itrole;
 import com.ssm.pojo.Resource;
 import com.ssm.pojo.ResourceExample;
+import com.ssm.service.IAccountAttributeService;
+import com.ssm.service.IAccountService;
+import com.ssm.service.IEntitlementService;
+import com.ssm.service.IItroleAttributeService;
+import com.ssm.service.IItroleService;
+import com.ssm.service.IPolicyService;
+import com.ssm.service.IPrivilegeService;
 import com.ssm.service.IResourceService;
+import com.ssm.service.ISchedulejobService;
+import com.ssm.service.IUserService;
 
 @Service("resourceService")
 public class ResourceService implements IResourceService{
@@ -27,6 +38,84 @@ public class ResourceService implements IResourceService{
 	
 	@Autowired
 	private ResourceTypeMapper resourceTypeMapper;
+	
+	@Autowired
+	private IPolicyService policyService;
+	
+	@Autowired
+	private ISchedulejobService schedulejobService;
+	
+	@Autowired
+	private IEntitlementService entitlementService;
+	
+	@Autowired
+	private IAccountService accountService;
+	
+	@Autowired
+	private IAccountAttributeService acctAttrService;
+	
+	@Autowired
+	private IItroleService itroleService;
+	
+	@Autowired
+	private IItroleAttributeService itroleAttrService;
+	
+	@Autowired
+	private IPrivilegeService privilegeService;
+	
+	@Autowired
+	private IUserService userService;
+	
+	@Override
+	public void cascadeDeleteResource(String resUuid) throws Exception{
+		/*
+		 * policy
+		 */
+		policyService.deletePolicyByResource(resUuid);
+		/*
+		 * schedulejob
+		 */
+		schedulejobService.deleSchedulejobByResource(resUuid);
+		/*
+		 * entitlement		account_attribute	account
+		 */
+		
+		List<Account> accountList = accountService.getAccountByResUuid2(resUuid);
+		
+		for(Account account : accountList){
+			String acctUuid = account.getAcctUuid();
+			
+			entitlementService.deleEntitlementByAccountTgtUuid(account.getAcctTgtUuid());
+			
+			acctAttrService.deleteByAccountUuid(acctUuid);
+			
+			accountService.deleteByPrimaryKey(acctUuid);
+		}
+		
+		/*
+		 * privilege	itrole_attribute	itrole
+		 */
+		List<Itrole> itroleList = itroleService.getItroleByResUuid(resUuid);
+		
+		for(Itrole itrole : itroleList){
+			String itroleUuid = itrole.getItroleUuid();
+			
+			privilegeService.deleteByItrole(itrole.getItroleUuid());
+			
+			itroleAttrService.deleteByItroleUuid(itroleUuid);
+			
+			itroleService.deleteByPrimaryKey(itroleUuid);
+		}
+		/*
+		 * user
+		 */
+		userService.deleteUserByResource(resUuid);
+		
+		/*
+		 * resource
+		 */
+		resourceMapper.deleteByPrimaryKey(resUuid);
+	}
 	
 	@Override
 	public List<Resource> getAllResourceNonTrust(){

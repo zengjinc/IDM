@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
@@ -58,6 +59,9 @@ public class EntitlementService implements IEntitlementService {
 	@Autowired
 	private IPrivilegeService privilegeService;
 	
+	@Autowired
+	private ThreadPoolTaskExecutor taskExecutor;
+	
 	/*
 	 * 授权，到目标资源更改新密码（默认密码），新增entitlement表记录，并发送给用户
 	 */
@@ -85,9 +89,19 @@ public class EntitlementService implements IEntitlementService {
 			User user = userService.getUserByPrimaryKey(userUuid);
 			Resource resource = resourceService.getResourceByPrimarKey(resUuid);
 			Account account = acctService.getAccountByAcctTgtUuid(acctTgtUuid);
-			mailSenderService.entitlementFinishEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId(), randomPwd);
+			
+			taskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						mailSenderService.entitlementFinishEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId(), randomPwd);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
 		}
-		
 		
 		return insertSelective;
 	}
@@ -147,7 +161,17 @@ public class EntitlementService implements IEntitlementService {
 			User user = userService.getUserByPrimaryKey(userUuid);
 			Resource resource = resourceService.getResourceByPrimarKey(resUuid);
 			Account account = acctService.getAccountByAcctTgtUuid(acctTgtUuid);
-			mailSenderService.entitlementDisableEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
+			
+			taskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						mailSenderService.entitlementDisableEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 		
 		return updateNum;
@@ -177,7 +201,17 @@ public class EntitlementService implements IEntitlementService {
 			User user = userService.getUserByPrimaryKey(userUuid);
 			Resource resource = resourceService.getResourceByPrimarKey(resUuid);
 			Account account = acctService.getAccountByAcctTgtUuid(acctTgtUuid);
-			mailSenderService.entitlementEnableEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
+			
+			taskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						mailSenderService.entitlementEnableEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 		
 		return updateNum;
@@ -206,7 +240,16 @@ public class EntitlementService implements IEntitlementService {
 			privilegeService.revokeAccountPrivilege(account);
 			
 			//发送邮件
-			mailSenderService.entitlementCancelEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
+			taskExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						mailSenderService.entitlementCancelEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
 		}
 		
 		return deleteNum;
@@ -350,6 +393,19 @@ public class EntitlementService implements IEntitlementService {
 			}
 			
 		}
+	}
+
+	@Override
+	public boolean deleEntitlementByAccountTgtUuid(String acctTgtUuid) throws Exception {
+		EntitlementExample example = new EntitlementExample();
+		
+		example.createCriteria().andEtmAcctUuidEqualTo(acctTgtUuid);
+		
+		if(entitlementMapper.deleteByExample(example) > 0){
+			return true;
+		}
+		
+		return false;
 	}
 	
 }

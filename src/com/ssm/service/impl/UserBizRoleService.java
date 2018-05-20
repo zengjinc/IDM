@@ -76,5 +76,19 @@ public class UserBizRoleService implements IUserBizRoleService {
 		
 		return bizRoleList;
 	}
+
+	@Override
+	public boolean deleteByBizrole(String bizRoleUuid) throws Exception {
+		
+		RelUserBizroleExample example = new RelUserBizroleExample();
+		
+		example.createCriteria().andRelUserBizroleBizroleUuidEqualTo(bizRoleUuid);
+		
+		if(userBizRoleMapper.deleteByExample(example) > 0){
+			return true;
+		}
+		
+		return false;
+	}
 	
 }

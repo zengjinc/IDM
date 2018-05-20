@@ -42,4 +42,6 @@ public interface IUserService {
 
 	User doLogin(String userName, String pwd) throws Exception;
 
+	boolean deleteUserByResource(String resUuid) throws Exception;
+
 }

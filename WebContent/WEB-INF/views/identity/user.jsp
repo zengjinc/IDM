@@ -128,8 +128,8 @@
 							<th>用户标识</th>
 							<th>用户名称</th>
 							<th>用户状态</th>
-							<th>组织单位</th>
-							<th>用户类型</th>
+<!-- 							<th>组织单位</th> -->
+<!-- 							<th>用户类型</th> -->
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -145,8 +145,8 @@
 								<c:if test="${user['userStatus'] == '0'}">
 								<td>已禁用</td>
 								</c:if>
-								<td></td>
-								<td>${user['userType']}</td>
+<!-- 								<td></td> -->
+<%-- 								<td>${user['userType']}</td> --%>
 								<td><a
 									href="toidentity/userdetail.action?useruuid=${user['userUuid']}">查看</a>
 								</td>
@@ -219,20 +219,23 @@
 			})
 			$(".check_all").prop("checked", false);
 			
-			var jsonStr = {"userList" : user_id_list};
-			$.ajax({
-				type : 'post',
-				url : 'toidentity/enableuser.action',
-				contentType : 'application/json;charset=utf-8',
-				data : JSON.stringify(jsonStr),
-				dataType : 'text',
-				success : function(result){
-					if(result == "success"){
-						window.location.href="toidentity/user.action";
+			if(user_id_list.length <= 0){
+				$.notify("请先选择用户，再进行激活操作。");
+			}else{
+				var jsonStr = {"userList" : user_id_list};
+				$.ajax({
+					type : 'post',
+					url : 'toidentity/enableuser.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+					dataType : 'text',
+					success : function(result){
+						if(result == "success"){
+							window.location.href="toidentity/user.action";
+						}
 					}
-				}
-			});
-			
+				});
+			}
 		});
 		//禁用
 		$("#disable_user_btn").click(function(){
@@ -245,24 +248,29 @@
 			})
 			$(".check_all").prop("checked", false);
 			
-			var jsonStr = {"userList" : user_id_list};
-			$.ajax({
-				type : 'post',
-				url : 'toidentity/disableuser.action',
-				contentType : 'application/json;charset=utf-8',
-				data : JSON.stringify(jsonStr),
-				dataType : 'text',
-				success : function(result){
-					if(result == "success"){
-						window.location.href="toidentity/user.action";
+			if(user_id_list.length <= 0){
+				$.notify("请先选择用户，再进行禁用操作。");
+			}else{
+				var jsonStr = {"userList" : user_id_list};
+				$.ajax({
+					type : 'post',
+					url : 'toidentity/disableuser.action',
+					contentType : 'application/json;charset=utf-8',
+					data : JSON.stringify(jsonStr),
+					dataType : 'text',
+					success : function(result){
+						if(result == "success"){
+							window.location.href="toidentity/user.action";
+						}
 					}
-				}
-			});
+				});
+			}
 			
 		});
 		//删除
 		$("#delete_user_btn").click(function(){
 			var user_id_list = new Array();
+			
 			$(".check").each(function() {
 				if ($(this).is(':checked')) {
 					user_id_list.push($(this).parent().parent().children("td:eq(1)").attr('data-value'));
@@ -271,19 +279,28 @@
 			})
 			$(".check_all").prop("checked", false);
 			
-			var jsonStr = {"userList" : user_id_list};
-			$.ajax({
-				type : 'post',
-				url : 'toidentity/deleteuser.action',
-				contentType : 'application/json;charset=utf-8',
-				data : JSON.stringify(jsonStr),
-				dataType : 'text',
-				success : function(result){
-					if(result == "success"){
-						window.location.href="toidentity/user.action";
-					}
+			if(user_id_list.length <= 0){
+				$.notify("请先选择用户，再进行删除操作。");
+			}else{
+				var jsonStr = {"userList" : user_id_list};
+				
+				
+				var msg = "将删除选中用户的信息以及用户的所有账号信息，操作不可逆。";
+				if(confirm(msg)){
+					$.ajax({
+						type : 'post',
+						url : 'toidentity/deleteuser.action',
+						contentType : 'application/json;charset=utf-8',
+						data : JSON.stringify(jsonStr),
+						dataType : 'text',
+						success : function(result){
+							if(result == "success"){
+								window.location.href="toidentity/user.action";
+							}
+						}
+					});
 				}
-			});
+			}
 			
 		});
 		

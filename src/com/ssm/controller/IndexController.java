@@ -18,7 +18,7 @@ public class IndexController {
 	private UserMapper userMapper;
 	
 	@RequestMapping("/toidentity")
-	public String toLogin(){
+	public String toIdentity(){
 		User user = userMapper.selectByPrimaryKey("idmadmin");
 		logger.debug(user.toString());
 //		return "identity/user";

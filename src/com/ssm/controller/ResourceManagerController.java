@@ -30,6 +30,7 @@ import com.ssm.pojo.ResourceExample;
 import com.ssm.pojo.ResourceExample.Criteria;
 import com.ssm.pojo.ResourceType;
 import com.ssm.pojo.ResourceTypeExample;
+import com.ssm.service.IResourceService;
 import com.ssm.utils.CommonUtil;
 
 @Controller
@@ -40,9 +41,12 @@ public class ResourceManagerController {
 
 	@Autowired
 	private ResourceTypeMapper resourceTypeMapper;
-
+	
 	@Autowired
 	private ResourceMapper resourceMapper;
+	
+	@Autowired
+	private IResourceService resourceService;
 
 	@RequestMapping("/resource")
 	public String toResource(ModelMap modelMap, @RequestParam(required = true, defaultValue = "1") int page, @RequestParam(defaultValue = "10") int limit) {
@@ -79,8 +83,12 @@ public class ResourceManagerController {
 	}
 	
 	@RequestMapping("/deleteresource")
-	public String deleteResource(@RequestParam(value="resuuid")String resUuid){
-		resourceMapper.deleteByPrimaryKey(resUuid);
+	public String deleteResource(@RequestParam(value="resuuid")String resUuid) throws Exception{
+//		resourceMapper.deleteByPrimaryKey(resUuid);
+		
+		//级联删除
+		resourceService.cascadeDeleteResource(resUuid);
+		
 		return "redirect:resource.action";
 	}
 	

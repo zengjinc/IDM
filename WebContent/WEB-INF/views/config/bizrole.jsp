@@ -80,7 +80,7 @@
 								<td>${bizRole['bizRoleDesc']}</td>
 								<td><a
 									href="toconfig/bizroledetail.action?bizroleuuid=${bizRole['bizRoleUuid']}">查看</a>&nbsp;&nbsp;
-									<a href="toconfig/delbizrole.action?bizroleuuid=${bizRole['bizRoleUuid']}">删除</a>
+									<a href="toconfig/delbizrole.action?bizroleuuid=${bizRole['bizRoleUuid']}" onclick="return confirmRemove();">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -96,6 +96,14 @@
 
 	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
+	
+		function confirmRemove(){
+			var msg = "是否删除该岗位，已分配的岗位将会自动取消。";
+			if(confirm(msg)){
+				return true;
+			}
+			return false;
+		}
 		$(function(){
 			$('#pagination0')
 			.jqPaginator(

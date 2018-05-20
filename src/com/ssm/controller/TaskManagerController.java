@@ -1,11 +1,14 @@
 package com.ssm.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.quartz.CronExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ssm.mapper.ResourceMapper;
 import com.ssm.mapper.SchedulejobMapper;
@@ -54,6 +58,35 @@ public class TaskManagerController {
 		modelMap.put("scdjboList", pagedScdJobList);
 		return "task/task";
 	}
+	
+	@RequestMapping("/vaildatecronexpression")
+	@ResponseBody
+	public String validateCronExpression(@RequestBody String jsonStr) throws Exception{
+		 String  cron = jsonStr.split("=")[1];
+		
+		Map<String,String> resultMap = new HashMap<>();
+		String resultString = "";
+		try{
+			boolean flag = CronExpression.isValidExpression(cron);
+			
+			if(flag){
+				resultMap.put("valid", "true");
+			}else{
+				resultMap.put("valid", "false");
+			}
+		}catch(Exception e){
+			resultMap.put("valid", "false");
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			resultString = mapper.writeValueAsString(resultMap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return resultString;
+	}
 
 	@RequestMapping(value = "/searchtask", method = RequestMethod.POST)
 	public String searTask(ModelMap modelMap, @ModelAttribute Schedulejob schedulejob) {
@@ -88,6 +121,9 @@ public class TaskManagerController {
 		Schedulejob schedulejob = schedulejobMapper.selectByPrimaryKey(ScdUuid);
 		schedulejob.setScdStatus(0);
 		schedulejobMapper.updateByPrimaryKey(schedulejob);
+		//删除定时任务
+		JobManager jobManager = (JobManager) BeanUtil.getBean("jobManager");
+		jobManager.removeJob(schedulejob);
 		return "redirect:task.action";
 	}
 
@@ -96,6 +132,9 @@ public class TaskManagerController {
 		Schedulejob schedulejob = schedulejobMapper.selectByPrimaryKey(ScdUuid);
 		schedulejob.setScdStatus(1);
 		schedulejobMapper.updateByPrimaryKey(schedulejob);
+		//添加定时任务
+		JobManager jobManager = (JobManager) BeanUtil.getBean("jobManager");
+		jobManager.saveOrUpdateJob(schedulejob);
 		return "redirect:task.action";
 	}
 
@@ -207,9 +246,33 @@ public class TaskManagerController {
 		Schedulejob schedulejob = schedulejobMapper.selectByPrimaryKey(scdUuid.replace("\"",""));
 		
 		
-		BaseScheduleJob baseschedulejob = (BaseScheduleJob) BeanUtil.getBean(schedulejob.getScdJobType());//com.ssm.shedule.UserSynchronisedScheduleJob
+		BaseScheduleJob baseschedulejob = (BaseScheduleJob) BeanUtil.getBean(schedulejob.getScdJobType());
 		baseschedulejob.setSchedulejob(schedulejob);
 		((TaskService)baseschedulejob).exec();
+		
+		//执行任务链
+		JsonNode taskchainJson = new ObjectMapper().readTree(schedulejob.getScdJsonAttr()).get("taskchainJson");
+		
+		Iterator<JsonNode> iterator = taskchainJson.getElements();
+		
+		while(iterator.hasNext()){
+			JsonNode node = iterator.next();
+			
+			String scdId = node.get("scdJobId").asText();
+			
+			SchedulejobExample example = new SchedulejobExample();
+			example.createCriteria().andScdIdEqualTo(scdId);
+			
+			List<Schedulejob> scdList = schedulejobMapper.selectByExampleWithBLOBs(example);
+			
+			if(scdList.size() > 0){
+				Schedulejob schedulejob2 = scdList.get(0);
+				
+				BaseScheduleJob baseschedulejob2 = (BaseScheduleJob) BeanUtil.getBean(schedulejob2.getScdJobType());
+				baseschedulejob2.setSchedulejob(schedulejob2);
+				((TaskService)baseschedulejob2).exec();
+			}
+		}
 		
 		return "success";
 	}

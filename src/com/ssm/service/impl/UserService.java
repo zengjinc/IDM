@@ -125,6 +125,19 @@ public class UserService implements IUserService{
 		}
 		return null;
 	}
+
+	@Override
+	public boolean deleteUserByResource(String resUuid) throws Exception {
+		UserExample example = new UserExample();
+		
+		example.createCriteria().andUserResUuidEqualTo(resUuid);
+		
+		if(userMapper.deleteByExample(example) > 0){
+			return true;
+		}
+		
+		return false;
+	}
 	
 
 	

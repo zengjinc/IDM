@@ -81,4 +81,14 @@ public class ItroleService implements IItroleService{
 	public Itrole getItroleByItroleUuid(String itroleUuid) throws Exception{
 		return itroleMapper.selectByPrimaryKey(itroleUuid);
 	}
+
+	@Override
+	public boolean deleteByPrimaryKey(String itroleUuid) throws Exception {
+		
+		if(itroleMapper.deleteByPrimaryKey(itroleUuid) > 0){
+			return true;
+		}
+		
+		return false;
+	}
 }

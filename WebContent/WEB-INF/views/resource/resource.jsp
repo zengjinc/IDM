@@ -87,7 +87,7 @@
 								<td><a
 									href="toresource/resourcedetail.action?resuuid=${resource['resUuid']}">查看</a>
 									<a
-									href="toresource/deleteresource.action?resuuid=${resource['resUuid']}">删除</a>
+									href="toresource/deleteresource.action?resuuid=${resource['resUuid']}" onclick="return Removeconfirm();">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -136,6 +136,16 @@
 
 	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
+		function Removeconfirm(){
+			var msg = "确认删除资源吗？\n删除资源将删除资源的所有信息，包括回收回来的账号和角色以及所有的账号授权和角色分配，操作不可逆！";
+			 if (confirm(msg)){ 
+			 	return true; 
+			 }else{ 
+			 	return false; 
+			 } 
+			
+		}
+	
 		$(function() {
 
 			$('#pagination0')

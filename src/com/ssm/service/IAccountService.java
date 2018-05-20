@@ -23,4 +23,8 @@ public interface IAccountService {
 
 	boolean createAccountByPolicy(Map<String, String> basicAttributesMap, Map<String, String> attributesMap, String policyUuid) throws Exception;
 
+	boolean deleteByPrimaryKey(String acctUuid) throws Exception;
+
+	List<Account> getAccountByResUuid2(String resUuid) throws Exception;
+
 }

@@ -14,6 +14,7 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.css" rel="stylesheet">
 <link href="css/bootstrap-select.min.css" rel="stylesheet">
+<link href="css/bootstrapValidator.min.css" rel="stylesheet">
 <!-- custom style -->
 <link href="css/custom.css?version=<%=Math.random()%>" rel="stylesheet">
 <script type="text/javascript" src="js/loading.js"></script>
@@ -38,25 +39,28 @@
 			<%@ include file="policynav.jsp"%>
 			<!-- 主体右 -->
 			<div class="col-md-10 subject">
-				<div class="row">
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">授权策略标识</span> <input id="etm_pol_id" type="text" class="form-control">
+				<form action="" id="form1">
+					<div class="row">
+						<div class="col-md-5 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">授权策略标识</span> <input id="etm_pol_id" name="etm_pol_id" type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-5 col-md-offset-1 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">授权策略名称</span> <input id="etm_pol_name" name="etm_pol_name" type="text" class="form-control">
+							</div>
 						</div>
 					</div>
-					<div class="col-md-5 col-md-offset-1">
-						<div class="input-group">
-							<span class="input-group-addon">授权策略名称</span> <input id="etm_pol_name" type="text" class="form-control">
+					<div class="row">
+						<div class="col-md-5 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">授权策略描述</span> <input id="etm_pol_desc" type="text" class="form-control">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">授权策略描述</span> <input id="etm_pol_desc" type="text" class="form-control">
-						</div>
-					</div>
-				</div>
+				
+				</form>
 				<ul id="myTab" class="nav nav-tabs">
 					<li class="active"><a href="#home" data-toggle="tab">规则</a></li>
 				</ul>
@@ -160,6 +164,33 @@
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
+			$('#form1').bootstrapValidator({
+				message: '验证失败',
+				live : 'disabled',
+				feedbackIcons: {
+// 					valid: 'glyphicon glyphicon-ok',
+// 					invalid: 'glyphicon glyphicon-remove',
+// 					validating: 'glyphicon glyphicon-refresh'
+				},
+				fields: {
+					etm_pol_id: {
+						message: '策略标识验证证失败',
+						validators: {
+							notEmpty: {
+								message: '策略标识不能为空'
+							}
+						}
+					},
+					etm_pol_name: {
+						validators: {
+							notEmpty: {
+								message: '策略名称不能为空'
+							}
+						}
+					}
+				}
+			});
+			
 			var etmPolUuid = GetQueryString("etmpoluuid");
 			
 			if(etmPolUuid != null){
@@ -203,60 +234,63 @@
 			
 			//保存当前授权策略
 			$("#save_entitlement_btn").click(function(){
-				var etmPolId = $("#etm_pol_id").val();
-				var etmPolName = $("#etm_pol_name").val();
-				var etmPolDesc = $("#etm_pol_desc").val();
+				var validate = $('#form1').data('bootstrapValidator').validate();
 				
-				var etmArr = new Array();
-				$("#entitlement_table").find("tbody").children().each(function(){
-					var bizRole = $(this).children("td:eq(0)").attr('data-value');
-					var entitlement = $(this).children("td:eq(1)").attr('data-value');
+				if(validate.isValid()){ 
+					var etmPolId = $("#etm_pol_id").val();
+					var etmPolName = $("#etm_pol_name").val();
+					var etmPolDesc = $("#etm_pol_desc").val();
 					
-					var etmJson = {"bizRole" : bizRole, "entitlement" : entitlement};
+					var etmArr = new Array();
+					$("#entitlement_table").find("tbody").children().each(function(){
+						var bizRole = $(this).children("td:eq(0)").attr('data-value');
+						var entitlement = $(this).children("td:eq(1)").attr('data-value');
+						
+						var etmJson = {"bizRole" : bizRole, "entitlement" : entitlement};
+						
+						etmArr.push(etmJson);
+					})
 					
-					etmArr.push(etmJson);
-				})
-				
-// 				console.log(etmArr);
-				
-				var jsonStr = {"etmPolUuid" : etmPolUuid,"etmPolId" : etmPolId, "etmPolName" : etmPolName, "etmPolDesc" : etmPolDesc, "etmArr" : etmArr};
-				
-				 $.ajax({
-						type : 'post',
-						url : 'topolicy/saveetmpolicy.action',
-						contentType : 'application/json;charset=utf-8',
-	 					data : JSON.stringify(jsonStr),
-						dataType : 'text',
-						success : function(information){
-							if(information.indexOf("success") >= 0){
-								$.notify({
-									icon : 'glyphicon glyphicon-success-sign',
-									title : '<strong>保存授权策略结果</strong>',
-									message : "成功",
-									allow_dismiss : false
-									// url: 'https://github.com/mouse0270/bootstrap-notify',
-									// target: '_blank'
-								}, {
-									z_index : 1051,
-									type : 'success', // danger warning info success
-									mouse_over : 'pause'
-								});
-								setTimeout(function(){window.location.href='topolicy/entitlement.action'}, 2000);
-							}else{
-								$.notify({
-									icon : 'glyphicon glyphicon-success-sign',
-									title : '<strong>保存授权策略结果：出错！</strong>',
-									message : information,
-									allow_dismiss : false
-								}, {
-									z_index : 1051,
-									type : 'warning', // danger warning info success
-									mouse_over : 'pause'
-								});
+//	 				console.log(etmArr);
+					
+					var jsonStr = {"etmPolUuid" : etmPolUuid,"etmPolId" : etmPolId, "etmPolName" : etmPolName, "etmPolDesc" : etmPolDesc, "etmArr" : etmArr};
+					
+					 $.ajax({
+							type : 'post',
+							url : 'topolicy/saveetmpolicy.action',
+							contentType : 'application/json;charset=utf-8',
+		 					data : JSON.stringify(jsonStr),
+							dataType : 'text',
+							success : function(information){
+								if(information.indexOf("success") >= 0){
+									$.notify({
+										icon : 'glyphicon glyphicon-success-sign',
+										title : '<strong>保存授权策略结果</strong>',
+										message : "成功",
+										allow_dismiss : false
+										// url: 'https://github.com/mouse0270/bootstrap-notify',
+										// target: '_blank'
+									}, {
+										z_index : 1051,
+										type : 'success', // danger warning info success
+										mouse_over : 'pause'
+									});
+									setTimeout(function(){window.location.href='topolicy/entitlement.action'}, 2000);
+								}else{
+									$.notify({
+										icon : 'glyphicon glyphicon-success-sign',
+										title : '<strong>保存授权策略结果：出错！</strong>',
+										message : information,
+										allow_dismiss : false
+									}, {
+										z_index : 1051,
+										type : 'warning', // danger warning info success
+										mouse_over : 'pause'
+									});
+								}
 							}
-						}
-					});
-				
+						});
+				}
 			})
 			
 			//页面加载完成时加载所有的岗位

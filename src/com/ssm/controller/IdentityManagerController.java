@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -89,6 +90,9 @@ public class IdentityManagerController {
 	
 	@Autowired
 	private RelUserBizroleMapper relUserBizRoleMapper;
+	
+	@Autowired
+	private ThreadPoolTaskExecutor taskExecutor;
 	
 	
 	@RequestMapping("/user")
@@ -572,7 +576,18 @@ public class IdentityManagerController {
 					User user = userService.getUserByPrimaryKey(userUuid);
 					Resource resource = resourceService.getResourceByPrimarKey(resUuid);
 					Account account = accountService.getAccountByAcctTgtUuid(acctTgtUuid);
-					mailSenderService.changePasswordEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId(), newPwd);
+					
+					taskExecutor.execute(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								mailSenderService.changePasswordEmail(user.getUserEmail(), user.getUserName(), resource.getResName(), account.getAcctLoginId(), newPwd);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+					
 					return "success";
 				}
 			}

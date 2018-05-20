@@ -60,6 +60,92 @@ public class PolicyService implements IPolicyService {
 		return policyMapper.insert(policy);
 	}
 	
+	
+	@Override
+	public boolean deletePolicyByResource(String resUuid) throws Exception{
+		//授权策略，包含该资源就删除
+		List<Policy> entitlementPolicyList = getEntitlementPolicy(new PageBounds());
+		
+		for(Policy policy : entitlementPolicyList){
+			
+			Iterator<JsonNode> iterator = new ObjectMapper().readTree(policy.getPolJsonStr()).getElements();
+			
+			while(iterator.hasNext()){
+				
+				JsonNode node = iterator.next();
+				
+				String entitlementStr = node.get("entitlement").asText();
+				
+				String[] entitlementArr = entitlementStr.split(";");
+				
+				for(String s : entitlementArr){
+					
+					if(s != null && s.length() > 0){
+						
+						if(s.indexOf("-->") >= 0){
+							
+							if(s.split("-->")[0].equals(resUuid)){
+								//删除policy
+								try {
+									deletePolicy(policy.getPolUuid());
+								} catch (Exception e) {
+									e.printStackTrace();
+									return false;
+								}
+							}
+							
+						}else{
+							
+							if(s.equals(resUuid)){
+								//删除policy
+								try {
+									deletePolicy(policy.getPolUuid());
+								} catch (Exception e) {
+									e.printStackTrace();
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+		//角色冲突策略，包含该资源的对象就删除
+		List<Policy> roleConflictPolicyList = getRoleConflictPolicy(new PageBounds());
+		
+		for(Policy policy : roleConflictPolicyList){
+			
+			Iterator<JsonNode> iterator = new ObjectMapper().readTree(policy.getPolJsonStr()).getElements();
+			
+			while(iterator.hasNext()){
+				
+				JsonNode node = iterator.next();
+				
+				String itrolesStr = node.get("itroles").asText();
+				
+				String[] itrolesArr = itrolesStr.split(",");
+				
+				for(String s : itrolesArr){
+					
+					Itrole itrole = itroleService.getItroleByItroleUuid(s);
+					
+					if(itrole.getItroleResUuid().equals(resUuid)){
+						//删除policy
+						try {
+							deletePolicy(policy.getPolUuid());
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
+					}
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	@Override
 	public List<Policy> getEntitlementPolicy(PageBounds pageBounds) throws Exception{
 		PolicyExample example = new PolicyExample();

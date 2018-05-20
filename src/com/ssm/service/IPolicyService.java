@@ -27,4 +27,6 @@ public interface IPolicyService {
 
 	boolean roleConflictPolicy(String acctUuid, String itroleUuid) throws Exception;
 
+	boolean deletePolicyByResource(String resUuid) throws Exception;
+
 }

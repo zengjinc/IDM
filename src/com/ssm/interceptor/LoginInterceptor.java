@@ -36,18 +36,23 @@ public class LoginInterceptor implements HandlerInterceptor{
         //获取请求的URL
         String url = request.getRequestURI();  
         
+       //获取Session  
+        HttpSession session = request.getSession();
+        
         if(url.indexOf("login.action")>=0){  
+        	session.removeAttribute("preUrl");
             return true;
         }  
-        //获取Session  
-        HttpSession session = request.getSession();
+        
         String user = (String)session.getAttribute("user");  
         
         if(user != null){
             return true;  
         }
         //不符合条件的，跳转到登录界面  
-        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);  
+//        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);  
+        session.setAttribute("preUrl", url);
+        response.getWriter().print("<html><script type='text/JavaScript'> location.href='"+request.getContextPath()+"/tologin.action'</script></html>");
           
         return false;
     }  

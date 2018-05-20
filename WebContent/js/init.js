@@ -14,7 +14,73 @@ function GetQueryString(name)
      if(r!=null)return  unescape(r[2]); return null;
 }
 
+function logOutConfirm(){
+	 var msg = "您真的退出系统吗？\n请确认！";
+	 if (confirm(msg)){ 
+	 	return true; 
+	 }else{ 
+	 	return false; 
+	 } 
+}
+
 $(function() {
+	//模态框显示事件
+	$('#resert_user_password').on('show.bs.modal', function() {
+		$("#old_user_pwd").val('');
+		$("#new_user_pwd").val('');
+		$("#new_user_pwd2").val('');
+	})
+	
+	//确认修改密码
+	$("#resert_user_password_confirm").click(function(){
+		var oldPassword = $("#old_user_pwd").val();
+		var newPassword = $("#new_user_pwd").val();
+		var newPassword2 = $("#new_user_pwd2").val();
+		
+		var jsonStr = {"oldPassword" : oldPassword,"newPassword" : newPassword,"newPassword2" : newPassword2};
+		
+		$.ajax({
+			type : 'post',
+			url : 'changepassword.action',
+			contentType : 'application/json;charset=utf-8',
+			dataType : 'text',
+			data : JSON.stringify(jsonStr),
+			success : function(information){
+				if(information.indexOf("success") >= 0){
+					//清空cookie
+					$.cookie("rmbMe", "false", { expires: -1 }); // 删除 cookie
+			        $.cookie("userName", '', { expires: -1 });
+			        $.cookie("pwd", '', { expires: -1 });
+					$.notify({
+						icon : 'glyphicon glyphicon-success-sign',
+						title : '<strong>修改密码结果</strong>',
+						message : "成功",
+						allow_dismiss : false
+						// url: 'https://github.com/mouse0270/bootstrap-notify',
+						// target: '_blank'
+					}, {
+						z_index : 1051,
+						type : 'success', // danger warning info success
+						mouse_over : 'pause'
+					});
+				}else{
+					$.notify({
+						icon : 'glyphicon glyphicon-success-sign',
+						title : '<strong>修改密码结果 ： 失败。</strong>',
+						message : information,
+						allow_dismiss : false
+					}, {
+						z_index : 1051,
+						type : 'warning', // danger warning info success
+						mouse_over : 'pause'
+					});
+				}
+			}
+		});
+		
+		
+	})
+	
 	// 导航栏点击变色
 	var nav = $(".nav.navbar-nav.navbar-left");
 	var pageUrl = window.location.href;

@@ -137,8 +137,10 @@ $(function() {
 //				$("#resource_ou").val(resId);
 				if(resTrust == "1"){
 					$("#resource_trust").val("true");
+					$("#tab_role").hide();
 				}else{
 					$("#resource_trust").val("false");
+					$("#tab_role").show();
 				}
 				
 				//config
@@ -407,294 +409,298 @@ $(function() {
 	// 保存资源的所有信息
 	$("#btn_resource_save").click(function() {
 		
-		var resourceJson = {};
-		var otherTab = {};
+		var validate = $('#form1').data('bootstrapValidator').validate();
 		
-		resourceJson['resUuid'] = resuuid;
-		
-		// resource 基本信息
-		var resource_id = $("#resource_id").val();
-		var resource_name = $("#resource_name").val();
-		var resource_desc = $("#resource_desc").val();
-		var resource_type = $("#resource_type").val();
-		var owner_account = $("#owner_account").val();
-		var owner_ou = $("#owner_ou").val();
-		var resource_trust = $("#resource_trust").val();
-
-		var resourceBaseJson = {
-			"resource_id" : resource_id,
-			"resource_name" : resource_name,
-			"resource_desc" : resource_desc,
-			"resource_type" : resource_type,
-			"owner_account" : owner_account,
-			"owner_ou" : owner_ou,
-			"resource_trust" : resource_trust
-		}
-		
-		//base
-		resourceJson['baseJson'] = resourceBaseJson;
-		
-		// 配置
-		var jdbc_drive = $("#jdbc_drive").val();
-		var jdbc_url = $("#jdbc_url").val();
-		var jdbc_username = $("#jdbc_username").val();
-		var jdbc_pwd = $("#jdbc_pwd").val();
-
-		var configJson = {
-			"jdbc_drive" : jdbc_drive,
-			"jdbc_url" : jdbc_url,
-			"jdbc_username" : jdbc_username,
-			"jdbc_pwd" : jdbc_pwd
-		}
-		
-		//添加配置信息到 otherJson
-		otherTab['configJson'] = configJson;
-		
-		// 账号架构
-		var acctJson = {};
-		
-		var user_table = $("#user_table").val();
-		var user_uuidgener_sel = $("#user_uuidgener_sel").val();
-		var uuidgener_text = $("#uuidgener_text").val();
-		
-		var pwd_table = $("#pwd_table").val();
-		var pwd_col = $("#pwd_col").val();
-		var pwd_rel = $("#pwd_rel").val();
-		var pwd_encoding_text = $("#pwd_encoding_text").val();
-		
-		acctJson['user_table'] = user_table;
-		acctJson['user_uuidgener_sel'] = user_uuidgener_sel;
-		acctJson['uuidgener_text'] = uuidgener_text;
-		acctJson['pwd_table'] = pwd_table;
-		acctJson['pwd_col'] = pwd_col;
-		acctJson['pwd_rel'] = pwd_rel;
-		acctJson['pwd_encoding_text'] = pwd_encoding_text;
-		
-		var acct_attr_def = new Array();
-		$(".acct_tr").each(function(){
-			var target_name = $(this).children().eq(1).text();
-			var show_name = $(this).children().eq(2).text();
-			var data_type = $(this).children().eq(3).text();
-			var min = $(this).children().eq(4).text();
-			var max = $(this).children().eq(5).text();
-			var required = $(this).children().eq(6).text();
-			var editable = $(this).children().eq(7).text();
-			var acct_tr_json = {
-				"target_name" : target_name,	
-				"show_name" : show_name,	
-				"data_type" : data_type,	
-				"min" : min,	
-				"max" : max,	
-				"required" : required,	
-				"editable" : editable
+		if(validate.isValid()){ 
+			var resourceJson = {};
+			var otherTab = {};
+			
+			resourceJson['resUuid'] = resuuid;
+			
+			// resource 基本信息
+			var resource_id = $("#resource_id").val();
+			var resource_name = $("#resource_name").val();
+			var resource_desc = $("#resource_desc").val();
+			var resource_type = $("#resource_type").val();
+			var owner_account = $("#owner_account").val();
+			var owner_ou = $("#owner_ou").val();
+			var resource_trust = $("#resource_trust").val();
+	
+			var resourceBaseJson = {
+				"resource_id" : resource_id,
+				"resource_name" : resource_name,
+				"resource_desc" : resource_desc,
+				"resource_type" : resource_type,
+				"owner_account" : owner_account,
+				"owner_ou" : owner_ou,
+				"resource_trust" : resource_trust
 			}
-			acct_attr_def.push(acct_tr_json);
-		})
-		
-		acctJson['acct_attr_def'] = acct_attr_def;
-		
-		var account_uuid = $("#account_uuid").val();
-		var account_id = $("#account_id").val();
-		var account_ou_uuid = $("#account_ou_uuid").val();
-		var account_createtime = $("#account_createtime").val();
-		var account_modifytime = $("#account_modifytime").val();
-		var account_status = $("#account_status").val();
-		var account_lock = $("#account_lock").val();
-		
-		var account_status_enable = $("#account_status_enable").val();
-		var account_status_disable = $("#account_status_disable").val();
-		var account_lock_lock = $("#account_lock_lock").val();
-		var account_lock_unlock = $("#account_lock_unlock").val();
-		
-		acctJson['account_uuid'] = account_uuid;
-		acctJson['account_id'] = account_id;
-		acctJson['account_ou_uuid'] = account_ou_uuid;
-		acctJson['account_createtime'] = account_createtime;
-		acctJson['account_modifytime'] = account_modifytime;
-		acctJson['account_status'] = account_status;
-		acctJson['account_lock'] = account_lock;
-		acctJson['account_status_enable'] = account_status_enable;
-		acctJson['account_status_disable'] = account_status_disable;
-		acctJson['account_lock_lock'] = account_lock_lock;
-		acctJson['account_lock_unlock'] = account_lock_unlock;
-		
-		var acct_attr_mapping = new Array();
-		$(".acct_attr_mapping_tr").each(function(){
-			var user_attr = $(this).children().eq(0).text();
-			var acct_attr = $(this).children().eq(1).text();
-			var attr_mapping_tr_json = {
-				"user_attr" : user_attr,	
-				"acct_attr" : acct_attr
+			
+			//base
+			resourceJson['baseJson'] = resourceBaseJson;
+			
+			// 配置
+			var jdbc_drive = $("#jdbc_drive").val();
+			var jdbc_url = $("#jdbc_url").val();
+			var jdbc_username = $("#jdbc_username").val();
+			var jdbc_pwd = $("#jdbc_pwd").val();
+	
+			var configJson = {
+				"jdbc_drive" : jdbc_drive,
+				"jdbc_url" : jdbc_url,
+				"jdbc_username" : jdbc_username,
+				"jdbc_pwd" : jdbc_pwd
 			}
-			acct_attr_mapping.push(attr_mapping_tr_json);
-		})
-		
-		acctJson['acct_attr_mapping'] = acct_attr_mapping;
-		
-		var acct_assign_rule = new Array();
-		$(".acct_assign_rule_tr").each(function(){
-			var assign_rule = $(this).children().eq(0).text();
-			acct_assign_rule.push(assign_rule);
-		})
-		
-		acctJson['acct_assign_rule'] = acct_assign_rule;
-		otherTab['acctJson'] = acctJson;
-		
-		// 角色架构
-		var roleJson = {};
-		
-		var role_tablename = $("#role_tablename").val();
-		var role_rel_tablename = $("#role_rel_tablename").val();
-		var role_rel_uuid = $("#role_rel_uuid").val();
-		var role_user_col = $("#role_user_col").val();
-		var role_col = $("#role_col").val();
-		var role_uuidgener_sel = $("#role_uuidgener_sel").val();
-		var role_uuidgener_text = $("#role_uuidgener_text").val();
-		
-		roleJson['role_tablename'] =  role_tablename;
-		roleJson['role_rel_tablename'] = role_rel_tablename;
-		roleJson['role_rel_uuid'] =  role_rel_uuid;
-		roleJson['role_user_col'] =  role_user_col;
-		roleJson['role_col'] =  role_col;
-		roleJson['role_uuidgener_sel'] =  role_uuidgener_sel;
-		roleJson['role_uuidgener_text'] =  role_uuidgener_text;
-		
-		var role_attr_def = new Array();
-		$(".role_tr").each(function(){
-			var target_name = $(this).children().eq(1).text();
-			var show_name = $(this).children().eq(2).text();
-			var data_type = $(this).children().eq(3).text();
-			var min = $(this).children().eq(4).text();
-			var max = $(this).children().eq(5).text();
-			var required = $(this).children().eq(6).text();
-			var editable = $(this).children().eq(7).text();
-			var acct_tr_json = {
-				"target_name" : target_name,	
-				"show_name" : show_name,	
-				"data_type" : data_type,	
-				"min" : min,	
-				"max" : max,	
-				"required" : required,	
-				"editable" : editable
-			}
-			role_attr_def.push(acct_tr_json);
-		})
-		
-		roleJson['role_attr_def'] = role_attr_def;
-		
-		var role_uuid = $("#role_uuid").val();
-		var role_id = $("#role_id").val();
-		var role_name = $("#role_name").val();
-		var role_name2 = $("#role_name2").val();
-		
-		roleJson['role_uuid'] = role_uuid;
-		roleJson['role_id'] = role_id;
-		roleJson['role_name'] = role_name;
-		roleJson['role_name2'] = role_name2;
-		
-		otherTab['roleJson'] = roleJson;
-		
-		// 组织单位架构
-		var ouJson = {};
-		
-		var ou_tablename = $("#ou_tablename").val();
-		
-		ouJson['ou_tablename'] = ou_tablename;
-		
-		//ou_tr
-		var ou_attr_def = new Array();
-		$(".ou_tr").each(function(){
-			var target_name = $(this).children().eq(1).text();
-			var show_name = $(this).children().eq(2).text();
-			var data_type = $(this).children().eq(3).text();
-			var min = $(this).children().eq(4).text();
-			var max = $(this).children().eq(5).text();
-			var required = $(this).children().eq(6).text();
-			var editable = $(this).children().eq(7).text();
-			var acct_tr_json = {
-				"target_name" : target_name,	
-				"show_name" : show_name,	
-				"data_type" : data_type,	
-				"min" : min,	
-				"max" : max,	
-				"required" : required,	
-				"editable" : editable
-			}
-			ou_attr_def.push(acct_tr_json);
-		})
-		
-		ouJson['ou_attr_def'] = ou_attr_def;
-		
-		var ou_uuid = $("#ou_uuid").val();
-		var ou_id = $("#ou_id").val();
-		var ou_distinguished_name = $("#ou_distinguished_name").val();
-		var ou_name = $("#ou_name").val();
-		var ou_name2 = $("#ou_name2").val();
-		var ou_parent_uuid = $("#ou_parent_uuid").val();
-		
-		ouJson['ou_uuid'] = ou_uuid;
-		ouJson['ou_id'] = ou_id;
-		ouJson['ou_distinguished_name'] = ou_distinguished_name;
-		ouJson['ou_name'] = ou_name;
-		ouJson['ou_name2'] = ou_name2;
-		ouJson['ou_parent_uuid'] = ou_parent_uuid;
-		
-		otherTab['ouJson'] = ouJson;
-		
-		resourceJson['attrJson'] = otherTab;
-		
-		// 发送到后台
-		$.ajax({
-			type : 'post',
-			url : 'toresource/saveresource.action',
-			contentType : 'application/json;charset=utf-8',// 指定为json类型
-			dataType : 'json', // 服务器响应类型
-			data : JSON.stringify(resourceJson), // JSON.stringify(jdbc),
-			success : function(information) {// 返回json结果
-				if(information.result.indexOf("success") >= 0){
-					$.notify({
-						icon : 'glyphicon glyphicon-success-sign',
-						title : '<strong>保存资源结果</strong>',
-						message : "成功",
-						allow_dismiss : false
-						// url: 'https://github.com/mouse0270/bootstrap-notify',
-						// target: '_blank'
-					}, {
-						z_index : 1051,
-						type : 'success', // danger warning info success
-						mouse_over : 'pause'
-					});
-					setTimeout(function(){window.location.href='toresource/resource.action'}, 2000);
-				}else{
+			
+			//添加配置信息到 otherJson
+			otherTab['configJson'] = configJson;
+			
+			// 账号架构
+			var acctJson = {};
+			
+			var user_table = $("#user_table").val();
+			var user_uuidgener_sel = $("#user_uuidgener_sel").val();
+			var uuidgener_text = $("#uuidgener_text").val();
+			
+			var pwd_table = $("#pwd_table").val();
+			var pwd_col = $("#pwd_col").val();
+			var pwd_rel = $("#pwd_rel").val();
+			var pwd_encoding_text = $("#pwd_encoding_text").val();
+			
+			acctJson['user_table'] = user_table;
+			acctJson['user_uuidgener_sel'] = user_uuidgener_sel;
+			acctJson['uuidgener_text'] = uuidgener_text;
+			acctJson['pwd_table'] = pwd_table;
+			acctJson['pwd_col'] = pwd_col;
+			acctJson['pwd_rel'] = pwd_rel;
+			acctJson['pwd_encoding_text'] = pwd_encoding_text;
+			
+			var acct_attr_def = new Array();
+			$(".acct_tr").each(function(){
+				var target_name = $(this).children().eq(1).text();
+				var show_name = $(this).children().eq(2).text();
+				var data_type = $(this).children().eq(3).text();
+				var min = $(this).children().eq(4).text();
+				var max = $(this).children().eq(5).text();
+				var required = $(this).children().eq(6).text();
+				var editable = $(this).children().eq(7).text();
+				var acct_tr_json = {
+					"target_name" : target_name,	
+					"show_name" : show_name,	
+					"data_type" : data_type,	
+					"min" : min,	
+					"max" : max,	
+					"required" : required,	
+					"editable" : editable
+				}
+				acct_attr_def.push(acct_tr_json);
+			})
+			
+			acctJson['acct_attr_def'] = acct_attr_def;
+			
+			var account_uuid = $("#account_uuid").val();
+			var account_id = $("#account_id").val();
+			var account_ou_uuid = $("#account_ou_uuid").val();
+			var account_createtime = $("#account_createtime").val();
+			var account_modifytime = $("#account_modifytime").val();
+			var account_status = $("#account_status").val();
+			var account_lock = $("#account_lock").val();
+			
+			var account_status_enable = $("#account_status_enable").val();
+			var account_status_disable = $("#account_status_disable").val();
+			var account_lock_lock = $("#account_lock_lock").val();
+			var account_lock_unlock = $("#account_lock_unlock").val();
+			
+			acctJson['account_uuid'] = account_uuid;
+			acctJson['account_id'] = account_id;
+			acctJson['account_ou_uuid'] = account_ou_uuid;
+			acctJson['account_createtime'] = account_createtime;
+			acctJson['account_modifytime'] = account_modifytime;
+			acctJson['account_status'] = account_status;
+			acctJson['account_lock'] = account_lock;
+			acctJson['account_status_enable'] = account_status_enable;
+			acctJson['account_status_disable'] = account_status_disable;
+			acctJson['account_lock_lock'] = account_lock_lock;
+			acctJson['account_lock_unlock'] = account_lock_unlock;
+			
+			var acct_attr_mapping = new Array();
+			$(".acct_attr_mapping_tr").each(function(){
+				var user_attr = $(this).children().eq(0).text();
+				var acct_attr = $(this).children().eq(1).text();
+				var attr_mapping_tr_json = {
+					"user_attr" : user_attr,	
+					"acct_attr" : acct_attr
+				}
+				acct_attr_mapping.push(attr_mapping_tr_json);
+			})
+			
+			acctJson['acct_attr_mapping'] = acct_attr_mapping;
+			
+			var acct_assign_rule = new Array();
+			$(".acct_assign_rule_tr").each(function(){
+				var assign_rule = $(this).children().eq(0).text();
+				acct_assign_rule.push(assign_rule);
+			})
+			
+			acctJson['acct_assign_rule'] = acct_assign_rule;
+			otherTab['acctJson'] = acctJson;
+			
+			// 角色架构
+			var roleJson = {};
+			
+			var role_tablename = $("#role_tablename").val();
+			var role_rel_tablename = $("#role_rel_tablename").val();
+			var role_rel_uuid = $("#role_rel_uuid").val();
+			var role_user_col = $("#role_user_col").val();
+			var role_col = $("#role_col").val();
+			var role_uuidgener_sel = $("#role_uuidgener_sel").val();
+			var role_uuidgener_text = $("#role_uuidgener_text").val();
+			
+			roleJson['role_tablename'] =  role_tablename;
+			roleJson['role_rel_tablename'] = role_rel_tablename;
+			roleJson['role_rel_uuid'] =  role_rel_uuid;
+			roleJson['role_user_col'] =  role_user_col;
+			roleJson['role_col'] =  role_col;
+			roleJson['role_uuidgener_sel'] =  role_uuidgener_sel;
+			roleJson['role_uuidgener_text'] =  role_uuidgener_text;
+			
+			var role_attr_def = new Array();
+			$(".role_tr").each(function(){
+				var target_name = $(this).children().eq(1).text();
+				var show_name = $(this).children().eq(2).text();
+				var data_type = $(this).children().eq(3).text();
+				var min = $(this).children().eq(4).text();
+				var max = $(this).children().eq(5).text();
+				var required = $(this).children().eq(6).text();
+				var editable = $(this).children().eq(7).text();
+				var acct_tr_json = {
+					"target_name" : target_name,	
+					"show_name" : show_name,	
+					"data_type" : data_type,	
+					"min" : min,	
+					"max" : max,	
+					"required" : required,	
+					"editable" : editable
+				}
+				role_attr_def.push(acct_tr_json);
+			})
+			
+			roleJson['role_attr_def'] = role_attr_def;
+			
+			var role_uuid = $("#role_uuid").val();
+			var role_id = $("#role_id").val();
+			var role_name = $("#role_name").val();
+			var role_name2 = $("#role_name2").val();
+			
+			roleJson['role_uuid'] = role_uuid;
+			roleJson['role_id'] = role_id;
+			roleJson['role_name'] = role_name;
+			roleJson['role_name2'] = role_name2;
+			
+			otherTab['roleJson'] = roleJson;
+			
+			// 组织单位架构
+			var ouJson = {};
+			
+			var ou_tablename = $("#ou_tablename").val();
+			
+			ouJson['ou_tablename'] = ou_tablename;
+			
+			//ou_tr
+			var ou_attr_def = new Array();
+			$(".ou_tr").each(function(){
+				var target_name = $(this).children().eq(1).text();
+				var show_name = $(this).children().eq(2).text();
+				var data_type = $(this).children().eq(3).text();
+				var min = $(this).children().eq(4).text();
+				var max = $(this).children().eq(5).text();
+				var required = $(this).children().eq(6).text();
+				var editable = $(this).children().eq(7).text();
+				var acct_tr_json = {
+					"target_name" : target_name,	
+					"show_name" : show_name,	
+					"data_type" : data_type,	
+					"min" : min,	
+					"max" : max,	
+					"required" : required,	
+					"editable" : editable
+				}
+				ou_attr_def.push(acct_tr_json);
+			})
+			
+			ouJson['ou_attr_def'] = ou_attr_def;
+			
+			var ou_uuid = $("#ou_uuid").val();
+			var ou_id = $("#ou_id").val();
+			var ou_distinguished_name = $("#ou_distinguished_name").val();
+			var ou_name = $("#ou_name").val();
+			var ou_name2 = $("#ou_name2").val();
+			var ou_parent_uuid = $("#ou_parent_uuid").val();
+			
+			ouJson['ou_uuid'] = ou_uuid;
+			ouJson['ou_id'] = ou_id;
+			ouJson['ou_distinguished_name'] = ou_distinguished_name;
+			ouJson['ou_name'] = ou_name;
+			ouJson['ou_name2'] = ou_name2;
+			ouJson['ou_parent_uuid'] = ou_parent_uuid;
+			
+			otherTab['ouJson'] = ouJson;
+			
+			resourceJson['attrJson'] = otherTab;
+			
+			// 发送到后台
+			$.ajax({
+				type : 'post',
+				url : 'toresource/saveresource.action',
+				contentType : 'application/json;charset=utf-8',// 指定为json类型
+				dataType : 'json', // 服务器响应类型
+				data : JSON.stringify(resourceJson), // JSON.stringify(jdbc),
+				success : function(information) {// 返回json结果
+					if(information.result.indexOf("success") >= 0){
+						$.notify({
+							icon : 'glyphicon glyphicon-success-sign',
+							title : '<strong>保存资源结果</strong>',
+							message : "成功",
+							allow_dismiss : false
+							// url: 'https://github.com/mouse0270/bootstrap-notify',
+							// target: '_blank'
+						}, {
+							z_index : 1051,
+							type : 'success', // danger warning info success
+							mouse_over : 'pause'
+						});
+						setTimeout(function(){window.location.href='toresource/resource.action'}, 2000);
+					}else{
+						$.notify({
+							icon : 'glyphicon glyphicon-success-sign',
+							title : '<strong>创建资源结果</strong>',
+							message : "失败",
+							allow_dismiss : false
+							// url: 'https://github.com/mouse0270/bootstrap-notify',
+							// target: '_blank'
+						}, {
+							z_index : 1051,
+							type : 'warning', // danger warning info success
+							mouse_over : 'pause'
+						});
+					}
+				},
+				error : function() {
 					$.notify({
 						icon : 'glyphicon glyphicon-success-sign',
 						title : '<strong>创建资源结果</strong>',
-						message : "失败",
+						message : "失败，发生未知异常",
 						allow_dismiss : false
 						// url: 'https://github.com/mouse0270/bootstrap-notify',
 						// target: '_blank'
 					}, {
 						z_index : 1051,
-						type : 'warning', // danger warning info success
+						type : 'danger', // danger warning info success
 						mouse_over : 'pause'
 					});
 				}
-			},
-			error : function() {
-				$.notify({
-					icon : 'glyphicon glyphicon-success-sign',
-					title : '<strong>创建资源结果</strong>',
-					message : "失败，发生未知异常",
-					allow_dismiss : false
-					// url: 'https://github.com/mouse0270/bootstrap-notify',
-					// target: '_blank'
-				}, {
-					z_index : 1051,
-					type : 'danger', // danger warning info success
-					mouse_over : 'pause'
-				});
-			}
-		});
+			});
+		}
 
 	})
 

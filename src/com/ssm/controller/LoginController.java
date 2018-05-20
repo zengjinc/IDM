@@ -23,9 +23,15 @@ public class LoginController {
 	@Autowired
 	private IUserService userService;
 	
+	@RequestMapping("/tologin")
+	public String toLogin(){
+		return "login";
+	}
+	
 	@RequestMapping("/login")
 	@ResponseBody
 	public Map<String,String> login(HttpSession session,@RequestBody String jsonStr){
+		
 		Map<String,String> result = new HashMap<>();
 		
 		try{
@@ -86,5 +92,32 @@ public class LoginController {
 	public String logout(HttpSession session){
 		session.invalidate();
 		return "login";
+	}
+	
+	@RequestMapping("/changepassword")
+	@ResponseBody
+	public String changePassword(HttpSession session,@RequestBody String jsonStr){
+		try{
+			JsonNode node = new ObjectMapper().readTree(jsonStr);
+			String oldPwd = node.get("oldPassword").asText();
+			String newPassword = node.get("newPassword").asText();
+			String newPassword2 = node.get("newPassword2").asText();
+			
+			if(!newPassword.equals(newPassword2)){
+				return "输入的新密码不一致";
+			}else{
+				User user = userService.getUserByPrimaryKey((String)session.getAttribute("user"));
+				if(user.getUserPwd().equals(oldPwd)){
+					user.setUserPwd(newPassword);
+					userService.updateUserByPrimaryKey(user);
+					return "success";
+				}else{
+					return "输入的原始密码不正确";
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return e.getMessage();
+		}
 	}
 }

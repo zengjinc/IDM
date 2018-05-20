@@ -23,16 +23,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ssm.mapper.AccountAttributeMapper;
 import com.ssm.mapper.AccountMapper;
+import com.ssm.mapper.EntitlementMapper;
 import com.ssm.mapper.ItroleAttributeMapper;
 import com.ssm.mapper.ItroleMapper;
+import com.ssm.mapper.PrivilegeMapper;
 import com.ssm.pojo.Account;
 import com.ssm.pojo.AccountAttribute;
 import com.ssm.pojo.AccountAttributeExample;
 import com.ssm.pojo.AccountExample;
+import com.ssm.pojo.EntitlementExample;
 import com.ssm.pojo.Itrole;
 import com.ssm.pojo.ItroleAttribute;
 import com.ssm.pojo.ItroleAttributeExample;
 import com.ssm.pojo.ItroleExample;
+import com.ssm.pojo.Privilege;
+import com.ssm.pojo.PrivilegeExample;
 import com.ssm.pojo.Resource;
 import com.ssm.utils.CommonUtil;
 
@@ -61,13 +66,19 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	@Autowired
 	private ItroleMapper itroleMapper;
 	
+	@Autowired
+	private EntitlementMapper entitlementMapper;
+	
+	@Autowired
+	private PrivilegeMapper privilegeMapper;
+	
 	@Override
 	public Resource getResource() {
 		return resource;
 	}
 	
 	@Override
-	public void setResource(Resource resource) {
+	public void setResource(Resource resource)  throws Exception{
 		this.resource = resource;
 		if(this.getResource() != null){
 			ObjectMapper mapper = new ObjectMapper();
@@ -84,7 +95,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 	
 	@Override
-	public boolean connect() {
+	public boolean connect()  throws Exception{
 			if(configJson != null){
 				String jdbcDrive = configJson.get("jdbc_drive").asText();
 				String jdbcUrl = configJson.get("jdbc_url").asText();
@@ -107,7 +118,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public boolean disconnect() {
+	public boolean disconnect() throws Exception{
 		if(connection != null){
 			try {
 				connection.close();
@@ -120,13 +131,13 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public Map<String, List<String>> findAccount(String identifier) {
+	public Map<String, List<String>> findAccount(String identifier) throws Exception{
 		
 		return null;
 	}
 
 	@Override
-	public void listAccounts() {
+	public void listAccounts() throws Exception{
 		String acctTable = acctJson.get("user_table").asText();
 		String resourceUuid = this.getResource().getResUuid();
 		Map<String,String> targetNameMap = new HashMap<>();
@@ -263,6 +274,13 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 //				acctMapper.deleteByExample(example);
 					for(Account acct : needToDeleteAccount){
 						/*
+						 * 删除 entitlement 表中的数据
+						 */
+						EntitlementExample example2 = new EntitlementExample();
+						example2.createCriteria().andEtmAcctUuidEqualTo(acct.getAcctTgtUuid());
+						entitlementMapper.deleteByExample(example2);
+						
+						/*
 						 * 删除 account_attribute 表中的数据
 						 */
 						AccountAttributeExample example1 = new AccountAttributeExample();
@@ -275,10 +293,12 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 					}
 				}
 				
-				disconnect();		//释放连接资源
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			disconnect();		//释放连接资源
+			getAssignedRoles();
 		}
 	}
 
@@ -289,7 +309,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	 * 			   auto : 在插入过程中不提供uuid。
 	 */
 	@Override
-	public String createAccount(Map<String, String> attributesMap) {
+	public String createAccount(Map<String, String> attributesMap) throws Exception{
 		//insert into account(acct_uuid,acct_id,acct_status) value('acctuuid5','account_5',1);
 		String userTable = acctJson.get("user_table").asText();
 		String acctUuid = acctJson.get("account_uuid").asText();
@@ -377,7 +397,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public int updateAccount(String identifier, Map<String, String> attributesMap) {
+	public int updateAccount(String identifier, Map<String, String> attributesMap) throws Exception{
 		//update user set xxx = 'xxx',xxx = 'xxx' where xxx='xxx';
 		String userTable = acctJson.get("user_table").asText();
 		String acctUuid = acctJson.get("account_uuid").asText();
@@ -415,7 +435,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public boolean enableAccount(String identifier) {
+	public boolean enableAccount(String identifier) throws Exception{
 		//拼接语句	update user set status='' where user_uuid = ?
 		String userTable = acctJson.get("user_table").asText();
 		String acctStatus = acctJson.get("account_status").asText();
@@ -451,7 +471,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public boolean disableAccount(String identifier) {
+	public boolean disableAccount(String identifier) throws Exception{
 		//拼接语句	update user set status='' where user_uuid = ?
 		String userTable = acctJson.get("user_table").asText();
 		String acctStatus = acctJson.get("account_status").asText();
@@ -487,7 +507,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public boolean deleteAccount(String identifier, Map<String, List<String>> attributes) {
+	public boolean deleteAccount(String identifier, Map<String, List<String>> attributes) throws Exception{
 		return false;
 	}
 	
@@ -495,7 +515,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	 * IConnector.IPassword
 	 */
 	@Override
-	public boolean verifyPassword(String identifier, StringBuilder password) {
+	public boolean verifyPassword(String identifier, StringBuilder password) throws Exception{
 		//密码加密
 		String passwordEncodingScript = acctJson.get("pwd_encoding_text").asText();
 		String encodePassword = encodePassword(passwordEncodingScript, password.toString().toCharArray());
@@ -540,7 +560,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	 * 重设密码：更新对应 identifier 的密码。利用密码加密脚本将对 password 进行加密 
 	 */
 	@Override
-	public boolean resetPassword(String identifier, StringBuilder password) {
+	public boolean resetPassword(String identifier, StringBuilder password) throws Exception{
 		//密码加密
 		String passwordEncodingScript = acctJson.get("pwd_encoding_text").asText();
 		String encodePassword = encodePassword(passwordEncodingScript, password.toString().toCharArray());
@@ -582,12 +602,12 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	 * IConnector.IRole
 	 */
 	@Override
-	public Map<String, List<String>> findRole(String roleIdentifier, String[] attributesToRetrieve) {
+	public Map<String, List<String>> findRole(String roleIdentifier, String[] attributesToRetrieve) throws Exception{
 		return null;
 	}
 
 	@Override
-	public List<Map<String, List<String>>> listRoles() {
+	public List<Map<String, List<String>>> listRoles() throws Exception{
 		String resourceUuid = this.getResource().getResUuid();
 		String roleTable = roleJson.get("role_tablename").asText();
 		//获取属性定义，保存到map中
@@ -717,6 +737,13 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 					example.createCriteria().andItroleResUuidEqualTo(resourceUuid).andItroleTgtRoleUuidIn(itroleTgtUuidList);
 					List<Itrole> needToDeleteRole = itroleMapper.selectByExample(example);
 					for(Itrole itrole : needToDeleteRole){
+						/*
+						 * 删除之前要先删除已分配的角色，即删除 privilege 表中的数据
+						 */
+						PrivilegeExample example2 = new PrivilegeExample();
+						example2.createCriteria().andPvgItroleUuidEqualTo(itrole.getItroleUuid());
+						privilegeMapper.deleteByExample(example2);
+						
 						itroleMapper.deleteByPrimaryKey(itrole.getItroleUuid());
 						
 						ItroleAttributeExample example1 = new ItroleAttributeExample();
@@ -729,6 +756,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 				e.printStackTrace();
 			}finally {
 				disconnect();	//释放连接资源
+				getAssignedRoles();
 			}
 		}
 		
@@ -738,12 +766,132 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public List<Map<String, List<String>>> getAssignedRoles(String accountIdentifier, List<String> roleIdentifierResults) {
-		return null;
+	public boolean getAssignedRoles() throws Exception{
+		String resourceUuid = this.getResource().getResUuid();
+		
+		String roleRelTable = roleJson.get("role_rel_tablename").asText();
+		String userUuid = roleJson.get("role_user_col").asText();
+		String roleUuid = roleJson.get("role_col").asText();
+		
+		//获取属性定义，保存到map中
+		Map<String,String> targetNameMap = new HashMap<>();
+		JsonNode acctAttrDef = roleJson.get("role_attr_def");
+		Iterator<JsonNode> iterator = acctAttrDef.getElements();
+		while(iterator.hasNext()){
+			JsonNode tempNode = iterator.next();
+			String targetName = tempNode.get("target_name").getTextValue();
+			targetNameMap.put(tempNode.get("show_name").getTextValue(),targetName);
+		}
+		
+//		StringBuffer sql = new StringBuffer("select ");
+		String sql = "select " + userUuid + "," + roleUuid + " from " + roleRelTable;
+		
+		if(roleRelTable == null || roleRelTable.equals("") || roleRelTable.equals("null")){
+			throw new Exception("用户权限表不存在。");
+		}else{
+			if(connect()){
+				PreparedStatement prepareStatement;
+				try {
+					System.out.println("执行sql语句 ： " + sql);
+					prepareStatement = connection.prepareStatement(sql);
+					ResultSet resultSet = prepareStatement.executeQuery();
+					
+					List<Map<String,String>> privilegeListMap = new ArrayList<>();	//保存所有回收回来的权限
+					
+					while(resultSet.next()){
+						String tgtUserUuid = resultSet.getString(userUuid);	//用户在目标资源的uuid
+						String tgtRoleUuid = resultSet.getString(roleUuid);	//角色在目标资源的uuid
+						
+						Map<String,String> tempMap = new HashMap<>();
+						tempMap.put("tgtUserUuid", tgtUserUuid);
+						tempMap.put("tgtRoleUuid", tgtRoleUuid);
+						
+						privilegeListMap.add(tempMap);
+						
+						//根据用户和角色的uuid获取idm系统中的用户的角色
+						Account account = null;
+						Itrole itrole = null;
+						
+						AccountExample example = new AccountExample();
+						example.createCriteria().andAcctTgtUuidEqualTo(tgtUserUuid);
+						List<Account> accountList = acctMapper.selectByExample(example);
+						if(accountList.size() > 0){
+							account = accountList.get(0);
+						}
+						
+						ItroleExample example2 = new ItroleExample();
+						example2.createCriteria().andItroleTgtRoleUuidEqualTo(tgtRoleUuid);
+						List<Itrole> itroleList = itroleMapper.selectByExample(example2);
+						if(itroleList.size() > 0){
+							itrole = itroleList.get(0);
+						}
+						
+						//如果用户和角色存在，表示需要同步该条权限，判断该条权限在idm系统中是否存在，不存在才插入。存在则跳过
+						if(account != null && itrole != null){
+							
+							PrivilegeExample example3 = new PrivilegeExample();
+							example3.createCriteria().andPvgAcctUuidEqualTo(account.getAcctUuid()).andPvgItroleUuidEqualTo(itrole.getItroleUuid());
+							List<Privilege> privilegeList = privilegeMapper.selectByExample(example3);
+							
+							if(privilegeList.size() == 0){
+								Privilege privilege = new Privilege();
+								privilege.setPvgUuid(CommonUtil.generateUUID());
+								privilege.setPvgAcctUuid(account.getAcctUuid());
+								privilege.setPvgItroleUuid(itrole.getItroleUuid());
+								privilegeMapper.insert(privilege);
+								System.out.println("同步新的权限 ： " + account.getAcctTgtUuid() + "," + itrole.getItroleTgtRoleUuid());
+							}
+							
+						}//如果有一项不存在，则不同步该条权限
+						
+					}
+					
+					/*
+					 * 如果目标资源删除了某条权限，idm系统也要同步
+					 */
+					List<Privilege> idmPrivilegeList = privilegeMapper.selectByExample(null);
+					
+					Iterator<Privilege> it = idmPrivilegeList.iterator();
+					
+					while(it.hasNext()){
+						
+						Privilege next = it.next();
+						
+						for(Map<String,String> map : privilegeListMap){
+							
+							String tgtUserUuid1 = map.get("tgtUserUuid");
+							String tgtRoleUuid1 = map.get("tgtRoleUuid");
+							
+							Account acct1 = acctMapper.selectByPrimaryKey(next.getPvgAcctUuid());
+							Itrole itrole1 = itroleMapper.selectByPrimaryKey(next.getPvgItroleUuid());
+							
+							if(acct1.getAcctTgtUuid().equals(tgtUserUuid1) && itrole1.getItroleTgtRoleUuid().equals(tgtRoleUuid1)){
+								it.remove();
+							}
+						}
+						
+					}
+					
+					//进行删除
+					if(idmPrivilegeList.size() > 0){
+						for(Privilege p : idmPrivilegeList){
+							privilegeMapper.deleteByPrimaryKey(p.getPvgUuid());
+						}
+					}
+					
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}finally {
+					disconnect();	//释放连接资源
+				}
+			}
+		}
+		
+		return true;
 	}
 
 	@Override
-	public boolean assignRoles(String accountUuid,String itroleUuid) {
+	public boolean assignRoles(String accountUuid,String itroleUuid) throws Exception{
 		//insert into xxx (xxx,xxx) values ();
 		String roleRelTable = roleJson.get("role_rel_tablename").asText();
 		String roleRelTableUuid = roleJson.get("role_rel_uuid").asText();
@@ -787,7 +935,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	}
 
 	@Override
-	public boolean unassignRoles(String accountUuid,String itroleUuid) {
+	public boolean unassignRoles(String accountUuid,String itroleUuid) throws Exception{
 		//delete from xxx where xxx = xxx and xxx = xxx;
 		String roleRelTable = roleJson.get("role_rel_tablename").asText();
 		String roleCol = roleJson.get("role_col").asText();
@@ -818,21 +966,21 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 	 * IConnector.IOrganizationUnit
 	 */
 	@Override
-	public Map<String, List<String>> getRootOU(String[] attributesToRetrieve) {
+	public Map<String, List<String>> getRootOU(String[] attributesToRetrieve) throws Exception{
 		return null;
 	}
 
 	@Override
-	public List<Map<String, List<String>>> listChildOUs(String ouIdentifier, String[] attributesToRetrieve) {
+	public List<Map<String, List<String>>> listChildOUs(String ouIdentifier, String[] attributesToRetrieve) throws Exception{
 		return null;
 	}
 
 	@Override
-	public Map<String, List<String>> findOU(String ouIdentifier, String[] attributesToRetrieve) {
+	public Map<String, List<String>> findOU(String ouIdentifier, String[] attributesToRetrieve) throws Exception{
 		return null;
 	}
 
-	private String encodePassword(String passwordEncodingScript, char[] password) {
+	private String encodePassword(String passwordEncodingScript, char[] password) throws Exception{
 
 		logger.info("Encode Password.");
 
@@ -868,7 +1016,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 		return new String(password);
 	}
 	
-	public String generateUuid(String generateUuidScript){
+	public String generateUuid(String generateUuidScript) throws Exception{
 		
 		logger.info("Generate UUID.");
 
@@ -899,7 +1047,7 @@ public class JDBCConnector implements IConnector,IConnector.IPassword, IConnecto
 		return null;
 	}
 	
-	public String generateUuidBySQL(String generateUuidScript){
+	public String generateUuidBySQL(String generateUuidScript) throws Exception{
 		logger.info("Generate UUID.");
 		
 		if (generateUuidScript != null && !generateUuidScript.trim().isEmpty()) {

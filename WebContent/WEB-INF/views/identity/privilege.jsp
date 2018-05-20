@@ -121,8 +121,8 @@
 							<th>用户标识</th>
 							<th>用户名称</th>
 							<th>用户状态</th>
-							<th>组织单位</th>
-							<th>用户类型</th>
+<!-- 							<th>组织单位</th> -->
+<!-- 							<th>用户类型</th> -->
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -137,8 +137,8 @@
 								<c:if test="${user['userStatus'] == '0'}">
 								<td>已禁用</td>
 								</c:if>
-								<td></td>
-								<td>${user['userType']}</td>
+<!-- 								<td></td> -->
+<%-- 								<td>${user['userType']}</td> --%>
 								<td><a href="toidentity/privilegedetail.action?userprivilegeuuid=${user['userUuid']}">查看</a></td>
 							</tr>
 						</c:forEach>

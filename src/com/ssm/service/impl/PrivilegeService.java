@@ -172,6 +172,19 @@ public class PrivilegeService implements IPrivilegeService {
 			revokeEntitlement(p.getPvgAcctUuid(), p.getPvgItroleUuid(), itrole.getItroleResUuid());
 		}
 	}
+
+	@Override
+	public boolean deleteByItrole(String itroleUuid) throws Exception {
+		PrivilegeExample example = new PrivilegeExample();
+		
+		example.createCriteria().andPvgItroleUuidEqualTo(itroleUuid);
+		
+		if(privilegeMapper.deleteByExample(example) > 0){
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
 }

@@ -15,7 +15,8 @@
 	</Console>
 
 	<RollingFile name="RollingFile" fileName="../logs/idm.log"
-		filePattern="logs/idm-%d{yyyy-MM-dd}-%i.log.zip" ImmediateFlush="true">
+		filePattern="logs/idm-%d{yyyy-MM-dd HH:mm}.log" ImmediateFlush="true">
+<!-- 		filePattern="logs/idm-%d{yyyy-MM-dd}-%i.log.zip" ImmediateFlush="true"> -->
 		<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} -%-5level [%t]  %logger.%M(%L) -%msg%n" />
 		<Policies>
 			<TimeBasedTriggeringPolicy modulate="true" interval="1" />

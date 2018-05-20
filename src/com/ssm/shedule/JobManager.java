@@ -45,7 +45,7 @@ public class JobManager {
      */  
     public void initTask() throws SchedulerException {  
     	SchedulejobExample example = new SchedulejobExample();
-    	example.createCriteria().andScdCronIsNotNull().andScdCronNotEqualTo("");
+    	example.createCriteria().andScdCronIsNotNull().andScdCronNotEqualTo("").andScdStatusEqualTo(1);
     	List<Schedulejob> jobList = schedulejobMapper.selectByExampleWithBLOBs(example);
         for (Schedulejob job : jobList) {  
         	saveOrUpdateJob(job);  

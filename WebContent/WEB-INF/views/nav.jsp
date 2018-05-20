@@ -32,12 +32,55 @@
 			      </ul>
 			      <ul class="nav navbar-nav navbar-right">
 			        <li><a href="#"id="toggle_nav" onclick="return false">隐藏导航</a></li>
-			        <li><a href="#" onclick="return false">修改密码</a></li>
-			        <li><a href="logout.action" onclick="">退出</a></li>
+			        <li><a href="#" onclick="return false" data-toggle="modal" data-target="#resert_user_password">修改密码</a></li>
+			        <li><a href="logout.action" onclick="return logOutConfirm();">退出</a></li>
 			      </ul>
 			    </div><!-- /.navbar-collapse -->
 			  </div><!-- /.container-fluid -->
 			</nav>
+		</div>
+		
+		<!-- 模态框 修改密码 -->
+		<div class="modal fade" id="resert_user_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel2">修改密码</h4>
+					</div>
+					<!-- modal 主体-->
+					<div class="modal-body">
+						<form class="form-horizontal center-block" id="reset_user_password_form" role="form">
+							
+							<div class="form-group">
+								<label for="resId" class="col-md-3 control-label">原密码</label>
+								<div class="col-md-5">
+									<input type="password" class="form-control" id="old_user_pwd" name="old_pwd"
+										placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="resId" class="col-md-3 control-label">新密码</label>
+								<div class="col-md-5">
+									<input type="password" class="form-control" id="new_user_pwd" name="new_pwd"
+										placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="resId" class="col-md-3 control-label">确认密码</label>
+								<div class="col-md-5">
+									<input type="password" class="form-control" id="new_user_pwd2" name="new_pwd2"
+										placeholder="">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<a type="button" class="btn btn-primary" data-dismiss="modal" id="resert_user_password_confirm">确认</a> 
+					</div>
+				</div>
+			</div>
 		</div>
 		
 </body>

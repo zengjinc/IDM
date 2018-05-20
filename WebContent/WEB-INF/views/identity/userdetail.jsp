@@ -16,6 +16,7 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- custom style -->
 <link href="css/custom.css?version=<%=Math.random()%>" rel="stylesheet">
+<link href="css/bootstrapValidator.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/loading.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,47 +39,49 @@
 			<%@ include file="identitynav.jsp"%>
 			<!-- 主体右 -->
 			<div class="col-md-10 subject">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" data-value=""  type="text" class="form-control" placeholder="">
+				<form action="" id="form1">
+					<div class="row">
+						<div class="col-md-4 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">用户标识</span> <input id="user_id" name="user_id" data-value=""  type="text" class="form-control" placeholder="">
+							</div>
+						</div>
+						<div class="col-md-4 col-md-offset-2 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">用户名称</span> <input id="user_name" name="user_name" type="text" class="form-control" placeholder="">
+							</div>
 						</div>
 					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">用户名称</span> <input id="user_name" name="user_name" type="text" class="form-control" placeholder="">
+					<div class="row">
+	<!-- 					<div class="col-md-4"> -->
+	<!-- 						<div class="input-group"> -->
+	<!-- 							<span class="input-group-addon">组织单位</span> <input id="user_ou" name="user_ou" value="" type="text" class="form-control" placeholder=""> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+						<div class="col-md-4 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">用户状态</span> <input id="user_status" name="user_status" type="text" class="form-control" placeholder="" readonly="readonly">
+							</div>
+						</div>
+						<div class="col-md-4  col-md-offset-2 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" type="text" class="form-control" placeholder="">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-<!-- 					<div class="col-md-4"> -->
-<!-- 						<div class="input-group"> -->
-<!-- 							<span class="input-group-addon">组织单位</span> <input id="user_ou" name="user_ou" value="" type="text" class="form-control" placeholder=""> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">用户状态</span> <input id="user_status" name="user_status" type="text" class="form-control" placeholder="" readonly="readonly">
+					<div class="row">
+						<div class="col-md-4 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" type="text" class="form-control" placeholder="">
+							</div>
+						</div>
+						<div class="col-md-4  col-md-offset-2 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" type="text" class="form-control" placeholder="">
+							</div>
 						</div>
 					</div>
-					<div class="col-md-4  col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">员工标识</span> <input id="user_employeeid" name="user_employeeid" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">电话号码</span> <input id="user_phonenumber" name="user_phonenumber" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-					<div class="col-md-4  col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">电子邮箱</span> <input id="user_email" name="user_email" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-				</div>
+				</form>
 
 				<ul id="myTab" class="nav nav-tabs">
 <!-- 					<li><a href="#home" data-toggle="tab"> 平台角色 </a></li> -->
@@ -137,5 +140,62 @@
 	<%@ include file="../commonscript.jsp" %>
 	<!-- user -->
 	<script src="js/user.js?version=<%=Math.random()%>"></script>
+	<script type="text/javascript">
+		$(function(){
+			
+			$('#form1').bootstrapValidator({
+				message: '验证失败',
+				live : 'disabled',
+				feedbackIcons: {
+// 					valid: 'glyphicon glyphicon-ok',
+// 					invalid: 'glyphicon glyphicon-remove',
+// 					validating: 'glyphicon glyphicon-refresh'
+				},
+				fields: {
+					user_id: {
+						message: '用户名验证失败',
+						validators: {
+							notEmpty: {
+								message: '用户标识不能为空'
+							}
+						}
+					},
+					user_name: {
+						validators: {
+							notEmpty: {
+								message: '用户名称不能为空'
+							}
+						}
+					},
+					user_phonenumber : {
+						validators: {
+							stringLength: {
+		                         min: 11,
+		                         max: 11,
+		                         message: '请输入11位手机号码'
+		                     },
+		                     regexp: {
+		                         regexp: /^1[3|5|8]{1}[0-9]{9}$/,
+		                         message: '请输入正确的手机号码'
+		                     }
+						}
+					},
+					user_email : {
+						validators: {
+							 notEmpty: {
+		                            message: '邮箱不能为空'
+		                        },
+	                         emailAddress: {
+	                           	   message: '邮箱地址格式有误'
+	                        	}
+						}
+					}
+					
+				}
+			});
+
+		});
+
+	</script>
 </body>
 </html>

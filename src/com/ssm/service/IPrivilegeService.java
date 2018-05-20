@@ -18,4 +18,6 @@ public interface IPrivilegeService {
 	void revokeAccountPrivilege(Account account) throws Exception;
 
 	List<Itrole> getPrivilegeByAcctUuid(String acctUuid) throws Exception;
+
+	boolean deleteByItrole(String itroleUuid) throws Exception;
 }

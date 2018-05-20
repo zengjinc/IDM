@@ -22,7 +22,7 @@ public class ReconRoleScheduleJob extends BaseScheduleJob implements TaskService
 	private ResourceMapper resourceMapper;
 	
 	@Override
-	public void exec() {
+	public void exec() throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		String resourceId = null;
 		try {

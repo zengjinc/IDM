@@ -10,4 +10,6 @@ public interface IUserBizRoleService {
 
 	List<BusinessRole> getUserBizRole(String userUuid) throws Exception;
 
+	boolean deleteByBizrole(String bizRoleUuid) throws Exception;
+
 }

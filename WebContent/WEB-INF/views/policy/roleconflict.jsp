@@ -79,7 +79,7 @@
 								<td>${roleconflictPolicy['polName']}</td>
 								<td>${roleconflictPolicy['polDesc']}</td>
 								<td><a href="topolicy/roleconflictdetail.action?policyuuid=${roleconflictPolicy['polUuid']}">查看</a>&nbsp;&nbsp;
-									<a href="topolicy/delroleconflictpolicy.action?policyuuid=${roleconflictPolicy['polUuid']}">删除</a>
+									<a href="topolicy/delroleconflictpolicy.action?policyuuid=${roleconflictPolicy['polUuid']}" onclick="return confirmRemove();">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -95,6 +95,14 @@
 
 	<%@ include file="../commonscript.jsp" %>
 	<script type="text/javascript">
+		function confirmRemove(){
+			var msg = "是否删除该策略，操作不可逆";
+			if(confirm(msg)){
+				return true;
+			}
+			return false;
+		}
+	
 		$(function(){
 			$('#pagination0')
 			.jqPaginator(

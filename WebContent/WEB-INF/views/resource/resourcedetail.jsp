@@ -17,6 +17,7 @@
 <!-- custom style -->
 <link href="css/custom.css?version=<%=Math.random()%>" rel="stylesheet">
 <link href="css/animate.css?version=<%=Math.random()%>" rel="stylesheet">
+<link href="css/bootstrapValidator.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/loading.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,59 +40,61 @@
 			<%@ include file="resourcenav.jsp"%>
 			<!-- 主体右 -->
 			<div class="col-md-10 subject">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">资源标识</span> <input id="resource_id" type="text" class="form-control" placeholder="" required oninvalid="setCustomValidity('required')" oninput="setCustomValidity('')">
+				<form action="" id="form1">
+					<div class="row">
+						<div class="col-md-4 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">资源标识</span> <input id="resource_id" name="resource_id" type="text" class="form-control" placeholder="">
+							</div>
+						</div>
+						<div class="col-md-4 col-md-offset-2 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">资源名称</span> <input id="resource_name" name="resource_name" type="text" class="form-control" placeholder="">
+							</div>
 						</div>
 					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">资源名称</span> <input id="resource_name" type="text" class="form-control" placeholder="" required="required">
+					<div class="row">
+						<div class="col-md-4 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">资源描述</span> <input id="resource_desc" type="text" class="form-control" placeholder="">
+							</div>
+						</div>
+						<div class="col-md-4 col-md-offset-2 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">资源类型</span> <input id="resource_type" value="jdbcConnector" type="text" class="form-control" placeholder="" readonly="readonly">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">资源描述</span> <input id="resource_desc" type="text" class="form-control" placeholder="">
+	<!-- 				<div class="row"> -->
+	<!-- 					<div class="col-md-4"> -->
+	<!-- 						<div class="input-group"> -->
+	<!-- 							<span class="input-group-addon">归属账号</span> <input id="owner_account" type="text" class="form-control" placeholder=""> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+	<!-- 					<div class="col-md-4 col-md-offset-2"> -->
+	<!-- 						<div class="input-group"> -->
+	<!-- 							<span class="input-group-addon">归属组织单位</span> <input id="owner_ou" type="text" class="form-control" placeholder=""> -->
+	<!-- 						</div> -->
+	<!-- 					</div> -->
+	<!-- 				</div> -->
+					<div class="row">
+						<div class="col-md-4 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">信任资源</span> <select class="form-control" id="resource_trust">
+									<option value="false">否</option>
+									<option value="true">是</option>
+								</select>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">资源类型</span> <input id="resource_type" value="jdbcConnector" type="text" class="form-control" placeholder="" readonly="readonly">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">归属账号</span> <input id="owner_account" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-					<div class="col-md-4 col-md-offset-2">
-						<div class="input-group">
-							<span class="input-group-addon">归属组织单位</span> <input id="owner_ou" type="text" class="form-control" placeholder="">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="input-group">
-							<span class="input-group-addon">信任资源</span> <select class="form-control" id="resource_trust">
-								<option value="false">否</option>
-								<option value="true">是</option>
-							</select>
-						</div>
-					</div>
-				</div>
+				</form>
 
 				<ul id="myTab" class="nav nav-tabs">
 					<li class="active" id="tab_config"><a href="#config" data-toggle="tab">配置</a></li>
 					<li id="tab_acct"><a href="#account" data-toggle="tab">账号架构</a></li>
 					<li id="tab_role"><a href="#role" data-toggle="tab">基本角色架构</a></li>
 <!-- 					<li id="ou_nav"><a href="#orgunit" data-toggle="tab">组织单位架构</a></li> -->
-					<li id="account_nav"><a href="#recon_account" data-toggle="tab">账号</a></li>
+<!-- 					<li id="account_nav"><a href="#recon_account" data-toggle="tab">账号</a></li> -->
 				</ul>
 				<div id="myTabContent" class="tab-content">
 					<div class="tab-pane fade in active" id="config">
@@ -176,21 +179,21 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>用户密码表名称</td>
-									<td><input id="pwd_table" type="text" class="form-control" /></td>
-									<td></td>
-								</tr>
+<!-- 								<tr> -->
+<!-- 									<td>用户密码表名称</td> -->
+<!-- 									<td><input id="pwd_table" type="text" class="form-control" /></td> -->
+<!-- 									<td></td> -->
+<!-- 								</tr> -->
 								<tr>
 									<td style="vertical-align: middle;">用户密码列</td>
 									<td style="vertical-align: middle;"><input id="pwd_col" type="text" class="form-control" /></td>
 									<td style="vertical-align: middle;"></td>
 								</tr>
-								<tr>
-									<td style="vertical-align: middle;">用户密码连接列</td>
-									<td style="vertical-align: middle;"><input id="pwd_rel" type="text" class="form-control" /></td>
-									<td style="vertical-align: middle;"></td>
-								</tr>
+<!-- 								<tr> -->
+<!-- 									<td style="vertical-align: middle;">用户密码连接列</td> -->
+<!-- 									<td style="vertical-align: middle;"><input id="pwd_rel" type="text" class="form-control" /></td> -->
+<!-- 									<td style="vertical-align: middle;"></td> -->
+<!-- 								</tr> -->
 								<tr>
 									<td style="vertical-align: middle;">用户密码编码脚本&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 									<td style="vertical-align: middle;"><textarea class="form-control" rows="8" id="pwd_encoding_text"></textarea></td>
@@ -241,45 +244,47 @@
 									<td><input id="account_id" type="text" class="form-control" /></td>
 								</tr>
 								<tr>
-									<td>组织单位唯一标识符</td>
-									<td><input id="account_ou_uuid" type="text" class="form-control" /></td>
+<!-- 									<td>组织单位唯一标识符</td> -->
+<!-- 									<td><input id="account_ou_uuid" type="text" class="form-control" /></td> -->
 									<td>创建时间属性</td>
 									<td><input id="account_createtime" type="text" class="form-control" /></td>
-								</tr>
-								<tr>
 									<td>修改时间属性</td>
 									<td><input id="account_modifytime" type="text" class="form-control" /></td>
-									<td>状态属性</td>
-									<td><input id="account_status" type="text" class="form-control" /></td>
 								</tr>
 								<tr>
-									<td>锁定标识属性</td>
-									<td><input id="account_lock" type="text" class="form-control" /></td>
-									<td></td>
-									<td></td>
+									<td>状态属性</td>
+									<td><input id="account_status" type="text" class="form-control" /></td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
 								</tr>
+<!-- 								<tr> -->
+<!-- 									<td>锁定标识属性</td> -->
+<!-- 									<td><input id="account_lock" type="text" class="form-control" /></td> -->
+<!-- 									<td></td> -->
+<!-- 									<td></td> -->
+<!-- 								</tr> -->
 							</tbody>
 						</table>
 						<table class="table table-striped">
 							<thead>
 								<tr>
 									<th colspan="2">状态属性值</th>
-									<th colspan="2">锁定标识属性值</th>
+<!-- 									<th colspan="2">锁定标识属性值</th> -->
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td>已启用/激活</td>
 									<td><input id="account_status_enable" value="1" type="text" class="form-control" /></td>
-									<td>已锁定</td>
-									<td><input id="account_lock_lock" type="text" value="0" class="form-control" /></td>
-								</tr>
-								<tr>
 									<td>已禁用</td>
 									<td><input id="account_status_disable" type="text" class="form-control" /></td>
-									<td>已解锁</td>
-									<td><input id="account_lock_unlock" type="text" class="form-control" /></td>
+<!-- 									<td>已锁定</td> -->
+<!-- 									<td><input id="account_lock_lock" type="text" value="0" class="form-control" /></td> -->
 								</tr>
+<!-- 								<tr> -->
+<!-- 									<td>已解锁</td> -->
+<!-- 									<td><input id="account_lock_unlock" type="text" class="form-control" /></td> -->
+<!-- 								</tr> -->
 							</tbody>
 						</table>
 						<!-- 属性映射 -->
@@ -663,6 +668,34 @@
 				}
 
 			})
+			
+			$('#form1').bootstrapValidator({
+				message: '验证失败',
+				live : 'disabled',
+				feedbackIcons: {
+// 					valid: 'glyphicon glyphicon-ok',
+// 					invalid: 'glyphicon glyphicon-remove',
+// 					validating: 'glyphicon glyphicon-refresh'
+				},
+				fields: {
+					resource_id: {
+						message: '资源标识证失败',
+						validators: {
+							notEmpty: {
+								message: '资源标识不能为空'
+							}
+						}
+					},
+					resource_name: {
+						validators: {
+							notEmpty: {
+								message: '资源名称不能为空'
+							}
+						}
+					}
+				}
+			});
+
 		})
 	</script>
 </body>

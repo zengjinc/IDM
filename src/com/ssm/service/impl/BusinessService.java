@@ -10,11 +10,15 @@ import com.ssm.mapper.BusinessRoleMapper;
 import com.ssm.pojo.BusinessRole;
 import com.ssm.pojo.BusinessRoleExample;
 import com.ssm.service.IBusinessRoleService;
+import com.ssm.service.IUserBizRoleService;
 @Service
 public class BusinessService implements IBusinessRoleService {
 
 	@Autowired
 	private BusinessRoleMapper bizRoleMapper;
+	
+	@Autowired
+	private IUserBizRoleService userBizroleService;
 	
 	@Override
 	public int addBizRole(BusinessRole bizRole) throws Exception{
@@ -54,8 +58,12 @@ public class BusinessService implements IBusinessRoleService {
 		return bizRoleMapper.updateByPrimaryKey(bizRole);
 	}
 	
+	/*
+	 * 删除岗位，同时删除已分配的岗位
+	 */
 	@Override
 	public int deleteBizRole(String bizRoleUuid) throws Exception{
+		userBizroleService.deleteByBizrole(bizRoleUuid);
 		return bizRoleMapper.deleteByPrimaryKey(bizRoleUuid);
 	}
 	

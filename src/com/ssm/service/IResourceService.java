@@ -17,4 +17,6 @@ public interface IResourceService {
 
 	List<Resource> getResourceByExample(ResourceExample example) throws Exception;
 
+	void cascadeDeleteResource(String resUuid) throws Exception;
+
 }

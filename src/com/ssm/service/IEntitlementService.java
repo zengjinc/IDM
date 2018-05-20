@@ -33,4 +33,6 @@ public interface IEntitlementService {
 	int entitlementByPolicy(String userUuid, String acctTgtUuid, String resUuid, String policyUuid) throws Exception;
 
 	void revokePolicyEntitlement(User user) throws Exception;
+
+	boolean deleEntitlementByAccountTgtUuid(String acctTgtUuid) throws Exception;
 }

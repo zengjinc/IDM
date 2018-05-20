@@ -15,6 +15,7 @@
 <link href="css/bootstrap.css" rel="stylesheet">
 <!-- custom style -->
 <link href="css/custom.css?version=<%=Math.random()%>" rel="stylesheet">
+<link href="css/bootstrapValidator.min.css" rel="stylesheet">
 <script type="text/javascript" src="js/loading.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,63 +38,65 @@
 			<%@ include file="tasknav.jsp"%>
 			<!-- 主体右 -->
 			<div class="col-md-10 subject">
-				<div class="row">
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">计划任务标识</span> <input id="scd_job_id" name="date" type="text" class="form-control" placeholder="" >
+				<form action="" id="form1">
+					<div class="row">
+						<div class="col-md-5 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">计划任务标识</span> <input id="scd_job_id" name="scd_job_id" type="text" class="form-control" placeholder="" >
+							</div>
+						</div>
+						<div class="col-md-5 col-md-offset-1 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">计划任务类型</span> 
+								<select class="form-control" id="scd_job_type" name="scd_job_type">
+									<option>-</option>
+									<option value="reconAccountScheduleJob">账号回收任务</option>
+									<option value="reconRoleScheduleJob">角色回收任务</option>
+	<!-- 								<option value="reconOUJob">组织单位回收任务</option> -->
+									<option value="userSynchronisedScheduleJob">用户同步任务</option>
+									<option value="assignAccountOwnerScheduleJob">账号拥有者分配任务</option>
+	<!-- 								<option value="">用户重新评估任务</option> -->
+								</select>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-5 col-md-offset-1">
-						<div class="input-group">
-							<span class="input-group-addon">计划任务类型</span> 
-							<select class="form-control" id="scd_job_type">
-								<option>-</option>
-								<option value="reconAccountScheduleJob">账号回收任务</option>
-								<option value="reconRoleScheduleJob">角色回收任务</option>
-								<option value="reconOUJob">组织单位回收任务</option>
-								<option value="userSynchronisedScheduleJob">用户同步任务</option>
-								<option value="assignAccountOwnerScheduleJob">账号拥有者分配任务</option>
-<!-- 								<option value="">用户重新评估任务</option> -->
-							</select>
+					<div class="row">
+						<div class="col-md-5 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">Cron表达式</span> <input id="scd_job_cron" name="scd_job_cron" type="text" class="form-control" placeholder="" >
+							</div>
+						</div>
+						<div class="col-md-5 col-md-offset-1 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">计划任务状态</span> <input id="scd_job_status" name="scd_job_status" data-value="" type="text" class="form-control" placeholder="" readonly="readonly">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">Cron表达式</span> <input id="scd_job_cron" name="date" type="text" class="form-control" placeholder="" >
+					<div class="row">
+						<div class="col-md-5 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">上一次运行时间</span> <input id="scd_job_last_run_time" name="scd_job_last_run_time" type="text" class="form-control" placeholder="" readonly="readonly">
+							</div>
+						</div>
+						<div class="col-md-5 col-md-offset-1 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">下一次运行时间</span> <input id="scd_job_next_run_time" name="scd_job_next_run_time" type="text" class="form-control" placeholder="" readonly="readonly">
+							</div>
 						</div>
 					</div>
-					<div class="col-md-5 col-md-offset-1">
-						<div class="input-group">
-							<span class="input-group-addon">计划任务状态</span> <input id="scd_job_status" name="date2" data-value="" type="text" class="form-control" placeholder="" readonly="readonly">
+					<div class="row">
+						<div class="col-md-5 form-group">
+							<div class="input-group">
+								<span class="input-group-addon">计划任务描述</span> <input id="scd_job_desc" name="scd_job_desc" type="text" class="form-control" placeholder="" >
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">上一次运行时间</span> <input id="scd_job_last_run_time" name="date" type="text" class="form-control" placeholder="" readonly="readonly">
-						</div>
-					</div>
-					<div class="col-md-5 col-md-offset-1">
-						<div class="input-group">
-							<span class="input-group-addon">下一次运行时间</span> <input id="scd_job_next_run_time" name="date2" type="text" class="form-control" placeholder="" readonly="readonly">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-5">
-						<div class="input-group">
-							<span class="input-group-addon">计划任务描述</span> <input id="scd_job_desc" name="date" type="text" class="form-control" placeholder="" >
-						</div>
-					</div>
-				</div>
+				</form>
 				<ul id="myTab" class="nav nav-tabs">
 					<li class="active"><a href="#home" data-toggle="tab">属性</a></li>
 					<li><a href="#taskchain" data-toggle="tab">任务链</a></li>
 				</ul>
-				<div id="myTabContent" class="tab-content">
+				<div id="myTabContent" class="tab-content" style="min-height:50vh;">
 					<div class="tab-pane fade in active" id="home">
 						<table class="table table-striped">
 							<thead>
@@ -154,5 +157,49 @@
 
 	<%@ include file="../commonscript.jsp" %>
 	<script src="js/task.js?version=<%=Math.random()%>"></script>
+	<script type="text/javascript">
+		$(function(){
+			
+			$('#form1').bootstrapValidator({
+				message: '验证失败',
+				live : 'disabled',
+				feedbackIcons: {
+// 					valid: 'glyphicon glyphicon-ok',
+// 					invalid: 'glyphicon glyphicon-remove',
+// 					validating: 'glyphicon glyphicon-refresh'
+				},
+				fields: {
+					scd_job_id: {
+						message: '计划任务验证失败',
+						validators: {
+							notEmpty: {
+								message: '计划任务标识不能为空'
+							}
+						}
+					},
+					scd_job_cron: {
+						validators: {
+								remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}  
+			                         url: 'totask/vaildatecronexpression.action',//验证地址
+			                         message: 'cron表达式格式有误',//提示消息
+// 			                         delay :  2000,	//2秒钟发送一次请求
+			                         type: 'POST'//请求方式
+			                         /**自定义提交数据，默认值提交当前input value
+			                          *  data: function(validator) {
+			                               return {
+			                                   password: $('[name="passwordNameAttributeInYourForm"]').val(),
+			                                   whatever: $('[name="whateverNameAttributeInYourForm"]').val()
+			                               };
+			                            }
+			                          */
+			                     }
+						}
+					}
+				}
+			});
+
+		});
+
+	</script>
 </body>
 </html>
